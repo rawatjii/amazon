@@ -1,38 +1,41 @@
-.App {
-  text-align: center;
+*{margin:0; padding:0; box-sizing: border-box;}
+:root{
+    --btnColor:#FFD814;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+body{box-sizing: border-box;}
+.btn{outline:none; border:none; border-radius: 8px; box-shadow: 0 2px 5px 0 rgba(213,217,217,.5);}
+.btn_fill{background:var(--btnColor)}
+.no-fieldset fieldset{border:none;}
+.dropdown_menu{cursor: pointer; position:relative; padding-right:12px;}
+.dropdown_menu:before{
+    position: absolute;
+    content: '';
+    width: 0;
+    height: 0;
+    border-left: 4px solid transparent;
+    border-right: 4px solid transparent;
+    border-top: 4px solid #b9b9b9;
+    right: 0;
+    bottom: 5px;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
+/* navbar */
+.header .location{margin-left:20px; display: flex; align-items: flex-end; cursor: pointer;}
+.header .location .icon{width:18px; margin-right:2px;}
+.header .location .icon img{filter:invert(1);}
+.header .location .text{font-size:14px; line-height: 16px;}
+.header .location .text p{font-weight: 600;}
+.header .search_card{margin:0 20px;}
+.header .search_card .category_input {background: #f3f3f3; border-radius: 4px 0 0 4px;}
+.header .search_card .category_input .MuiSelect-select{min-height:unset; padding: 5px 35px 5px 10px;  height: 40px; display: flex; align-items: center; font-size: 13px; box-sizing: border-box;}
+.header .search_card .search_input{background:#fff; overflow:hidden; border-left:1px solid #ccc;}
+.header .search_card .search_input .MuiInputBase-input{padding:5px 10px; height: 40px; box-sizing: border-box;}
+.header .search_card .search_btn{height:40px; border-radius: 0 4px 4px 0; min-width: unset; width: 45px;}
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
 
-.App-link {
-  color: #61dafb;
-}
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
+/* location modal */
+.location_modal .modal-body p{font-size:13px; line-height:20px;}
+.location_modal .modal-body .btn{width:100%; margin-top:10px;}
+.location_modal .modal-body .btn{height:29px;}

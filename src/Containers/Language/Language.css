@@ -1,0 +1,7 @@
+.language_menu{
+    height: 40px;
+    display: flex;
+    align-items: center;
+}
+.language_menu .main{display: flex; align-items: center; text-transform: uppercase; font-weight: 600; font-size: 14px;}
+.language_menu .main .flag{margin-right:5px; width: 20px;}
