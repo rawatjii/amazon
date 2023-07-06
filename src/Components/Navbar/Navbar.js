@@ -1,130 +1,84 @@
 import * as React from 'react';
+import {useState, useEffect } from 'react';
+import ReactDOM from 'react-dom';
 import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
-import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
-import Menu from '@mui/material/Menu';
-import MenuIcon from '@mui/icons-material/Menu';
 import Container from '@mui/material/Container';
-import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
-import Tooltip from '@mui/material/Tooltip';
-import MenuItem from '@mui/material/MenuItem';
-import AdbIcon from '@mui/icons-material/Adb';
-import AspectRatio from '@mui/joy/AspectRatio';
-import FormControl from '@mui/material/FormControl';
-import Select from '@mui/material/Select';
-import FormHelperText from '@mui/material/FormHelperText';  
-import TextField from '@mui/material/TextField';
-import SearchIcon from '@mui/icons-material/Search';
+
 import Image from '../Image/Image'
-import ModalComponent from '../Modal/ModalComponent';
+import Location from './Location/Location';
 import LanguageComponent from '../../Containers/Language/Language'
+import SignIn from '../../Containers/SignIn/SignIn'
+import ReturnOrders from '../../Containers/ReturnOrders/ReturnOrders';
+import CartLink from './CartLink/CartLink'
+import Search from './Search/Search';
+import NavMenus from './NavMenus/NavMenus';
 
 // logo
 import logo from '../../assets/logo.png';
-import locationIcon from '../../assets/icons/location.svg';
+import './Navbar.css'
 
-const pages = ['Products', 'Pricing', 'Blog'];
-const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
+const Navbar = (props) => {
+  
+  const [showSidebarMenu, setShowSidebarMenu] = useState(false);
+  const CategoryMenus = ["Amazon miniTV", "Sell","Best Seller","Mobiles","Today's Deals","Customer Service","New Releases","Prime","Electronics","Home & Kitchen","Amazon Pay","Gift Ideas","Fashion","Computers","Books","Coupons","Beauty & Personal Care","Toys & Games"];
 
-const rootPath = process.env.PUBLIC_URL;
-
-function Navbar() {
-  const [anchorElNav, setAnchorElNav] = React.useState(null);
-  const [anchorElUser, setAnchorElUser] = React.useState(null);
-  const [openModal, setOpenModal] = React.useState(false);
-  const [age, setAge] = React.useState('');
-
-  const handleChange = (event) => {
-    setAge(event.target.value);
-  };
-
-  const handleOpenNavMenu = (event) => {
-    setAnchorElNav(event.currentTarget);
-  };
-  const handleOpenUserMenu = (event) => {
-    setAnchorElUser(event.currentTarget);
-  };
-
-  const handleCloseNavMenu = () => {
-    setAnchorElNav(null);
-  };
-
-  const handleCloseUserMenu = () => {
-    setAnchorElUser(null);
-  };
-
-  const showModal = () => {
-    setOpenModal(true)
+  const showSideMenu = ()=>{
+    setShowSidebarMenu(true)
   }
 
-  const hideModal = () => {
-    setOpenModal(false)
+  const hideSideMenu = ()=>{
+    setShowSidebarMenu(true)
   }
 
   return (
-    <div>
+    <>
       <AppBar className='header' position="static" color="primary">
-            <Container maxWidth="xl">
-              <Toolbar disableGutters>
+            <Container maxWidth='false'>
+              <Toolbar className='header_bar' disableGutters>
                 
-                <Image src={logo} className="mainLogo" maxWidth="128" objectFit="contain" />
+                <Image src={logo} className="header_item mainLogo" maxWidth="97" objectFit="contain" />
+                <Location />
+                <Search />
+                <LanguageComponent />
+                <SignIn />
+                <ReturnOrders />
+                <CartLink />
 
-                <div className='location' onClick={showModal}>
-                  <div className='icon'>
-                    <Image src={locationIcon} />
-                  </div>
-                  <div className='text'>
-                    <small>Hello</small>
-                    <p>Select your address</p>
-                  </div>
-                </div>
-
-                <div className='search_card'>
-                  <FormControl className='category_input no-fieldset' color='secondary'>
-                    <Select
-                      value={age}
-                      onChange={handleChange}
-                      displayEmpty
-                    >
-                      <MenuItem value="">All Categories</MenuItem>
-                      <MenuItem value={10}>Electronics</MenuItem>
-                      <MenuItem value={20}>Mobile</MenuItem>
-                      <MenuItem value={30}>Others</MenuItem>
-                    </Select>
-                  </FormControl>
-                  
-                  <TextField className='search_input no-fieldset' placeholder="Search Amazon.in" id="outlined-basic"  />
-
-                  <Button variant="contained" color='secondary' className='search_btn no-fieldset'>
-                    <SearchIcon />
-                  </Button>
-                </div>
-
-                <div>
-                  <LanguageComponent /> 
-                </div>
-
-                
               </Toolbar>
             </Container>
       </AppBar> 
 
-      {/* modal */}
-      <ModalComponent modalStatus={openModal} hideModal={hideModal} width="375" className="location_modal">
-        <div className='modal-header'>
-          <h6 className='title'>Choose your location</h6>
-        </div>
-        <div className='modal-body'>
-          <p>Delivery options and delivery speeds may vary for different locations</p>
-          <Button variant="contained" className='btn btn_fill' color="secondary">Sign in to update your location</Button>
-          {/* <button className='btn btn_fill'>Sign in to update your location</button> */}
-        </div>
-      </ModalComponent>
-    </div>
+      <div className='mini_bar'>
+        <Container maxWidth='false'>
+          <ul className="all_items">
+            <li className='all'>
+              <a href='#' onClick={showSideMenu}>
+                <div className='bars'>
+                  <span></span>
+                </div>
+                All
+              </a>
+            </li>
+
+            {CategoryMenus.map(item=>{
+              return <li className='item' key={item}>
+                <a href="#">{item}</a>
+              </li>
+            })}
+          </ul>
+        </Container>
+      </div>
+
+      {ReactDOM.createPortal(
+        showSidebarMenu ? <NavMenus /> : null,
+        document.getElementById('sidebarMenu')
+      )}
+    </>
     
   );
 }
+
+
+
 export default Navbar;

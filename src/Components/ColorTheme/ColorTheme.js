@@ -7,10 +7,10 @@ const colorTheme = createTheme({
         main: '#0f1111',
       },
       secondary: {
-        main: '#FFD814',
-      },
-      orange: {
         main: '#febd69',
+      },
+      btnColor: {
+        main: '#FFD814',
       },
     },
 });

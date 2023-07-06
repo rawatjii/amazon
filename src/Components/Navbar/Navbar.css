@@ -1,0 +1,32 @@
+.header{position: relative!important; z-index: 99;}
+.header .header_bar {display: flex;}
+.header .location{margin-left:20px; display: flex; align-items: flex-end; cursor: pointer;}
+.header .location .icon{width:18px; margin-right:2px;}
+.header .location .icon img{filter:invert(1);}
+.header .location .text{font-size:14px; line-height: 16px;}
+.header .location .text p{font-weight: 600;}
+.header .search_card{flex-grow: 1; display: flex;}
+.header .search_card .category_input {background: #f3f3f3; border-radius: 4px 0 0 4px;}
+.header .search_card .category_input .MuiSelect-select{min-height:unset; padding: 5px 35px 5px 10px;  height: 40px; display: flex; align-items: center; font-size: 13px; box-sizing: border-box;}
+.header .search_card .search_input{background:#fff; overflow:hidden; border-left:1px solid #ccc; flex-grow: 1;}
+.header .search_card .search_input .MuiInputBase-input{padding:5px 10px; height: 40px; box-sizing: border-box;}
+.header .search_card .search_btn{height:40px; border-radius: 0 4px 4px 0; min-width: unset; width: 45px;}
+/* .header .dropdown_menu .main{padding-top:12px; padding-bottom:12px;} */
+.header .dropdown_menu .main:before{bottom: 16px;}
+.header .dropdown_menu .dropdown_items{top: calc(100% - 5px);}
+.header_item {margin: 0 15px;}
+.header_item a .main{color:#fff;}
+.header_item .main{font-size: 14px; line-height: 16px; padding-top: 12px; padding-bottom: 12px;}
+.header_item .main p{font-weight: 600;}
+
+.mini_bar{background-color: var(--dark_blue);}
+.mini_bar .all_items{display:flex;}
+.mini_bar .all_items li{flex-grow: 1;}
+.mini_bar .all_items li.all a{display:flex; align-items: center; font-weight: 500;}
+.mini_bar .all_items .bars{position:relative; width:18px; height:14px; display:flex; align-items: center; margin-right: 5px;}
+.mini_bar .all_items .bars span{position:relative; width:100%; height:2px; background:#fff; display: block;} 
+.mini_bar .all_items .bars:before,
+.mini_bar .all_items .bars:after{position:absolute; content:''; width:100%; height:2px; background:#fff; display:block; top:0;}
+.mini_bar .all_items .bars:before{bottom:0; top:unset;}
+.mini_bar .all_items a{padding:10px 12px; color:#fff; font-size:14px; display: block; border: 1px solid transparent; border-radius: 3px;}
+.mini_bar .all_items a:hover{border-color:#fff;}

@@ -1,0 +1,5 @@
+.cart_item{display:flex; align-items: center;}
+.cart_item .main{display:flex; align-items: flex-end; padding-top: 8px; padding-bottom: 8px;}
+.cart_item .icon{width: 40px; height: 40px; display: flex; position: relative;}
+.cart_item .icon .count{position: absolute; right: 24%; bottom: 13px; font-size: 16px; color:var(--orange)}
+.cart_item .main p{padding-bottom: 5px; font-weight: 500!important; padding-left: 2px;}

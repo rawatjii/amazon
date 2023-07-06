@@ -1,0 +1,35 @@
+
+.signIn .dropdown_items{width: 800px; right: -100px; padding:0!important;}
+.signIn .dropdown_items.no_user{width: 500px;}
+.signIn .dropdown_items.no_user .top{text-align: center; padding: 15px 0 10px;  margin-bottom:15px; position:relative;}
+.signIn .dropdown_items.no_user .top:before{position:absolute; content:''; height:1px; width:calc(100% - 40px); bottom:0; left:20px; border-bottom: 0.5px solid #e1e1e1;}
+.signIn .dropdown_items.no_user .top button{width: 200px; font-size: 12px; text-transform: capitalize;}
+.signIn .dropdown_items.no_user .top p{margin-top:7px}
+.signIn .dropdown_items.no_user .top small{font-size:12px;}
+.signIn .dropdown_items.no_user .top a{color:var(--a-color); font-size:12px; font-weight: 500;}
+.signIn .dropdown_items.no_user .top a:hover{color:var(--orange); text-decoration: underline;}
+.signIn .dropdown_items .bottom{display:flex; flex-wrap: wrap;}
+.signIn .dropdown_items .history{max-width:33.33%; flex:0 0 33.33%; padding:15px; border-right:1px solid #ccc;}
+.signIn .dropdown_items .account_menus{max-width:66.66%; flex:0 0 66.66%;}
+.signIn .dropdown_items.no_user .account_menus{max-width:100%; flex:0 0 100%;}
+.signIn .dropdown_items:before{right:calc(100px - 4px); left:unset;}
+.signIn .dropdown_items a{font-size:14px;}
+.signIn .dropdown_items h3{font-size:16px; font-weight: 700;}
+.signIn .history .headings{margin-bottom:15px;}
+.signIn .history h3{font-size:18px;}
+.signIn .history .headings a{color:var(--a-color); font-weight: 500;}
+.signIn .history .product{display:flex;}
+.signIn .history .thumbnail img{width:75px; height:75px;}
+.signIn .history .details{padding-left:10px;}
+.signIn .history .details a p{display:-webkit-box; -webkit-line-clamp: 2; overflow: hidden; -webkit-box-orient: vertical; color:var(--a-color);}
+.signIn .history .details p:hover{color:var(--orange)}
+.signIn .history .details span{color:var(--a-color-price); font-weight: 400; font-size:16px; margin: 5px 0; display: inline-block;}
+.signIn .history .details span:hover{text-decoration: underline;}
+.signIn .history .details .cart_btn{font-size: 12px; padding: 4px 6px; display: block; line-height: initial; text-transform: capitalize;}
+.signIn .account_menus{display:flex; flex-wrap: wrap;}
+.signIn .account_menus .menus{max-width: 50%; flex:0 0 50%; padding: 15px 20px;}
+.signIn .account_menus .menus:not(:last-child){border-right:0.5px solid #e1e1e1;}
+.signIn .account_menus h3{margin-bottom:10px;}
+.signIn .account_menus hr{margin:5px 0; background-color:#e1e1e1; border: none; height: 0.5px;}
+.signIn .account_menus .list-item{padding:3px 0; display:block;}
+.signIn .account_menus .list-item:hover{text-decoration: underline; color:var(--orange)}
