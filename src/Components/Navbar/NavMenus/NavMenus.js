@@ -1,12 +1,23 @@
 import { Component } from "react";
+import ReactDOM from 'react-dom';
 import MenuUser from '../../../assets/icons/menu_user.svg';
 import './NavMenus.css'
 import Image from "../../Image/Image";
 
+const Backdrop = (props)=>{
+    return(
+        <div className={`backdrop ${props.className}`} onClick={props.hideMenu}></div>
+    );
+}
+
 class NavMenus extends Component{
     render(){
         return(
-            <div className="menus">
+            <>
+            <span className={`navMenuClose ${this.props.show ? 'show' : null}`} onClick={this.props.hideMenus}>
+                &times;
+            </span>
+            <div className={`menus ${this.props.show ? 'show' : null}`}>
                 <div className="user_top">
                     <Image src={MenuUser} className="user" />
                     <h4>Hello, sign in</h4>
@@ -107,6 +118,12 @@ class NavMenus extends Component{
 
                 </div>
             </div>
+
+            {ReactDOM.createPortal(
+                <Backdrop className={this.props.show ? 'show':''} hideMenu={this.props.hideMenus} />,
+                document.getElementById('backdrop')
+            )}
+            </>
         )
     }
 }

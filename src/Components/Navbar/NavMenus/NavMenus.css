@@ -1,3 +1,12 @@
-.menus{position:fixed; top:0; left:0; background:#fff; z-index: 999; width: 365px;}
+.navMenuClose{position: absolute; left: 380px; font-size: 50px; color: #fff; z-index: 999; top: 0px; display: flex; height: 40px; padding: 0; font-weight: 100; cursor: pointer; opacity:0; visibility: hidden; transition:all 0.3s ease-in-out; -webkit-transition:all 0.3s ease-in-out; -ms-transition:all 0.3s ease-in-out;}
+.navMenuClose.show{opacity:1; visibility: visible;}
+.menus{position:fixed; top:0; left:-365px; background:#fff; z-index: 999; width: 365px; transition:all 0.3s ease-in-out; -webkit-transition:all 0.3s ease-in-out; -ms-transition:all 0.3s ease-in-out;}
+.menus.show{left:0px;}
 .menus .user_top{display: flex; align-items: center; padding: 12px 20px 12px 40px; background:var(--dark_blue); color:#fff;}
 .menus .user_top .user{width:24px; margin-right:10px; filter: invert(1);}
+.menus .menu_bottom{height:calc(100vh - 48px); overflow: auto;}
+.menus .menu_bottom .single_category{padding: 20px 0 8px;}
+.menus .menu_bottom .single_category:not(:last-child){border-bottom: 1px solid #d5dbdb;}
+.menus .menu_bottom .single_category h4{font-size: 18px; margin-left: 36px; margin-bottom: 10px;}
+.menus .menu_bottom a{padding:13px 20px 13px 36px; display:block; font-size:14px;}
+.menus .menu_bottom a:hover{background-color: #eaeded; color: #111;}

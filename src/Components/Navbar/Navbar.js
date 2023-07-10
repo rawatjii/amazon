@@ -28,7 +28,7 @@ const Navbar = (props) => {
   }
 
   const hideSideMenu = ()=>{
-    setShowSidebarMenu(true)
+    setShowSidebarMenu(false)
   }
 
   return (
@@ -71,7 +71,7 @@ const Navbar = (props) => {
       </div>
 
       {ReactDOM.createPortal(
-        showSidebarMenu ? <NavMenus /> : null,
+        <NavMenus show={showSidebarMenu} hideMenus={hideSideMenu} />,
         document.getElementById('sidebarMenu')
       )}
     </>

@@ -12,6 +12,7 @@
 .header .search_card .search_input .MuiInputBase-input{padding:5px 10px; height: 40px; box-sizing: border-box;}
 .header .search_card .search_btn{height:40px; border-radius: 0 4px 4px 0; min-width: unset; width: 45px;}
 /* .header .dropdown_menu .main{padding-top:12px; padding-bottom:12px;} */
+.header{z-index: 999;}
 .header .dropdown_menu .main:before{bottom: 16px;}
 .header .dropdown_menu .dropdown_items{top: calc(100% - 5px);}
 .header_item {margin: 0 15px;}
