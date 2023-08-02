@@ -1,0 +1,6 @@
+.main_products{padding: 0 30px;}
+.main_products .MuiContainer-root{margin-top: -350px; position: relative; z-index: 9;}
+.card{background:#fff; padding:20px; margin: 20px 0;}
+.card .title{font-size: 20px; font-weight: 600; letter-spacing: 0.5px;}
+.card .heading_row{display:flex; margin-bottom: 30px;}
+.card .heading_row a{display:flex; align-items: flex-end; font-size:14px; margin-left: 20px; color:var(--a-color)}

@@ -6,6 +6,7 @@ import reportWebVitals from './reportWebVitals';
 import { configureStore } from '@reduxjs/toolkit';
 import { Provider } from 'react-redux';
 import authReducer from './store/reducers/authReducer';
+import { CookiesProvider } from 'react-cookie';
 
 const store = configureStore({
   reducer:{
@@ -19,9 +20,11 @@ const store = configureStore({
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <Provider store={store}>
-      <App />
-    </Provider>
+    <CookiesProvider>
+      <Provider store={store}>
+          <App />
+      </Provider>
+    </CookiesProvider>
   </React.StrictMode>
 );
 

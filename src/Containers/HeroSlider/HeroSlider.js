@@ -13,29 +13,31 @@ import './HeroSlider.css'
 class HeroSlider extends Component{
     render(){
         return(
-            <Container maxWidth='xl'>
-                <Swiper
-                    modules={[Navigation, Scrollbar]}
-                    spaceBetween={50}
-                    slidesPerView={1}
-                    allowTouchMove={false}
-                    loop={true}
-                    navigation
-                    scrollbar={{ draggable: false }}
-                    onSlideChange={() => console.log('slide change')}
-                    onSwiper={(swiper) => console.log(swiper)}
-                >
-                    <SwiperSlide>
-                        <Image src={banner1} className="w-100" />
-                    </SwiperSlide>
-                    <SwiperSlide>
-                        <Image src={banner2} className="w-100" />
-                    </SwiperSlide>
-                    <SwiperSlide>
-                        <Image src={banner3} className="w-100" />
-                    </SwiperSlide>
-                </Swiper> 
-            </Container>
+            <div className="hero_slider bg-gray">
+                <Container maxWidth='xl'>
+                    <Swiper
+                        modules={[Navigation, Scrollbar]}
+                        spaceBetween={50}
+                        slidesPerView={1}
+                        allowTouchMove={false}
+                        loop={true}
+                        navigation
+                        scrollbar={{ draggable: false }}
+                        onSlideChange={() => console.log('slide change')}
+                        onSwiper={(swiper) => console.log(swiper)}
+                    >
+                        <SwiperSlide>
+                            <Image src={banner1} className="w-100" />
+                        </SwiperSlide>
+                        <SwiperSlide>
+                            <Image src={banner2} className="w-100" />
+                        </SwiperSlide>
+                        <SwiperSlide>
+                            <Image src={banner3} className="w-100" />
+                        </SwiperSlide>
+                    </Swiper> 
+                </Container>
+            </div>
         )
     }
 }

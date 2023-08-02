@@ -1,0 +1,7 @@
+/* .swiper-slide{height:unset;} */
+.today_deals .swiper-slide .thumbnail{height: 250px; display: flex; align-items: center; justify-content: center; background-color: rgba(15,17,17,.03); padding: 10px;}
+.today_deals .swiper-slide .thumbnail img{object-fit: contain; height: 100%;}
+.today_deals .details{margin-top:10px;}
+.today_deals .details .deal{background-color: #cc0c39; color:#fff; padding: 4px 6px; font-size: 12px; display: inline-block;}
+.today_deals .deals .text{margin-left:8px; font-size:12px; font-weight: 500; letter-spacing: 0.5px; color:#CC0C39;}
+.today_deals .details .name{display:-webkit-box; -webkit-box-orient: vertical; overflow:hidden; -webkit-line-clamp: 1; margin-top:5px; font-size:14px; letter-spacing: 0.5px;}

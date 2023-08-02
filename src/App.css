@@ -10,6 +10,7 @@
 }
 
 body{box-sizing: border-box;}
+.bg-gray{background:#E3E6E6}
 a{text-decoration: none; color:var(--a-text-color)}
 li{list-style-type: none;}
 .btn{outline:none; border:none; border-radius: 8px; box-shadow: 0 2px 5px 0 rgba(213,217,217,.5);}
@@ -35,3 +36,6 @@ li{list-style-type: none;}
 .location_modal .modal-body p{font-size:13px; line-height:20px;}
 .location_modal .modal-body .btn{width:100%; margin-top:10px;}
 .location_modal .modal-body .btn{height:29px;}
+
+/* helper text */
+.MuiFormHelperText-root{margin-left:0!important;}

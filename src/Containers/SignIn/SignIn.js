@@ -7,6 +7,7 @@ import './SignIn.css';
 import defaultImage from '../../assets/default.jpg';
 import { connect } from 'react-redux';
 import { authActions } from '../../store/reducers/authReducer';
+import { Link } from 'react-router-dom';
 
 const Backdrop = (props)=>{
     return(
@@ -37,7 +38,7 @@ const SignIn = (props)=>{
                 <div className={`dropdown_items ${dropdown ? 'active' : ''} ${isAuth ? 'user_in':'no_user'}`}>
                     <div className='top'>
                         <Button variant="contained" color="secondary">Sign in</Button>
-                        <p><small>New Customer? <a href='#'>Start here.</a></small></p>
+                        <p><small>New Customer? <Link to="/register">Start here.</Link></small></p>
                     </div>
                     <div className='bottom'>
                         {isAuth? (
@@ -154,6 +155,7 @@ const SignIn = (props)=>{
                 
                 {/* <button onClick={props.onAuthLogin}>{props.UserStatus}</button> */}
             </div>
+
             {ReactDOM.createPortal(
                 dropdown ? <Backdrop className={dropdown ? 'show':''} /> : null,
                 document.getElementById('backdrop')
