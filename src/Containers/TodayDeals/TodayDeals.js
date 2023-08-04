@@ -13,7 +13,7 @@ class TodayDeals extends Component{
     }
 
     componentDidMount(){
-        axios.get('https://clone-17e54-default-rtdb.firebaseio.com/products.json')
+        axios.get('/products.json')
         .then(res=>{
             const allProductsArray = [];
             const allProductsData = res.data;

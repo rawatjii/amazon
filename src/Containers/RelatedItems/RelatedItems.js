@@ -7,10 +7,9 @@ class RelatedItems extends Component{
         cookies: instanceOf(Cookies).isRequired
     };
 
-    handleNameChange() {
+    handleNameChange = () => {
         const { cookies } = this.props;
-    
-        cookies.set('name', 'test', { path: '/' });
+        cookies.set('name', 'test', { path: '/', maxAge:3600 });
     }
 
     render(){
