@@ -6,55 +6,26 @@ import axios from '../../axios'
 import Loader from "../../Components/UI/Loader/Loader";
 import './TodayDeals.css'
 import { useDispatch, useSelector } from "react-redux";
-import { fetchProducts } from "../../store/reducers/productsReducer";
+import { addRelatedItemCategory } from "../../store/reducers/productsReducer";
+import { useCookies } from 'react-cookie';
 
 const TodayDeals = () => {
 
     const [loading, setLoading] = useState(true)
     const [allProducts, setAllProducts] = useState([])
+    
+    const [cookies, setCookie] = useCookies(['relatedItemsCategory']);
 
-    const dispatch = useDispatch()
+    const dispatch = useDispatch();
 
     const fetchAllProducts = useSelector((state)=>{
         return state.products.allProducts;
     })
 
-    // useEffect(() => {
-    //     fetchProducts()
-    // }, [])
-    
-
-    // state={
-    //     loading:true,
-    //     allProducts:[],
-    // }
-
-    /*componentDidMount(){
-        axios.get('/products.json')
-        .then(res=>{
-            const allProductsArray = [];
-            const allProductsData = res.data;
-            Object.entries(allProductsData).map((value, key)=>{
-                allProductsArray.push(value[1])
-            })
-            this.setState({allProducts:allProductsArray, loading:false})
-            console.log(this.state.allProducts);
-            // this.setState({allProducts:[...allProductsData]} )
-
-            // for(const [key, value] of Object.entries(allProductsData)){
-            //     // for(const [key1, value1] of Object.entries(value)){
-            //     //     productObject={key1, value1}
-            //     // }
-            //     allProductsArray.push({value})
-            //     console.log(allProductsArray);
-            // }
-            // Object.keys(allProductsData).map((key)=>{
-            //     allProductsArray.push({key})
-            //     console.log(allProductsArray);
-            // })
-            // console.log('testing', allProductsData);
-        })
-    }*/
+    const setRelatedCategory = (data)=>{
+        // dispatch(addRelatedItemCategory(data))
+        setCookie('relatedItemsCategory', data, {path: '/', maxAge: 3600})
+    }
 
     return(
         <div className="card today_deals">
@@ -78,7 +49,7 @@ const TodayDeals = () => {
                 {fetchAllProducts.map((item, index)=>{
                     return <SwiperSlide key={index}>
                         <div className="single_product">
-                            <a href="javascript:void(0)">
+                            <a href="javascript:void(0)" onClick={()=>setRelatedCategory(item.category)}>
                                 <div className="thumbnail">
                                     <Image src={item.images.image1} className="w-100" />
                                 </div>

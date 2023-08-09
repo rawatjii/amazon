@@ -1,27 +1,59 @@
-import { Component } from "react";
+import { Component, useEffect, useState } from "react";
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Navigation, Pagination, Scrollbar, A11y } from 'swiper/modules';
+import Image from "../../Components/Image/Image";
+import Loader from "../../Components/UI/Loader/Loader";
 import { instanceOf } from 'prop-types';
-import { withCookies, Cookies } from 'react-cookie';
+import { useCookies, withCookies, Cookies } from 'react-cookie';
+import { useSelector } from "react-redux";
 
-class RelatedItems extends Component{
-    static propTypes = {
-        cookies: instanceOf(Cookies).isRequired
-    };
+const RelatedItems = ()=>{
 
-    handleNameChange = () => {
-        const { cookies } = this.props;
-        cookies.set('name', 'test', { path: '/', maxAge:3600 });
-    }
+    const [cookies, setCookie] = useCookies(['relatedItemsCategory']);
 
-    render(){
-        return(
-            <div className="card today_deals">
-                <div className="heading_row">
-                    <h3 className="title">Related to items you've viewed</h3>
-                    <a href="#" className="" onClick={this.handleNameChange}>See more</a>
-                </div>
+    const allProducts = useSelector((state)=>{
+        return state.products.allProducts;
+    })
+
+    
+    return(
+        <div className="card today_deals">
+            <div className="heading_row">
+                <h3 className="title">Related to items you've viewed</h3>
+                <a href="#" className="">See more</a>
             </div>
-        )
-    }
+
+            {allProducts.length >= 0 ? (
+                <Swiper
+                    modules={[Navigation, Scrollbar]}
+                    spaceBetween={15}
+                    slidesPerView={5}
+                    allowTouchMove={false}
+                    loop={true}
+                    navigation
+                    scrollbar={{ draggable: false }}
+                    onSlideChange={() => console.log('slide change')}
+                    onSwiper={(swiper) => console.log(swiper)}
+                >
+                {allProducts.map((item, index)=>{
+                    if(item.category === cookies.relatedItemsCategory){
+                    return <SwiperSlide key={index}>
+                        <div className="single_product">
+                            <a href="javascript:void(0)">
+                                <div className="thumbnail">
+                                    <Image src={item.images.image1} className="w-100" />
+                                </div>
+                            </a>
+                        </div>
+                    </SwiperSlide>
+                    }
+                })}
+                
+                </Swiper> 
+            ) : <Loader/>}
+
+        </div>
+    )
 }
 
-export default withCookies(RelatedItems);
+export default RelatedItems;

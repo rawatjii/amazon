@@ -14,20 +14,6 @@ function App() {
 
   const dispatch = useDispatch();
 
-  // useEffect(() => {
-  //   const allProdsArray=[];
-  //   axios.get('/products.json')
-  //   .then(res => {
-  //     Object.entries(res.data).map((value)=>{
-  //       allProdsArray.push(value[1])
-  //     })
-  //   })
-  //   .then(()=>{
-  //     // console.log('APP', allProdsArray);
-  //     dispatch(fetchAllProducts(allProdsArray))
-  //   })
-  // }, [])
-
   useEffect(() => {
     dispatch(fetchProducts())
 }, [])

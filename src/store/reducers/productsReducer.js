@@ -1,6 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
-// import axios from '../../axios';
-import axios from 'axios';
+import { useCookies } from 'react-cookie';
+import axios from '../../axios';
+// import axios from 'axios';
 
 const initialState1 = {
     allProducts: [],
@@ -24,7 +25,7 @@ export const fetchProducts = ()=>{
     return async (dispatch)=>{
         try{
             const dataArr = [];
-            const response = await axios.get('https://clone-17e54-default-rtdb.firebaseio.com/products.json');
+            const response = await axios.get('/products.json');
             if (response.status >= 200 && response.status < 300) {
                 Object.entries(response.data).map((entry)=>{
                     dataArr.push(entry[1])
@@ -42,12 +43,13 @@ export const fetchProducts = ()=>{
     }
 }
 
-export const productClickFunc = ()=>{
-    return async ()=>{
+// export const addRelatedItemCategory = (data)=>{
 
-    }
-}
+//     return async (dispatch)=>{
+//         dispatch(setRelatedItemsCategory(data))
+//     }
+// }
 
-export const {fetchAllProducts, testFunc} = productsSlice.actions;
+export const {fetchAllProducts, setRelatedItemsCategory} = productsSlice.actions;
 
 export default productsSlice.reducer;
