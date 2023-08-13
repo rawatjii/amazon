@@ -1,0 +1,4 @@
+.products_by_offer .single_col{
+    max-width: 25%;
+    flex:0 0 25%;
+}
