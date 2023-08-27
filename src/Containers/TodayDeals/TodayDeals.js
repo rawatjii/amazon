@@ -1,4 +1,5 @@
 import React, {useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination, Scrollbar, A11y } from 'swiper/modules';
 import Image from "../../Components/Image/Image";
@@ -43,13 +44,11 @@ const TodayDeals = () => {
                     loop={true}
                     navigation
                     scrollbar={{ draggable: false }}
-                    onSlideChange={() => console.log('slide change')}
-                    onSwiper={(swiper) => console.log(swiper)}
                 >
                 {fetchAllProducts.map((item, index)=>{
                     return <SwiperSlide key={index}>
                         <div className="single_product">
-                            <a href="javascript:void(0)" onClick={()=>setRelatedCategory(item.category)}>
+                            <Link to={`/today-deals/${item.category}`} onClick={()=>setRelatedCategory(item.category)}>
                                 <div className="thumbnail">
                                     <Image src={item.images.image1} className="w-100" />
                                 </div>
@@ -60,7 +59,7 @@ const TodayDeals = () => {
                                     </p>
                                     <p className="name">{item.name}</p>
                                 </div>
-                            </a>
+                            </Link>
                         </div>
                     </SwiperSlide>
                 })}

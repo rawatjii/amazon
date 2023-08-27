@@ -23,8 +23,6 @@ class HeroSlider extends Component{
                         loop={true}
                         navigation
                         scrollbar={{ draggable: false }}
-                        onSlideChange={() => console.log('slide change')}
-                        onSwiper={(swiper) => console.log(swiper)}
                     >
                         <SwiperSlide>
                             <Image src={banner1} className="w-100" />

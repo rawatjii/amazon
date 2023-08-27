@@ -32,8 +32,6 @@ const RelatedItems = ()=>{
                     loop={true}
                     navigation
                     scrollbar={{ draggable: false }}
-                    onSlideChange={() => console.log('slide change')}
-                    onSwiper={(swiper) => console.log(swiper)}
                 >
                 {allProducts.map((item, index)=>{
                     if(item.category === cookies.relatedItemsCategory){

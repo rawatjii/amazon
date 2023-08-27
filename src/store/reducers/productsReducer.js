@@ -30,7 +30,7 @@ export const fetchProducts = ()=>{
                 Object.entries(response.data).map((entry)=>{
                     dataArr.push(entry[1])
                 });
-                console.log('products thunk', dataArr);
+                // console.log('products thunk', dataArr);
     
                 dispatch(fetchAllProducts(dataArr))
             }else{
