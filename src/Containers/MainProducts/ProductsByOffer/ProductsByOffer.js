@@ -41,7 +41,7 @@ const ProductsByOffer = ()=>{
                         // const test= []; 
                         const newObj = {
                             title:text,
-                            catgory:'mens style',
+                            category:'mens style',
                             products:[
                                 {
                                     thumbnail:mensFootwear,
@@ -51,22 +51,37 @@ const ProductsByOffer = ()=>{
                         }
 
                         productsCategory.map((singleCatg)=>{
-                            if(singleCatg.category === 'mens style'){
-                                singleCatg.products.map()
-                                console.log('product name', singleCatg.products.name);
+                            // console.log('testing', singleCatg);
+                            if(singleCatg.category == 'mens style'){
+                                console.log('testing');
+                                singleCatg.products.map((singleItem, singleItemNo)=>{
+                                    console.log('singleItem',singleItem);
+                                    const newProdArray = [singleItem, newObj];
+                                    // console.log('newProdArray',newProdArray);
+                                    setProductsCategory([
+                                        ...productsCategory,
+                                        newProdArray
+                                    ])
+                                })
+                            }else{
+                                setProductsCategory([
+                                    ...productsCategory,
+                                    newObj
+                                ])
                             }
-                            
                         })
 
-                        if(productsCategory){}
+                        // setProductsCategory([
+                        //     ...productsCategory,
+                        //     newObj
+                        // ])
+
+                        // if(productsCategory){}
                         // const newProductsArray = [
                         //     ...productsCategory,
                         //     // products:test
                         // ]
-                        setProductsCategory([
-                            ...productsCategory,
-                            newObj
-                        ])
+                        
                     }
                     
                     // discountNumbers.push(product.price.discount);

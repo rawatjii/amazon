@@ -46,9 +46,12 @@ const TodayDeals = () => {
                     scrollbar={{ draggable: false }}
                 >
                 {fetchAllProducts.map((item, index)=>{
+                    const newCat = item.category.replace(/\s/g, "").split(',')[0].replace('&','-');
+                    // console.log('newcategory',newCat);
+
                     return <SwiperSlide key={index}>
                         <div className="single_product">
-                            <Link to={`/today-deals/${item.category}`} onClick={()=>setRelatedCategory(item.category)}>
+                            <Link to={`/today-deals?cat=${newCat}`} onClick={()=>setRelatedCategory(item.category)}>
                                 <div className="thumbnail">
                                     <Image src={item.images.image1} className="w-100" />
                                 </div>
