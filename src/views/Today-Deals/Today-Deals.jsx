@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Route, Switch, useLocation } from 'react-route
 import Navbar from "../../Components/Navbar/Navbar";
 import axios from "axios";
 import { useSelector } from "react-redux";
+import Footer from '../../Containers/Footer/Footer'
 import './Today-Deals.css'
 // import { useParams } from "react-router-dom";
 
@@ -11,11 +12,13 @@ const Today_Deals = (props)=>{
     const urlParams = new URLSearchParams(location.search);
     const query = urlParams.get('cat');
     const filteredproducts = [];
+    const allproductsCategories = [];
     // console.log('query',query);
 
     // const params = useParams()
 
     const [filterProducts, setFilteredProducts] = useState([])
+    const [allCategories, setAllCategories] = useState([])
     
     const allProducts = useSelector((state)=>{
         return state.products.allProducts;
@@ -23,14 +26,20 @@ const Today_Deals = (props)=>{
 
     useEffect(() => {
         allProducts.map((singleProduct => {
-            if(singleProduct.category.replace(/\s/g, "").split(',')[0].replace('&','-') === query && singleProduct.price.discount > 0){
+            if(singleProduct.category.replace(/\s/g, "").split(',')[0].replace('&','-') === query && singleProduct.price.discountPrice != singleProduct.price.originalPrice){
                 filteredproducts.push(singleProduct)
+            }
+
+            const prodCategory = singleProduct.category.split(',')[0]
+            if(!allproductsCategories.includes(prodCategory)){
+                allproductsCategories.push(prodCategory)
             }
         }))
         
         setFilteredProducts(filteredproducts);
-        console.log('filterProducts',filterProducts);
-    }, [useEffect, allProducts])
+        setAllCategories(allproductsCategories)
+        // console.log('filterProducts',filterProducts);
+    }, [allProducts])
     
 
     return(
@@ -42,10 +51,18 @@ const Today_Deals = (props)=>{
 
             <div className="products_page">
                 <div className="row">
-                    <div className="col_3 left_col"></div>
+                    <div className="col_3 left_col">
+                        <h4 className="title">Category</h4>
+                        <ul className="allCategoriesLists">
+                            {allCategories.map((singleCategory, index) =>{
+                                return <li key={index}>{singleCategory}</li>
+                            })}
+                        </ul>
+                    </div>
 
                     <div className="col_9 right_col">
-                        <div className="row">
+                        <h3 className="title">Results</h3>
+                        <div className="row mx_-5">
                             {filterProducts.map((product, Index)=>{
                                 return <div className="single_col" key={Index}>
                                     <div className="singleProduct">
@@ -55,7 +72,14 @@ const Today_Deals = (props)=>{
                                         <div className="contents">
                                             <p className="name">{product.name}</p>
                                             <span className="tag">Deal of the Day</span>
-                                            <p><sup>₹</sup> <span className="currentPrice">{product.price.originalPrice}</span></p>
+                                            <p className="price">
+                                                <sup>₹</sup>
+                                                <span className="currentPrice">{product.price.discountPrice.toLocaleString()}</span>
+
+                                                <span className="old">M.R.P: <s>₹{product.price.originalPrice.toLocaleString()}</s></span>
+                                                <span className="discount">({Math.round(((product.price.originalPrice - product.price.discountPrice) / product.price.originalPrice) * 100)}% off)</span>
+                                            </p>
+                                            <p className="deliveryStatus">{product.price.discountPrice >= 499 ? "FREE Delivery by Amazon" : "FREE Delivery over ₹499. Fulfilled by Amazon" }</p>
                                         </div>
                                     </div>
                                 </div>
@@ -65,6 +89,8 @@ const Today_Deals = (props)=>{
                     </div>
                 </div>
             </div>
+
+            <Footer />
         </>
     )
 }
