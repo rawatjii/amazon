@@ -6,6 +6,7 @@ import axios from '../../axios';
 const initialState1 = {
     allProducts: [],
     relatedItemsCategory:'',
+    searchedProducts:[],
 };
 
 const productsSlice = createSlice({
@@ -17,6 +18,9 @@ const productsSlice = createSlice({
         },
         setRelatedItemsCategory:(state, action)=>{
             state.relatedItemsCategory = action.payload;
+        },
+        setSearchedProducts:(state, action)=>{
+            state.searchedProducts = [...action.payload];
         }
     }
 })
@@ -50,6 +54,6 @@ export const fetchProducts = ()=>{
 //     }
 // }
 
-export const {fetchAllProducts, setRelatedItemsCategory} = productsSlice.actions;
+export const {fetchAllProducts, setRelatedItemsCategory, setSearchedProducts} = productsSlice.actions;
 
 export default productsSlice.reducer;

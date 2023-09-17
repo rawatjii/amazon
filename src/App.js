@@ -7,6 +7,9 @@ import colorTheme from './Components/ColorTheme/ColorTheme';
 import Home from './views/Home';
 import Register from './views/Register/Register';
 import Today_Deals from './views/Today-Deals/Today-Deals';
+import Result from './views/Result/Result';
+import Dashboard from './admin/Components/Dashboard/Dashboard';
+import AddProduct from './admin/Components/AddProduct/AddProduct';
 import { fetchProducts } from './store/reducers/productsReducer';
 // css
 import './App.css';
@@ -17,8 +20,16 @@ function App() {
 
   useEffect(() => {
     dispatch(fetchProducts())
-}, [])
-  
+  }, []);
+
+  const firebaseConfig = {
+    apiKey: "your api key",
+    authDomain: "your credentials",
+    projectId: "your credentials",
+    storageBucket: "your credentials",
+    messagingSenderId: "your credentials",
+    appId: "your credentials"
+  };
 
   return (
     <BrowserRouter>
@@ -26,6 +37,9 @@ function App() {
           <Routes>
             <Route exact path='/register' element={<Register />} />
             <Route exact path='/today-deals' element={<Today_Deals />} />
+            <Route exact path='/result' element={<Result />} />
+            <Route exact path='/admin' element={<Dashboard />} />
+            <Route exact path='/add-product' element={<AddProduct />} />
             <Route exact path='/' element={<Home />} />
           </Routes>
         </ThemeProvider>
