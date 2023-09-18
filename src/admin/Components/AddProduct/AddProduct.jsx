@@ -89,13 +89,17 @@ const AddProduct = ()=>{
         try{
             let arr = [];
             for(let i = 0; i< images.length; i++){
-                const data = await uploadCloudinary(images[i])
-                arr.push(data);
+                const res = await uploadCloudinary(images[i]);
+                arr.push(res);
+                console.log('arr',arr);
+                // setPostData({...postData, images:[...postData.images, res]});
             }
-            setLinks(arr);
         }catch(error){
-            console.log(error)
+            console.log('error',error);
         }
+
+        
+        // setPostData({...postData, images:arr});
 
         // const data = new FormData()
         // data.append('files',postData.images);
@@ -105,6 +109,7 @@ const AddProduct = ()=>{
         //     id:uuidv4(),
         //     product_title:postData.product_title,
         //     categories:postData.product_category,
+        //     images:postData.images,
         // }
 
         // axios.post('/products.json', data)
