@@ -75,50 +75,55 @@ const AddProduct = ()=>{
     };
 
     const productImageHandler = (e)=>{
-        // setPostData({
-        //     ...postData,
-        //     images:e.target.files
-        // })
+        setPostData({
+            ...postData,
+            images:e.target.files
+        })
 
-        setImages(e.target.files)
+        // setImages(e.target.files)
     }
 
     const submitFunc = async(e)=>{
         e.preventDefault();
+        let arr = [];
+        const selectedImages = Object.values(postData.images);
+
+        // selectedImages.map(singlePostData => {
+        //     console.log('singlePostData',singlePostData.name);
+        // })
+
+        // console.log('postData.images',);
+
+        // return;
 
         try{
-            let arr = [];
-            for(let i = 0; i< images.length; i++){
-                const res = await uploadCloudinary(images[i]);
+            for(let i = 0; i < selectedImages.length; i++){
+                const res = await uploadCloudinary(selectedImages[i]);
                 arr.push(res);
-                console.log('arr',arr);
                 // setPostData({...postData, images:[...postData.images, res]});
             }
         }catch(error){
             console.log('error',error);
         }
 
-        
-        // setPostData({...postData, images:arr});
+        setPostData({...postData, images:arr});
 
-        // const data = new FormData()
-        // data.append('files',postData.images);
-        // data.append('upload_preset', 'amazon_clone');
+        debugger;
         
-        // const data = {
-        //     id:uuidv4(),
-        //     product_title:postData.product_title,
-        //     categories:postData.product_category,
-        //     images:postData.images,
-        // }
+        const data = {
+            id:uuidv4(),
+            product_title:postData.product_title,
+            categories:postData.product_category,
+            images:arr,
+        }
 
-        // axios.post('/products.json', data)
-        // .then(response => {
-        //     console.log('POST request successful', response.data);
-        // })
-        // .catch(error=>{
-        //     console.error('POST request error', error);
-        // })
+        axios.post('/products.json', data)
+        .then(response => {
+            console.log('POST request successful', response.data);
+        })
+        .catch(error=>{
+            console.error('POST request error', error);
+        })
     }
 
     return(
