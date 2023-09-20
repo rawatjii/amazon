@@ -68,7 +68,7 @@ const TodayDeals = () => {
                 })}
                 
                 </Swiper> 
-            ) : <Loader/>}
+            ) : <h6 className="text-center">No Today's Deals Found</h6>}
 
         </div>
     )

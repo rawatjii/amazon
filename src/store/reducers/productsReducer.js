@@ -4,6 +4,7 @@ import axios from '../../axios';
 // import axios from 'axios';
 
 const initialState1 = {
+    loading:false,
     allProducts: [],
     relatedItemsCategory:'',
     searchedProducts:[],
@@ -13,8 +14,18 @@ const productsSlice = createSlice({
     name:'products',
     initialState:initialState1,
     reducers:{
+        fetchProductsStart:(state)=>{
+            state.loading = true;
+        },
         fetchAllProducts:(state, action)=>{
-            state.allProducts = action.payload
+            state.allProducts = action.payload;
+            state.loading = false;
+        },
+        fetchProductsSuccess:(state)=>{
+            state.loading = false;
+        },
+        fetchProductsFailure:(state)=>{
+            state.loading = false;
         },
         setRelatedItemsCategory:(state, action)=>{
             state.relatedItemsCategory = action.payload;
@@ -27,6 +38,7 @@ const productsSlice = createSlice({
 
 export const fetchProducts = ()=>{
     return async (dispatch)=>{
+        dispatch(fetchProductsStart());
         try{
             const dataArr = [];
             const response = await axios.get('/products.json');
@@ -37,11 +49,13 @@ export const fetchProducts = ()=>{
                 // console.log('products thunk', dataArr);
     
                 dispatch(fetchAllProducts(dataArr))
+                dispatch(fetchProductsSuccess());
             }else{
                 throw new Error('Failed to fetch products')
             }
             
         }catch(err){
+            // dispatch(fetchProductsFailure());
             return console.error('Error While Fetching Projects');
         }
     }
@@ -54,6 +68,6 @@ export const fetchProducts = ()=>{
 //     }
 // }
 
-export const {fetchAllProducts, setRelatedItemsCategory, setSearchedProducts} = productsSlice.actions;
+export const {fetchProductsStart, fetchAllProducts, fetchProductsSuccess, fetchProductsFailure, setRelatedItemsCategory, setSearchedProducts} = productsSlice.actions;
 
 export default productsSlice.reducer;

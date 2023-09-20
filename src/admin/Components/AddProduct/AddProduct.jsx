@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useRef, useState} from 'react';
 import Sidebar from '../Sidebar/Sidebar';
 import Header from '../Header/Header';
 import axios from '../../../axios';
@@ -45,8 +45,14 @@ const AddProduct = ()=>{
         id:'',
         product_title:'',
         product_category:[],
-        images:[],
+        price:{
+            offerPrice:'',
+            originalPrice:''
+        }
     })
+
+    const originalPrice = useRef('');
+    const offerPrice = useRef('');
 
     const handleInputChange = (e)=>{
         const inputName = e.target.name;
@@ -86,35 +92,32 @@ const AddProduct = ()=>{
     const submitFunc = async(e)=>{
         e.preventDefault();
         let arr = [];
-        const selectedImages = Object.values(postData.images);
+        // const selectedImages = Object.values(postData.images);
 
         // selectedImages.map(singlePostData => {
         //     console.log('singlePostData',singlePostData.name);
         // })
 
-        // console.log('postData.images',);
-
-        // return;
-
-        try{
-            for(let i = 0; i < selectedImages.length; i++){
-                const res = await uploadCloudinary(selectedImages[i]);
-                arr.push(res);
-                // setPostData({...postData, images:[...postData.images, res]});
-            }
-        }catch(error){
-            console.log('error',error);
-        }
-
-        setPostData({...postData, images:arr});
-
-        debugger;
+        // try{
+        //     for(let i = 0; i < selectedImages.length; i++){
+        //         const res = await uploadCloudinary(selectedImages[i]);
+        //         arr.push(res);
+        //         // setPostData({...postData, images:[...postData.images, res]});
+        //     }
+        // }catch(error){
+        //     console.log('error',error);
+        // }
         
         const data = {
             id:uuidv4(),
             product_title:postData.product_title,
             categories:postData.product_category,
-            images:arr,
+            price:{
+                originalPrice:originalPrice.current.value,
+                offerPrice:offerPrice.current.value
+            },
+            rating:0,
+            // images:arr,
         }
 
         axios.post('/products.json', data)
@@ -188,21 +191,21 @@ const AddProduct = ()=>{
                                         <div className="border border-3 p-4 rounded">
                                         <div className="row g-3">
                                             <div className="col-md-6">
-                                                <label htmlFor="inputPrice" className="form-label">Price</label>
-                                                <input type="email" className="form-control" id="inputPrice" placeholder="00.00" />
+                                                <label htmlFor="inputPrice" className="form-label">Original Price</label>
+                                                <input type="number" className="form-control" id="inputPrice" placeholder="00" ref={originalPrice} />
                                             </div>
                                             <div className="col-md-6">
-                                                <label htmlFor="inputCompareatprice" className="form-label">Compare at Price</label>
-                                                <input type="password" className="form-control" id="inputCompareatprice" placeholder="00.00" />
+                                                <label htmlFor="inputCompareatprice" className="form-label">Offer Price</label>
+                                                <input type="number" className="form-control" id="inputCompareatprice" placeholder="00" ref={offerPrice} />
                                             </div>
-                                            <div className="col-md-6">
+                                            {/* <div className="col-md-6">
                                                 <label htmlFor="inputCostPerPrice" className="form-label">Cost Per Price</label>
                                                 <input type="email" className="form-control" id="inputCostPerPrice" placeholder="00.00" />
                                             </div>
                                             <div className="col-md-6">
                                                 <label htmlFor="inputStarPoints" className="form-label">Star Points</label>
                                                 <input type="password" className="form-control" id="inputStarPoints" placeholder="00.00" />
-                                            </div>
+                                            </div> */}
                                             <div className="col-12">
                                                 <label htmlFor="inputProductType" className="form-label">Product Type</label>
                                                 <select className="form-select" id="inputProductType">
