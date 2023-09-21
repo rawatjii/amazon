@@ -11,8 +11,6 @@ import { addRelatedItemCategory } from "../../store/reducers/productsReducer";
 import { useCookies } from 'react-cookie';
 
 const TodayDeals = () => {
-
-    const [loading, setLoading] = useState(true)
     const [allProducts, setAllProducts] = useState([])
     
     const [cookies, setCookie] = useCookies(['relatedItemsCategory']);
@@ -21,6 +19,10 @@ const TodayDeals = () => {
 
     const fetchAllProducts = useSelector((state)=>{
         return state.products.allProducts;
+    })
+
+    const loading = useSelector((state)=>{
+        return state.products.loading;
     })
 
     const setRelatedCategory = (data)=>{
@@ -34,9 +36,14 @@ const TodayDeals = () => {
                 <h3 className="title">Today's Deals</h3>
                 <a href="#" className="">See all deals</a>
             </div>
+
+            {loading === true ? (
+                <Loader />
+            ) : null}
             
-            {fetchAllProducts.length > 0 ? (
-                <Swiper
+            {loading === false ? (
+                fetchAllProducts.length > 0 ? (
+                    <Swiper
                     modules={[Navigation, Scrollbar]}
                     spaceBetween={15}
                     slidesPerView={5}
@@ -67,8 +74,9 @@ const TodayDeals = () => {
                     </SwiperSlide>
                 })}
                 
-                </Swiper> 
-            ) : <h6 className="text-center">No Today's Deals Found</h6>}
+                    </Swiper> 
+                ) : <h6 className="text-center">No Today's Deals Found</h6>
+            ) : null}
 
         </div>
     )

@@ -58,7 +58,7 @@ const Sidebar = ()=>{
 						<li> <a href="ecommerce-products-details.html"><i class="bx bx-right-arrow-alt"></i>Product Details</a>
 						</li>
 						<li>
-							<Link to="/add-products"><i class="bx bx-right-arrow-alt"></i>Add New Products</Link>
+							<Link to="/admin/add-products"><i class="bx bx-right-arrow-alt"></i>Add New Products</Link>
 						</li>
 						<li> <a href="ecommerce-orders.html"><i class="bx bx-right-arrow-alt"></i>Orders</a>
 						</li>

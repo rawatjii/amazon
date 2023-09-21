@@ -39,7 +39,7 @@ function App() {
             <Route exact path='/today-deals' element={<Today_Deals />} />
             <Route exact path='/result' element={<Result />} />
             <Route exact path='/admin' element={<Dashboard />} />
-            <Route exact path='/add-product' element={<AddProduct />} />
+            <Route exact path='/admin/add-products' element={<AddProduct />} />
             <Route exact path='/' element={<Home />} />
           </Routes>
         </ThemeProvider>

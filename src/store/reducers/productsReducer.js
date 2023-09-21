@@ -17,11 +17,12 @@ const productsSlice = createSlice({
         fetchProductsStart:(state)=>{
             state.loading = true;
         },
-        fetchAllProducts:(state, action)=>{
+        // fetchAllProducts:(state, action)=>{
+        //     state.allProducts = action.payload;
+        //     state.loading = false;
+        // },
+        fetchProductsSuccess:(state, action)=>{
             state.allProducts = action.payload;
-            state.loading = false;
-        },
-        fetchProductsSuccess:(state)=>{
             state.loading = false;
         },
         fetchProductsFailure:(state)=>{
@@ -48,14 +49,14 @@ export const fetchProducts = ()=>{
                 });
                 // console.log('products thunk', dataArr);
     
-                dispatch(fetchAllProducts(dataArr))
-                dispatch(fetchProductsSuccess());
+                // dispatch(fetchAllProducts(dataArr))
+                dispatch(fetchProductsSuccess(dataArr)); 
             }else{
                 throw new Error('Failed to fetch products')
             }
             
         }catch(err){
-            // dispatch(fetchProductsFailure());
+            dispatch(fetchProductsFailure());
             return console.error('Error While Fetching Projects');
         }
     }

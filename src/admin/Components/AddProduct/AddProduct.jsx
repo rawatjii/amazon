@@ -92,21 +92,21 @@ const AddProduct = ()=>{
     const submitFunc = async(e)=>{
         e.preventDefault();
         let arr = [];
-        // const selectedImages = Object.values(postData.images);
+        const selectedImages = Object.values(postData.images);
 
         // selectedImages.map(singlePostData => {
         //     console.log('singlePostData',singlePostData.name);
         // })
 
-        // try{
-        //     for(let i = 0; i < selectedImages.length; i++){
-        //         const res = await uploadCloudinary(selectedImages[i]);
-        //         arr.push(res);
-        //         // setPostData({...postData, images:[...postData.images, res]});
-        //     }
-        // }catch(error){
-        //     console.log('error',error);
-        // }
+        try{
+            for(let i = 0; i < selectedImages.length; i++){
+                const res = await uploadCloudinary(selectedImages[i]);
+                arr.push(res);
+                // setPostData({...postData, images:[...postData.images, res]});
+            }
+        }catch(error){
+            console.log('error',error);
+        }
         
         const data = {
             id:uuidv4(),
@@ -117,7 +117,7 @@ const AddProduct = ()=>{
                 offerPrice:offerPrice.current.value
             },
             rating:0,
-            // images:arr,
+            images:arr,
         }
 
         axios.post('/products.json', data)
