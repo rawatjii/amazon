@@ -12,10 +12,10 @@ import { useCookies } from 'react-cookie';
 
 const TodayDeals = () => {
     const [allProducts, setAllProducts] = useState([])
-    
+    // const [productCategories, setProductCategories] = useState([]);
     const [cookies, setCookie] = useCookies(['relatedItemsCategory']);
-
     const dispatch = useDispatch();
+    var productCategories = []
 
     const fetchAllProducts = useSelector((state)=>{
         return state.products.allProducts;
@@ -51,23 +51,33 @@ const TodayDeals = () => {
                     loop={true}
                     navigation
                     scrollbar={{ draggable: false }}
+                    style={{width:'100%'}}
                 >
                 {fetchAllProducts.map((item, index)=>{
-                    const newCat = item.category.replace(/\s/g, "").split(',')[0].replace('&','-');
+                    // const newCat = item.categories.replace(/\s/g, "").split(',')[0].replace('&','-');
+                    productCategories = [];
+                    item.categories.map((singleCategory)=>{
+                        productCategories.push(singleCategory);
+                        // setProductCategories([...productCategories, singleCategory])
+                    });
+
+                    const categoryText = productCategories.join('-')
+                    const thumbnail = item.images[0].url;
                     // console.log('newcategory',newCat);
 
-                    return <SwiperSlide key={index}>
+                    return <SwiperSlide key={item.id}>
                         <div className="single_product">
-                            <Link to={`/today-deals?cat=${newCat}`} onClick={()=>setRelatedCategory(item.category)}>
+                        {/* onClick={()=>setRelatedCategory(item.category)} */}
+                            <Link to={`/today-deals?cat=${categoryText}`} >
                                 <div className="thumbnail">
-                                    <Image src={item.images.image1} className="w-100" />
+                                    <Image src={thumbnail} className="w-100" />
                                 </div>
                                 <div className="details">
                                     <p className="deals">
                                         <span className="deal">Up to {item.price.discount}% off</span>
                                         <span className="text">Deal of the Day</span>
                                     </p>
-                                    <p className="name">{item.name}</p>
+                                    <p className="name">{item.product_title}</p>
                                 </div>
                             </Link>
                         </div>

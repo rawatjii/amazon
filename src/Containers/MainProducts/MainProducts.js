@@ -28,7 +28,7 @@ class MainProducts extends Component{
             <div className="main_products bg-gray">
                 <Container maxWidth='xl'>
                     {/* <h2>Main Products</h2>*/}
-                    <ProductsByOffer />
+                    {/* <ProductsByOffer /> */}
                     <TodayDeals />
                     {this.state.cookieName !== undefined ? 
                         <RelatedItems productByCategory={this.state.cookieName} /> :
