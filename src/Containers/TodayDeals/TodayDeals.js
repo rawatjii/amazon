@@ -57,7 +57,8 @@ const TodayDeals = () => {
                     // const newCat = item.categories.replace(/\s/g, "").split(',')[0].replace('&','-');
                     productCategories = [];
                     item.categories.map((singleCategory)=>{
-                        productCategories.push(singleCategory);
+                        const newSingleCategory = singleCategory.replace(/\s/g, "");
+                        productCategories.push(newSingleCategory);
                         // setProductCategories([...productCategories, singleCategory])
                     });
 

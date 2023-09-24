@@ -16,6 +16,16 @@ import './App.css';
 
 function App() {
 
+  useEffect(()=>{
+    // Get the current pathname
+    const currentPath = window.location.pathname;
+
+    // Check if the pathname starts with "/admin"
+    if(currentPath.startsWith('/admin')){
+      document.body.classList.add('admin');
+    }
+  })
+
   const dispatch = useDispatch();
 
   useEffect(() => {

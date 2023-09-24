@@ -13,6 +13,7 @@ const Today_Deals = (props)=>{
     const query = urlParams.get('cat');
     const filteredproducts = [];
     const allproductsCategories = [];
+    var productCategories = []
     // console.log('query',query);
 
     // const params = useParams()
@@ -26,18 +27,24 @@ const Today_Deals = (props)=>{
 
     useEffect(() => {
         allProducts.map((singleProduct => {
-            if(singleProduct.category.replace(/\s/g, "").split(',')[0].replace('&','-') === query && singleProduct.price.discountPrice != singleProduct.price.originalPrice){
+            singleProduct.categories.map((singleCategory) => {
+                const newSingleCategory = singleCategory.replace(/\s/g, "");
+                productCategories.push(newSingleCategory);
+            })
+            const categoryText = productCategories.join('-')
+
+            if(categoryText === query && singleProduct.price.offerPrice != singleProduct.price.originalPrice){
                 filteredproducts.push(singleProduct)
             }
 
-            const prodCategory = singleProduct.category.split(',')[0]
-            if(!allproductsCategories.includes(prodCategory)){
-                allproductsCategories.push(prodCategory)
-            }
+            // const prodCategory = singleProduct.category.split(',')[0]
+            // if(!allproductsCategories.includes(prodCategory)){
+            //     allproductsCategories.push(prodCategory)
+            // }
         }))
         
         setFilteredProducts(filteredproducts);
-        setAllCategories(allproductsCategories)
+        setAllCategories(allproductsCategories);
         // console.log('filterProducts',filterProducts);
     }, [allProducts])
     
@@ -67,19 +74,19 @@ const Today_Deals = (props)=>{
                                 return <div className="single_col" key={Index}>
                                     <div className="singleProduct">
                                         <div className="thumbnail">
-                                            <img src={product.images.image1} alt="thumbnail" className="img-fluid" />
+                                            <img src={product.images[0].url} alt="thumbnail" className="img-fluid" />
                                         </div>
                                         <div className="contents">
-                                            <p className="name">{product.name}</p>
+                                            <p className="name">{product.product_title}</p>
                                             <span className="tag">Deal of the Day</span>
                                             <p className="price">
                                                 <sup>₹</sup>
-                                                <span className="currentPrice">{product.price.discountPrice.toLocaleString()}</span>
+                                                <span className="currentPrice">{product.price.offerPrice.toLocaleString()}</span>
 
                                                 <span className="old">M.R.P: <s>₹{product.price.originalPrice.toLocaleString()}</s></span>
-                                                <span className="discount">({Math.round(((product.price.originalPrice - product.price.discountPrice) / product.price.originalPrice) * 100)}% off)</span>
+                                                <span className="discount">({Math.round(((product.price.originalPrice - product.price.offerPrice) / product.price.originalPrice) * 100)}% off)</span>
                                             </p>
-                                            <p className="deliveryStatus">{product.price.discountPrice >= 499 ? "FREE Delivery by Amazon" : "FREE Delivery over ₹499. Fulfilled by Amazon" }</p>
+                                            <p className="deliveryStatus">{product.price.offerPrice >= 499 ? "FREE Delivery by Amazon" : "FREE Delivery over ₹499. Fulfilled by Amazon" }</p>
                                         </div>
                                     </div>
                                 </div>

@@ -8,7 +8,7 @@ import '../../../admin/assets/plugins/metismenu/css/metisMenu.min.css';
 // Bootstrap CSS
 import '../../../admin/assets/css/bootstrap.min.css';
 import '../../../admin/assets/css/bootstrap-extended.css';
-import '../../../admin/assets/css/app.css';
+import '../../../admin/assets/css/admin-app.css';
 import '../../../admin/assets/css/icons.css';
 
 // Theme Style CSS
