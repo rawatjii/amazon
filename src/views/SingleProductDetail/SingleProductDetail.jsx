@@ -4,30 +4,9 @@ import Navbar from "../../Components/Navbar/Navbar";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import Footer from '../../Containers/Footer/Footer'
-import './Today-Deals.css'
 // import { useParams } from "react-router-dom";
 
-const Today_Deals = (props)=>{
-    const location = useLocation();
-    const urlParams = new URLSearchParams(location.search);
-    const query = urlParams.get('cat');
-    const filteredproducts = [];
-    const allproductsCategories = [];
-    var productCategories = []
-    // console.log('query',query);
-
-    // const params = useParams()
-
-    const [filterProducts, setFilteredProducts] = useState([])
-    const [allCategories, setAllCategories] = useState([])
-    
-    const allProducts = useSelector((state)=>{
-        return state.products.allProducts;
-    });
-
-    useEffect(() => {
-        
-    }, [allProducts])
+const SingleProductDetail = (props)=>{
     
 
     return(
@@ -37,10 +16,20 @@ const Today_Deals = (props)=>{
                 <p className="">results</p>
             </div>
 
+            <div className="top_content">
+                <div className="row">
+                    <div className="col-md-6 image_col">
+                        
+                    </div>
 
+                    <div className="col-md-6 content_col">
+
+                    </div>
+                </div>
+            </div>
             <Footer />
         </>
     )
 }
 
-export default Today_Deals;
+export default SingleProductDetail;

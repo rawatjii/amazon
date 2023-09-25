@@ -10,6 +10,7 @@ import Today_Deals from './views/Today-Deals/Today-Deals';
 import Result from './views/Result/Result';
 import Dashboard from './admin/Components/Dashboard/Dashboard';
 import AddProduct from './admin/Components/AddProduct/AddProduct';
+import SingleProductDetail from './views/SingleProductDetail/SingleProductDetail';
 import { fetchProducts } from './store/reducers/productsReducer';
 // css
 import './App.css';
@@ -32,15 +33,6 @@ function App() {
     dispatch(fetchProducts())
   }, []);
 
-  const firebaseConfig = {
-    apiKey: "your api key",
-    authDomain: "your credentials",
-    projectId: "your credentials",
-    storageBucket: "your credentials",
-    messagingSenderId: "your credentials",
-    appId: "your credentials"
-  };
-
   return (
     <BrowserRouter>
       <ThemeProvider theme={colorTheme}>
@@ -50,6 +42,7 @@ function App() {
             <Route exact path='/result' element={<Result />} />
             <Route exact path='/admin' element={<Dashboard />} />
             <Route exact path='/admin/add-products' element={<AddProduct />} />
+            <Route exact path='/:productId' element={<SingleProductDetail />} />
             <Route exact path='/' element={<Home />} />
           </Routes>
         </ThemeProvider>

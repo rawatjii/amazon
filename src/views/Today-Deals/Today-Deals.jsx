@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { BrowserRouter as Router, Route, Switch, useLocation } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch, useLocation, Link } from 'react-router-dom';
 import Navbar from "../../Components/Navbar/Navbar";
 import axios from "axios";
 import { useSelector } from "react-redux";
@@ -73,11 +73,15 @@ const Today_Deals = (props)=>{
                             {filterProducts.map((product, Index)=>{
                                 return <div className="single_col" key={Index}>
                                     <div className="singleProduct">
-                                        <div className="thumbnail">
-                                            <img src={product.images[0].url} alt="thumbnail" className="img-fluid" />
-                                        </div>
+                                        <Link to={`/` + product.id}>
+                                            <div className="thumbnail">
+                                                <img src={product.images[0].url} alt="thumbnail" className="img-fluid" />
+                                            </div>
+                                        </Link>
                                         <div className="contents">
-                                            <p className="name">{product.product_title}</p>
+                                            <Link to={`/` + product.id}>
+                                                <p className="name">{product.product_title}</p>
+                                            </Link>
                                             <span className="tag">Deal of the Day</span>
                                             <p className="price">
                                                 <sup>₹</sup>
