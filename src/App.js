@@ -12,6 +12,9 @@ import Dashboard from './admin/Components/Dashboard/Dashboard';
 import AddProduct from './admin/Components/AddProduct/AddProduct';
 import SingleProductDetail from './views/SingleProductDetail/SingleProductDetail';
 import { fetchProducts } from './store/reducers/productsReducer';
+import CreateReview from './views/CreateReview/CreateReview';
+import PrivateRoute from './views/Auth/PrivateRoute';
+import SignIn from './views/Auth/SignIn/SignIn';
 // css
 import './App.css';
 
@@ -37,12 +40,15 @@ function App() {
     <BrowserRouter>
       <ThemeProvider theme={colorTheme}>
           <Routes>
+            <Route exact path='/signin' element={<SignIn />} />
             <Route exact path='/register' element={<Register />} />
             <Route exact path='/today-deals' element={<Today_Deals />} />
             <Route exact path='/result' element={<Result />} />
             <Route exact path='/admin' element={<Dashboard />} />
             <Route exact path='/admin/add-products' element={<AddProduct />} />
             <Route exact path='/:productId' element={<SingleProductDetail />} />
+            <Route exact path='/create-review/:productId' element={<PrivateRoute><CreateReview /></PrivateRoute>} />
+            {/* <PrivateRoute exact path='/create-review/:productId' loggedIn="false" element={<CreateReview />} /> */}
             <Route exact path='/' element={<Home />} />
           </Routes>
         </ThemeProvider>

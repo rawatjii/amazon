@@ -8,6 +8,7 @@
         .thumbnails{
             display:flex;
             flex-direction: column;
+            margin-right: 15px;
     
             .img_wrap{
                 width:38px;
@@ -18,6 +19,7 @@
                 align-items: center;
                 overflow: hidden;
                 margin: 4px 0;
+                cursor: pointer;
             }
 
             .thumbnail_active{

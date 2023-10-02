@@ -1,7 +1,8 @@
 import React, { useEffect, useState, useRef } from "react";
-import { BrowserRouter as Router, Route, Switch, useLocation, useParams} from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch, useLocation, useParams, Link} from 'react-router-dom';
 import Navbar from "../../Components/Navbar/Navbar";
 import axios from "../../axios";
+import ReactImageMagnify from 'react-image-magnify';
 import { useSelector } from "react-redux";
 import Footer from '../../Containers/Footer/Footer';
 import styles from './SingleProductDetail.module.css'
@@ -66,13 +67,26 @@ const SingleProductDetail = (props)=>{
                                 })}
                             </div>
                             <div className="mainImage">
-                                <img src={activeImage} alt="" className="img-fluid" />
+                                <ReactImageMagnify {...{
+                                    smallImage: {
+                                        alt: 'Wristwatch by Ted Baker London',
+                                        isFluidWidth: true,
+                                        src: activeImage
+                                    },
+                                    largeImage: {
+                                        src: activeImage,
+                                        width: 1200,
+                                        height: 1800
+                                    }
+                                }} />
+                                {/* <img src={activeImage} alt="" className="img-fluid" /> */}
                             </div>
                         </div>
                     </div>
 
                     <div className="col-md-8 content_col">
-
+                        <h4 className="product_name">{filteredData.product_title}</h4>
+                        <Link to={`${process.env.REACT_APP_BASE_URL}create-review/${filteredData.id}`}>Create Review</Link>
                     </div>
                 </div>
             </div>

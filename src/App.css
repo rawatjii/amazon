@@ -18,7 +18,8 @@ body{box-sizing: border-box;}
 .img-fluid{max-width:100%;}
 
 .bg-gray{background:#E3E6E6}
-a{text-decoration: none; color:var(--a-text-color)}
+a{text-decoration: none; color:var(--a-color)}
+a:hover{text-decoration: underline; color: #c45500;}
 li{list-style-type: none;}
 .btn{outline:none; border:none; border-radius: 8px; box-shadow: 0 2px 5px 0 rgba(213,217,217,.5);}
 .btn_fill{background:var(--btnColor)}
@@ -57,4 +58,99 @@ li{list-style-type: none;}
 
 .totalResult p{
     font-size:14px;
+}
+
+/* auth_section */
+
+.auth_section{
+    padding:20px;
+
+    .contents{
+        text-align: center;
+
+        .form_card{
+            margin-top: 20px;
+            padding: 20px 26px;
+            border-radius: 8px;
+            border: 1px #ddd solid;
+            max-width: 350px;
+            margin-left: auto;
+            margin-right: auto;
+            text-align: left;
+
+            .form-group{
+                margin-bottom: 15px;
+
+                .label_row{
+                    display:flex;
+                }
+
+                .forgot_pass{
+                    margin-left:auto;
+                    font-size: 14px;
+                }
+            }
+
+            .title{
+                margin-bottom: 15px;
+            }
+
+            .signinBtn{
+                width:100%;
+                margin-top: 5px;
+                text-transform: capitalize;
+            }
+
+            .terms_condition{
+                margin-top: 20px;
+                display: block;
+                font-size: 13px;
+            }
+
+            .keepSignin{
+                margin-top: 10px;
+                font-size: 14px;
+                display: flex;
+                align-items: center;
+                margin-bottom: 20px;
+            }
+
+            .divider{
+                text-align: center;
+                position: relative;
+
+                &:before{
+                    position: absolute;
+                    content: '';
+                    height: 1px;
+                    width: 100%;
+                    background: #e7e7e7;
+                    left: 0;
+                    top: 50%;
+                    z-index: -1;
+                }
+            }
+        }
+    }
+
+    .logo{
+        max-width:120px;
+    }
+}
+
+.auth_section form label{
+    font-weight: 500;
+    font-size: 14px;
+    margin-bottom: 5px;
+}
+
+.auth_section .keepSignin input[type='checkbox']{
+    margin-right: 5px;
+}
+
+.auth_section .divider small{
+    background: #fff;
+    padding: 3px 10px;
+    color: #767776;
+    font-size: 12px;
 }
