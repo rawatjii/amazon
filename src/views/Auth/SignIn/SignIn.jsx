@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import Button from '@mui/material/Button';
 // logo
 import logoDark from '../../../assets/logo-dark.png';
@@ -46,7 +47,7 @@ const SignIn = ()=>{
                                 <small>New to Amazon?</small>
                             </div>
 
-                            <a href="" className='btn create_account_btn'>Create your Amazon account</a>
+                            <Link to={`${process.env.REACT_APP_BASE_URL}register`} className='btn create_account_btn'>Create your Amazon account</Link>
                             
                         </div>
                     </div>
