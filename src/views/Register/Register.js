@@ -12,39 +12,82 @@ class Register extends Component{
 
     constructor(props){
         super(props);
-        this.nameInputRef = React.createRef();
         this.emailInputRef = React.createRef();
         this.passwordInputRef = React.createRef();
+        this.confirmPasswordInputRef = React.createRef();
     }
+
+    // state = {
+    //     email:{
+    //         value:'',
+    //         isValid:null,
+    //     },
+    //     password:{
+    //         value:'',
+    //         isValid:null,
+    //     },
+    //     emailErr:null,
+    //     passwordErr:null,
+    // }
 
     state = {
-        emailErr:null,
-        passwordErr:null,
+        emailValidationErr : null,
+        passwordValidationErr : null,
+        confirmPasswordValidationErr : null,
     }
 
-    emailChangeHandler =(e)=>{
-        const email = e.target.value;
-        this.setState({emailErr:validator.isEmail(email)});
+    inputChangeHandler =(e)=>{
+        // var errValidation;
+        // if(e.target.name === 'email'){
+        //     errValidation = validator.isEmail(e.target.value);
+        // }
+        // // this.setState({emailErr:validator.isEmail(email)});
+        // this.setState((prevstate)=>{
+        //     return {
+        //         ...prevstate,
+        //         [e.target.name]:{
+        //             ...prevstate[e.target.name],
+        //             value:e.target.value,
+        //             isValid:errValidation
+        //         },
+        //     }
+        // })
     }
 
-    passwordChangeHandler=(e)=>{
-        const password = e.target.value;
-        this.setState({passwordErr:validator.isLength(password, {min:6})});
-    }
+    // passwordChangeHandler=(e)=>{
+    //     const password = e.target.value;
+    //     this.setState({passwordErr:validator.isLength(password, {min:6})});
+    // }
 
     userSignupHandler = (e)=>{
         e.preventDefault();
-        console.log('passwordInputRef',this.passwordInputRef.current.value);
+        const emailInputValue = this.emailInputRef.current.value;
+        const passwordInputValue = this.passwordInputRef.current.value;
+        const confirmPasswordInputValue = this.confirmPasswordInputRef.current.value;
+        
+        const emailValidation = validator.isEmail(emailInputValue);
+        const passwordValidation = validator.isLength(passwordInputValue, {min: 6, max: undefined});
+        const confirmPasswordValidation = passwordInputValue === confirmPasswordInputValue ? true : false;
+
+        this.setState({
+            emailValidationErr:emailValidation,
+            passwordValidationErr:passwordValidation,
+            confirmPasswordValidationErr:confirmPasswordValidation,
+        })
+
+        if(emailValidation && passwordValidation && confirmPasswordValidation === true){
+            axios.post('https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyBXTJ933M80KhdZHsq9RI235eatTkCoaWQ', {email:emailInputValue, password:passwordInputValue,returnSecureToken:true})
+            .then(res=>{
+                alert('user authenticated successfully');
+                return this.props.history.push('/');
+            })
+            .catch(error=>{
+                alert(error);
+            })
+        }
 
 
-
-        // axios.post('https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyBXTJ933M80KhdZHsq9RI235eatTkCoaWQ', {email:'test@gmail.com', password:'test123',returnSecureToken:true})
-        // .then(res=>{
-        //     console.log('user authenticated successfully');
-        // })
-        // .catch(error=>{
-        //     console.log('There is an error while user register');
-        // })
+        
     }
 
     render(){
@@ -53,23 +96,31 @@ class Register extends Component{
                 <Image src={logo} className="logo" />
                 <form className="register_form" onSubmit={this.userSignupHandler}>
                     <h3 className="form_head">Create Account</h3>
-                    <FormGroup>
+                    {/* <FormGroup>
                         <label>Your name</label>
                         <input placeholder="First and last name" ref={this.nameInputRef} />
-                    </FormGroup>
+                    </FormGroup> */}
                     <FormGroup>
                         <label>Email</label>
-                        <input placeholder="Your email" type="email" ref={this.emailInputRef} />
+                        <input className={!this.state.emailValidationErr && this.state.emailValidationErr != null ? 'err':null} placeholder="Your email" type="email" name="email" ref={this.emailInputRef} /*onChange={this.inputChangeHandler}*/ /*value={this.state.email.value}*/ />
+                        {!this.state.emailValidationErr && this.state.emailValidationErr != null ? <span className="error">Invalid Email</span> : null}
                         {/* onChange={this.emailChangeHandler} error={this.state.emailErr === false ? true : null} helperText={this.state.emailErr === false ? 'Invalid Email' : ''}  */}
                     </FormGroup>
                     <FormGroup>
                         <label>Password</label>
                         {/* onChange={this.passwordChangeHandler} error={this.state.passwordErr === false ? true : null} helperText="" */}
-                        <input placeholder="At lease 6 characters" type="password" ref={this.passwordInputRef}  />
-                        <span className="infoLine">
+                        <input className={!this.state.passwordValidationErr && this.state.passwordValidationErr != null ? 'err':null} placeholder="At lease 6 characters" name="password" type="password" ref={this.passwordInputRef}  />
+                        <span className={!this.state.passwordValidationErr && this.state.passwordValidationErr != null ? 'infoLine err':'infoLine'}>
                             <InfoOutlinedIcon className="icon"/>
                             Passwords must be at least 6 characters.
                         </span>
+                    </FormGroup>
+                    <FormGroup>
+                        <label>Confirm Password</label>
+                        {/* onChange={this.passwordChangeHandler} error={this.state.passwordErr === false ? true : null} helperText="" */}
+                        <input placeholder="Enter Confirm Password" type="password" ref={this.confirmPasswordInputRef}  />
+                        {!this.state.confirmPasswordValidationErr && this.state.confirmPasswordValidationErr != null ? <span className="error">Confirm password should match with password</span> : null}
+                        
                     </FormGroup>
                     <Button variant="contained" color="secondary" className="signup_btn" type="submit">Sign Up</Button>
                 </form>
