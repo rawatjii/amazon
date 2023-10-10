@@ -1,12 +1,14 @@
 import React, { Component } from "react";
+import { redirect } from 'react-router-dom';
 import logo from '../../assets/logo-dark.png';
 import Image from "../../Components/Image/Image";
 import { FormGroup, TextField } from "@mui/material";
 import validator from 'validator'
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import Button from '@mui/material/Button';
-import './Register.css'
 import axios from "axios";
+import { withNavigate } from "../../Components/hoc/withNavigate/withNavigate";
+import './Register.css'
 
 class Register extends Component{
 
@@ -16,6 +18,12 @@ class Register extends Component{
         this.passwordInputRef = React.createRef();
         this.confirmPasswordInputRef = React.createRef();
     }
+
+    
+    // handleRedirect = ()=>{
+    //     const navigate = useNavigate()
+    //     return navigate('/')
+    // }
 
     // state = {
     //     email:{
@@ -78,16 +86,15 @@ class Register extends Component{
         if(emailValidation && passwordValidation && confirmPasswordValidation === true){
             axios.post('https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyBXTJ933M80KhdZHsq9RI235eatTkCoaWQ', {email:emailInputValue, password:passwordInputValue,returnSecureToken:true})
             .then(res=>{
+                console.log('res',res);
                 alert('user authenticated successfully');
-                return this.props.history.push('/');
+                return this.props.navigate('/signin');
             })
             .catch(error=>{
                 alert(error);
             })
         }
 
-
-        
     }
 
     render(){
@@ -129,4 +136,4 @@ class Register extends Component{
     }
 }
 
-export default Register;
+export default withNavigate(Register);

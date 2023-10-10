@@ -14,11 +14,14 @@ import SingleProductDetail from './views/SingleProductDetail/SingleProductDetail
 import { fetchProducts } from './store/reducers/productsReducer';
 import CreateReview from './views/CreateReview/CreateReview';
 import PrivateRoute from './views/Auth/PrivateRoute';
+import CryptoJS from "crypto-js";
 import SignIn from './views/Auth/SignIn/SignIn';
 // css
 import './App.css';
 
 function App() {
+
+  var userLoginDecryptedStatus = '';
 
   useEffect(()=>{
     // Get the current pathname
@@ -33,7 +36,14 @@ function App() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(fetchProducts())
+    dispatch(fetchProducts());
+
+    const userLoginEncryptedStatus = localStorage.getItem('isUserSignin');
+
+    const bytes = CryptoJS.AES.decrypt(userLoginEncryptedStatus, `${process.env.REACT_APP_SECRET_KEY}`);
+    const data = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
+    userLoginDecryptedStatus = data;
+    console.log('userLoginDecryptedStatus',userLoginDecryptedStatus);
   }, []);
 
   return (
