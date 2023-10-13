@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import {BrowserRouter, Route, Routes} from 'react-router-dom'
+import { ToastContainer, toast } from 'react-toastify';
 import { ThemeProvider } from '@mui/material/styles';
 import axios from './axios';
 import { useDispatch, useSelector } from 'react-redux';
@@ -12,6 +13,7 @@ import Dashboard from './admin/Components/Dashboard/Dashboard';
 import AddProduct from './admin/Components/AddProduct/AddProduct';
 import SingleProductDetail from './views/SingleProductDetail/SingleProductDetail';
 import { fetchProducts } from './store/reducers/productsReducer';
+import { authActions } from './store/reducers/authReducer';
 import CreateReview from './views/CreateReview/CreateReview';
 import PrivateRoute from './views/Auth/PrivateRoute';
 import CryptoJS from "crypto-js";
@@ -38,12 +40,33 @@ function App() {
   useEffect(() => {
     dispatch(fetchProducts());
 
-    const userLoginEncryptedStatus = localStorage.getItem('isUserSignin');
+    try{
+      
+      var userLoginEncryptedStatus = localStorage.getItem('isUserSignin');
+      var bytes = CryptoJS.AES.decrypt(userLoginEncryptedStatus, `${process.env.REACT_APP_SECRET_KEY}`);
+      var data = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
 
-    const bytes = CryptoJS.AES.decrypt(userLoginEncryptedStatus, `${process.env.REACT_APP_SECRET_KEY}`);
-    const data = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
-    userLoginDecryptedStatus = data;
-    console.log('userLoginDecryptedStatus',userLoginDecryptedStatus);
+      if(data){
+      
+          if(data == 'true'){
+            dispatch(authActions.setLogin());
+          }else{
+            dispatch(authActions.setLogout());
+          }
+
+      }else{
+        console.error("Data could not be decrypted or is not valid JSON.");
+        dispatch(authActions.setLogout());
+      }
+
+    }catch(err){
+      console.error('An error occurred during decryption or parsing:',err);
+      dispatch(authActions.setLogout());
+    }
+
+    
+
+    
   }, []);
 
   return (
@@ -62,6 +85,8 @@ function App() {
             <Route exact path='/' element={<Home />} />
           </Routes>
         </ThemeProvider>
+
+        <ToastContainer />
     </BrowserRouter>
   );
 }

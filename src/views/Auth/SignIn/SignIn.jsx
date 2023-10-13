@@ -1,7 +1,11 @@
 import React, { useRef, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import CryptoJS from "crypto-js";
 import { withNavigate } from '../../../Components/hoc/withNavigate/withNavigate';
+import { authActions } from '../../../store/reducers/authReducer';
 import Button from '@mui/material/Button';
 import axios from 'axios';
 // logo
@@ -13,9 +17,16 @@ const SignIn = (props)=>{
     const [text, setText] = useState("");
     const [encrptedData, setEncrptedData] = useState("");
     const [decrptedData, setDecrptedData] = useState("");
+    const [emailErr, setEmailErr] = useState(false);
+    const [passwordErr, setPasswordErr] = useState(false);
 
     const emailRef = useRef();
     const passwordRef = useRef();
+
+    const dispatch = useDispatch();
+
+    const notify = (msg) => toast(msg);
+    const successNotify = (msg) => toast.success(msg);
 
     // const secretPass = "XkhZG4fW2t2W";
 
@@ -23,26 +34,37 @@ const SignIn = (props)=>{
         e.preventDefault();
         const emailInputValue = emailRef.current.value;
         const passwordInputValue = passwordRef.current.value;
-        
-        axios.post(`https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${process.env.REACT_APP_API_KEY}`, {email:emailInputValue, password:passwordInputValue,returnSecureToken:true})
-        .then(res=>{
-            const data = CryptoJS.AES.encrypt(
-                JSON.stringify('true'),
-                `${process.env.REACT_APP_SECRET_KEY}`
-            ).toString();
 
-            localStorage.setItem('isUserSignin', data);
-            return props.navigate('/');
-        })
-        .catch(err=>{
-            console.log(err);
-            const data = CryptoJS.AES.encrypt(
-                JSON.stringify('false'),
-                `${process.env.REACT_APP_SECRET_KEY}`
-            ).toString();
-            
-            localStorage.setItem('isUserSignin', data);
-        })
+        if(emailInputValue == ''){
+            setEmailErr(true);
+        }else{
+            setEmailErr(false);
+        }
+
+        if(passwordInputValue == ''){
+            setPasswordErr(true);
+        }else{
+            setPasswordErr(false);
+        }
+
+        if((emailInputValue && passwordInputValue) !== ''){
+            axios.post(`https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${process.env.REACT_APP_API_KEY}`, {email:emailInputValue, password:passwordInputValue,returnSecureToken:true})
+            .then(res=>{
+                const data = CryptoJS.AES.encrypt(
+                    JSON.stringify('true'),
+                    `${process.env.REACT_APP_SECRET_KEY}`
+                ).toString();
+
+                localStorage.setItem('isUserSignin', data);
+                successNotify('User signin successfully');
+                dispatch(authActions.setLogin());
+                return props.navigate('/');
+            })
+            .catch(err=>{
+                dispatch(authActions.setLogout());
+                return notify('User not found');
+            })
+        }
     };
 
     return(
@@ -59,6 +81,7 @@ const SignIn = (props)=>{
                                 <div className="form-group">
                                     <label>Email</label>
                                     <input type="email" name='email' ref={emailRef} className='form-control' />
+                                    {emailErr ? <span className="error">Please enter email</span> : null}
                                 </div>
 
                                 <div className="form-group">
@@ -67,6 +90,7 @@ const SignIn = (props)=>{
                                         <a href='' className='forgot_pass'>Forgot Password?</a>
                                     </div>
                                     <input type="password" name='password' ref={passwordRef} className='form-control' />
+                                    {passwordErr ? <span className="error">Please enter password</span> : null}
                                 </div>
 
                                 <Button variant="contained" color='secondary' className='search_btn no-fieldset signinBtn' type="submit">
