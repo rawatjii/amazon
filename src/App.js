@@ -18,12 +18,17 @@ import CreateReview from './views/CreateReview/CreateReview';
 import PrivateRoute from './views/Auth/PrivateRoute';
 import CryptoJS from "crypto-js";
 import SignIn from './views/Auth/SignIn/SignIn';
+import Redirect from './Components/Redirect/Redirect';
 // css
 import './App.css';
 
 function App() {
 
   var userLoginDecryptedStatus = '';
+
+  const isAuthenticated = useSelector((state)=>{
+    return state.auths.UserLogin;
+  });
 
   useEffect(()=>{
     // Get the current pathname
@@ -41,8 +46,20 @@ function App() {
     dispatch(fetchProducts());
 
     try{
-      
-      var userLoginEncryptedStatus = localStorage.getItem('isUserSignin');
+      const now = new Date()
+      const userStatusObj = JSON.parse(localStorage.getItem('isUserSignin'));
+
+      if(!userStatusObj){
+        return null;
+      }
+
+      if(now.getTime() > userStatusObj.expiration){
+        debugger;
+        localStorage.removeItem('isUserSignin');
+        return dispatch(authActions.setLogout());
+      }
+
+      var userLoginEncryptedStatus = userStatusObj.value;
       var bytes = CryptoJS.AES.decrypt(userLoginEncryptedStatus, `${process.env.REACT_APP_SECRET_KEY}`);
       var data = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
 
@@ -73,8 +90,8 @@ function App() {
     <BrowserRouter>
       <ThemeProvider theme={colorTheme}>
           <Routes>
-            <Route exact path='/signin' element={<SignIn />} />
-            <Route exact path='/register' element={<Register />} />
+            <Route exact path='/signin' element={isAuthenticated === false ? <SignIn /> : <Redirect el="/" /> } />
+            <Route exact path='/register' element={!isAuthenticated ? <Register /> : <Redirect el="/" />} />
             <Route exact path='/today-deals' element={<Today_Deals />} />
             <Route exact path='/result' element={<Result />} />
             <Route exact path='/admin' element={<Dashboard />} />

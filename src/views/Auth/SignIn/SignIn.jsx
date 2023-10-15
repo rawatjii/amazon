@@ -50,12 +50,17 @@ const SignIn = (props)=>{
         if((emailInputValue && passwordInputValue) !== ''){
             axios.post(`https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${process.env.REACT_APP_API_KEY}`, {email:emailInputValue, password:passwordInputValue,returnSecureToken:true})
             .then(res=>{
+                const now = new Date();
                 const data = CryptoJS.AES.encrypt(
                     JSON.stringify('true'),
                     `${process.env.REACT_APP_SECRET_KEY}`
                 ).toString();
+                const item = {
+                    value:data,
+                    expiration:now.getTime() + (`${process.env.REACT_APP_AUTH_EXPIRE_TIME}` * 60000)
+                }
+                localStorage.setItem('isUserSignin', JSON.stringify(item));
 
-                localStorage.setItem('isUserSignin', data);
                 successNotify('User signin successfully');
                 dispatch(authActions.setLogin());
                 return props.navigate('/');

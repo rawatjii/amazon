@@ -3,6 +3,7 @@ import {useParams} from 'react-router-dom';
 import { useSelector } from "react-redux";
 import Navbar from "../../Components/Navbar/Navbar";
 import { Rating } from 'react-simple-star-rating'
+import axios from '../../axios';
 
 const CreateReview = ()=>{
     const [filteredData, setFilteredData] = useState({});
@@ -14,12 +15,14 @@ const CreateReview = ()=>{
     })
     const [reviews, setReviews] = useState({
         headline:'',
+        photo:'',
         review:'',
     })
 
     const {productId} = useParams();
 
-    const refs = useRef([])
+    const headlineInput = useRef('')
+    const ReviewInput = useRef('')
 
     const allProducts = useSelector((state)=>{
         return state.products.allProducts;
@@ -35,6 +38,7 @@ const CreateReview = ()=>{
 
     // Catch Rating value
     const overallHandleRating = (value) => {
+        console.log('overall rating', value);
         setRatings({...ratings, ['overall']:value})
     }
 
@@ -57,6 +61,17 @@ const CreateReview = ()=>{
     }
 
     const onReviewSubmit = (e)=>{
+        var formData = {};
+        formData = {...ratings, ...reviews};
+
+        axios.put(`/${productId}.json`, formData)
+        .then(response=>{
+            console.log('product updated successfully');
+        })
+        .catch(err=>{
+            console.error("Error", err);
+        })
+
         // const data = {
 
         // }
@@ -127,16 +142,24 @@ const CreateReview = ()=>{
                     <hr />
 
                     <h5>Add a headline</h5>
-                    <input name='headline' className='form-control' placeholder="What's most important to know?" />
+                    <input name='headline' className='form-control' placeholder="What's most important to know?" ref={headlineInput} />
+
+                    <hr />
+
+                    <h5>Add a photo</h5>
+                    <small>Shoppers find images more helpful than text alone.</small>
+                    <input name='headline' 
+                    type="file"
+                    className='form-control' placeholder="What's most important to know?" />
 
                     <hr />
 
                     <h5>Add a written review</h5>
-                    <textarea name="review" rows="5" className='form-control' placeholder='What did you like or dislike? What did you use this product for?'></textarea>
+                    <textarea name="review" rows="5" className='form-control' placeholder='What did you like or dislike? What did you use this product for?' ref={ReviewInput} ></textarea>
 
                     <hr />
 
-                    <button className='btn' onSubmit={onReviewSubmit}>Submit</button>
+                    <button className='btn' onClick={onReviewSubmit}>Submit</button>
                 </div>
             </section>
         </>

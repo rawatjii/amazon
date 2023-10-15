@@ -1,10 +1,14 @@
 import React, { useEffect } from 'react';
 import {Route, useNavigate} from 'react-router-dom';
+
 import Login from './SignIn/SignIn';
+import { useSelector } from 'react-redux';
 
 const PrivateRoute = ({children})=>{
     const navigate = useNavigate();
-    const isAuthenticated = false;
+    const isAuthenticated = useSelector((state)=>{
+        return state.auths.UserLogin;
+    });
 
     useEffect(() => {
         if(!isAuthenticated){
