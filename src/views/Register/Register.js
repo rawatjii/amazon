@@ -8,6 +8,7 @@ import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import Button from '@mui/material/Button';
 import axios from "axios";
 import { withNavigate } from "../../Components/hoc/withNavigate/withNavigate";
+import { writeUserData } from "../../firebase-config";
 import './Register.css'
 
 class Register extends Component{
@@ -83,17 +84,20 @@ class Register extends Component{
             confirmPasswordValidationErr:confirmPasswordValidation,
         })
 
-        if(emailValidation && passwordValidation && confirmPasswordValidation === true){
-            axios.post('https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyBXTJ933M80KhdZHsq9RI235eatTkCoaWQ', {email:emailInputValue, password:passwordInputValue,returnSecureToken:true})
-            .then(res=>{
-                console.log('res',res);
-                alert('user authenticated successfully');
-                return this.props.navigate('/signin');
-            })
-            .catch(error=>{
-                alert(error);
-            })
-        }
+        // if(emailValidation && passwordValidation && confirmPasswordValidation === true){
+        //     axios.post('https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyBXTJ933M80KhdZHsq9RI235eatTkCoaWQ', {email:emailInputValue, password:passwordInputValue,returnSecureToken:true})
+        //     .then(res=>{
+        //         console.log('res',res);
+        //         alert('user authenticated successfully');
+        //         return this.props.navigate('/signin');
+        //     })
+        //     .catch(error=>{
+        //         alert(error);
+        //     })
+        // }
+
+        writeUserData('sandeepId','sandeep','sandeep@gmail.com','https://cdn.pixabay.com/photo/2017/01/30/23/52/female-2022387_640.png')
+        console.log('user data added');
 
     }
 

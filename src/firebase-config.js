@@ -1,4 +1,6 @@
 import { initializeApp } from "firebase/app";
+import { getDatabase, ref, set } from "firebase/database";
+
 
 const firebaseConfig = {
     apiKey: "AIzaSyBXTJ933M80KhdZHsq9RI235eatTkCoaWQ",
@@ -10,4 +12,14 @@ const firebaseConfig = {
     appId: "1:753771519749:web:f9673443b8061377d4616c"
   };
 
-  const app = initializeApp(firebaseConfig);
+  const firebaseApp = initializeApp(firebaseConfig);
+  const database = getDatabase(firebaseApp);
+
+  export function writeUserData(userId, name, email, imageUrl) {
+    const db = getDatabase();
+    set(ref(db, 'users/' + userId), {
+      username: name,
+      email: email,
+      profile_picture : imageUrl
+    });
+  }
