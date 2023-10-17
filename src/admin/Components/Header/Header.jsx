@@ -1,4 +1,18 @@
 import React from 'react';
+import '../../../admin/assets/plugins/simplebar/css/simplebar.css';
+import '../../../admin/assets/plugins/perfect-scrollbar/css/perfect-scrollbar.css';
+import '../../../admin/assets/plugins/metismenu/css/metisMenu.min.css';
+
+// Bootstrap CSS
+import '../../../admin/assets/css/bootstrap.min.css';
+import '../../../admin/assets/css/bootstrap-extended.css';
+import '../../../admin/assets/css/admin-app.css';
+import '../../../admin/assets/css/icons.css';
+
+// Theme Style CSS
+import '../../../admin/assets/css/dark-theme.css';
+import '../../../admin/assets/css/semi-dark.css';
+import '../../../admin/assets/css/header-colors.css';
 
 const Header = ()=>{
     return(

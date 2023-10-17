@@ -1,23 +1,16 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
-
-import '../../../admin/assets/plugins/simplebar/css/simplebar.css';
-import '../../../admin/assets/plugins/perfect-scrollbar/css/perfect-scrollbar.css';
-import '../../../admin/assets/plugins/metismenu/css/metisMenu.min.css';
-
-// Bootstrap CSS
-import '../../../admin/assets/css/bootstrap.min.css';
-import '../../../admin/assets/css/bootstrap-extended.css';
-import '../../../admin/assets/css/admin-app.css';
-import '../../../admin/assets/css/icons.css';
-
-// Theme Style CSS
-import '../../../admin/assets/css/dark-theme.css';
-import '../../../admin/assets/css/semi-dark.css';
-import '../../../admin/assets/css/header-colors.css';
-
+import $ from 'jquery';	
+import { useEffect } from 'react';
 
 const Sidebar = ()=>{
+
+	useEffect(()=>{
+		$('.metismenu > li > a').on('click', function(){
+			$(this).toggleClass('testing');
+		})
+	}, [])
+
     return(
         <>
         <div class="sidebar-wrapper" data-simplebar="true">
