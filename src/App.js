@@ -10,6 +10,7 @@ import Register from './views/Register/Register';
 import Today_Deals from './views/Today-Deals/Today-Deals';
 import Result from './views/Result/Result';
 import Dashboard from './admin/Components/Dashboard/Dashboard';
+import Users from '../src/admin/views/Users/Users';
 import AddProduct from './admin/Components/AddProduct/AddProduct';
 import SingleProductDetail from './views/SingleProductDetail/SingleProductDetail';
 import { fetchProducts } from './store/reducers/productsReducer';
@@ -95,6 +96,7 @@ function App() {
             <Route exact path='/today-deals' element={<Today_Deals />} />
             <Route exact path='/result' element={<Result />} />
             <Route exact path='/admin' element={<Dashboard />} />
+            <Route exact path='/admin/users' element={<Users />} />
             <Route exact path='/admin/add-products' element={<AddProduct />} />
             <Route exact path='/:productId' element={<SingleProductDetail />} />
             <Route exact path='/create-review/:productId' element={<PrivateRoute><CreateReview /></PrivateRoute>} />

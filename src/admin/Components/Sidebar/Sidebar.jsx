@@ -55,14 +55,29 @@ const Sidebar = ()=>{
 						<div className="menu-title">E-commerce</div>
 					</a>
 					<ul className='mm-collapse'>
-						<li> <a href="ecommerce-products.html"><i className="bx bx-right-arrow-alt"></i>Products</a>
+						<li> 
+							<NavLink href="ecommerce-products.html">
+								<i className="bx bx-right-arrow-alt"></i>
+								Products
+							</NavLink>
 						</li>
-						<li> <a href="ecommerce-products-details.html"><i className="bx bx-right-arrow-alt"></i>Product Details</a>
+						<li> 
+							<NavLink href="ecommerce-products-details.html">
+								<i className="bx bx-right-arrow-alt"></i>
+								Product Details
+							</NavLink>
 						</li>
 						<li>
-							<Link to="/admin/add-products"><i className="bx bx-right-arrow-alt"></i>Add New Products</Link>
+							<NavLink to="/admin/add-products">
+								<i className="bx bx-right-arrow-alt"></i>
+								Add New Products
+							</NavLink>
 						</li>
-						<li> <a href="ecommerce-orders.html"><i className="bx bx-right-arrow-alt"></i>Orders</a>
+						<li> 
+							<NavLink href="ecommerce-orders.html">
+								<i className="bx bx-right-arrow-alt"></i>
+								Orders
+							</NavLink>
 						</li>
 					</ul>
 				</li>
@@ -74,6 +89,12 @@ const Sidebar = ()=>{
 						<div className="menu-title">Authentication</div>
 					</a>
 					<ul className='mm-collapse'>
+						<li> 
+							<NavLink to="/admin/users">
+								<i className="bx bx-right-arrow-alt"></i>Users
+							</NavLink>
+						</li>
+						
 						<li> <a href="authentication-signin.html" target="_blank"><i className="bx bx-right-arrow-alt"></i>Sign In</a>
 						</li>
 						<li> <a href="authentication-signup.html" target="_blank"><i className="bx bx-right-arrow-alt"></i>Sign Up</a>
