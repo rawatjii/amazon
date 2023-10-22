@@ -28,8 +28,6 @@ const SignIn = (props)=>{
     const notify = (msg) => toast(msg);
     const successNotify = (msg) => toast.success(msg);
 
-    // const secretPass = "XkhZG4fW2t2W";
-
     const userLoginHandler = (e)=>{
         e.preventDefault();
         const emailInputValue = emailRef.current.value;

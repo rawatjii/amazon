@@ -94,10 +94,10 @@ const Dashboard = ()=>{
 											<div class="cursor-pointer text-dark font-24 dropdown-toggle dropdown-toggle-nocaret" data-bs-toggle="dropdown"><i class="bx bx-dots-horizontal-rounded text-option"></i>
 											</div>
 											<div class="dropdown-menu dropdown-menu-end">
-												<a class="dropdown-item" href="javaScript:;">Action</a>
-												<a class="dropdown-item" href="javaScript:;">Another action</a>
+												<a class="dropdown-item" href="#">Action</a>
+												<a class="dropdown-item" href="#">Another action</a>
 												<div class="dropdown-divider"></div>	
-												<a class="dropdown-item" href="javaScript:;">Something else here</a>
+												<a class="dropdown-item" href="#">Something else here</a>
 											</div>
 										</div>
 									</div>
@@ -215,10 +215,10 @@ const Dashboard = ()=>{
 											<div class="cursor-pointer text-dark font-24 dropdown-toggle dropdown-toggle-nocaret" data-bs-toggle="dropdown"><i class="bx bx-dots-horizontal-rounded text-option"></i>
 											</div>
 											<div class="dropdown-menu dropdown-menu-end">
-												<a class="dropdown-item" href="javaScript:;">Action</a>
-												<a class="dropdown-item" href="javaScript:;">Another action</a>
+												<a class="dropdown-item" href="#">Action</a>
+												<a class="dropdown-item" href="#">Another action</a>
 												<div class="dropdown-divider"></div>	
-												<a class="dropdown-item" href="javaScript:;">Something else here</a>
+												<a class="dropdown-item" href="#">Something else here</a>
 											</div>
 										</div>
 									</div>
@@ -318,10 +318,10 @@ const Dashboard = ()=>{
 											<div class="cursor-pointer text-dark font-24 dropdown-toggle dropdown-toggle-nocaret" data-bs-toggle="dropdown"><i class="bx bx-dots-horizontal-rounded text-option"></i>
 											</div>
 											<div class="dropdown-menu dropdown-menu-end">
-												<a class="dropdown-item" href="javaScript:;">Action</a>
-												<a class="dropdown-item" href="javaScript:;">Another action</a>
+												<a class="dropdown-item" href="#">Action</a>
+												<a class="dropdown-item" href="#">Another action</a>
 												<div class="dropdown-divider"></div>	
-												<a class="dropdown-item" href="javaScript:;">Something else here</a>
+												<a class="dropdown-item" href="#">Something else here</a>
 											</div>
 										</div>
 									</div>
@@ -448,7 +448,7 @@ const Dashboard = ()=>{
 											<td>Mitchell Daniel</td>
 											<td>#9668521</td>
 											<td>$99.85</td>
-											<td><a href="javaScript:;" class="btn btn-sm btn-success radius-30">Delivered</a>
+											<td><a href="#" class="btn btn-sm btn-success radius-30">Delivered</a>
 											</td>
 										</tr>
 										<tr>
@@ -461,7 +461,7 @@ const Dashboard = ()=>{
 											<td>Craig Clayton</td>
 											<td>#8627523</td>
 											<td>$59.35</td>
-											<td><a href="javaScript:;" class="btn btn-sm btn-danger radius-30">Cancelled</a>
+											<td><a href="#" class="btn btn-sm btn-danger radius-30">Cancelled</a>
 											</td>
 										</tr>
 										<tr>
@@ -474,7 +474,7 @@ const Dashboard = ()=>{
 											<td>Julia Burke</td>
 											<td>#6875954</td>
 											<td>$42.68</td>
-											<td><a href="javaScript:;" class="btn btn-sm btn-warning radius-30">Pending</a>
+											<td><a href="#" class="btn btn-sm btn-warning radius-30">Pending</a>
 											</td>
 										</tr>
 										<tr>
@@ -487,7 +487,7 @@ const Dashboard = ()=>{
 											<td>Clark Natela</td>
 											<td>#4587892</td>
 											<td>$32.78</td>
-											<td><a href="javaScript:;" class="btn btn-sm btn-success radius-30">Delivered</a>
+											<td><a href="#" class="btn btn-sm btn-success radius-30">Delivered</a>
 											</td>
 										</tr>
 										<tr>
@@ -500,7 +500,7 @@ const Dashboard = ()=>{
 											<td>Robin Mandela</td>
 											<td>#5587426</td>
 											<td>$29.52</td>
-											<td><a href="javaScript:;" class="btn btn-sm btn-success radius-30">Delivered</a>
+											<td><a href="#" class="btn btn-sm btn-success radius-30">Delivered</a>
 											</td>
 										</tr>
 										<tr>
@@ -513,7 +513,7 @@ const Dashboard = ()=>{
 											<td>Julia Burke</td>
 											<td>#6875954</td>
 											<td>$42.68</td>
-											<td><a href="javaScript:;" class="btn btn-sm btn-warning radius-30">Pending</a>
+											<td><a href="#" class="btn btn-sm btn-warning radius-30">Pending</a>
 											</td>
 										</tr>
 										<tr>
@@ -526,7 +526,7 @@ const Dashboard = ()=>{
 											<td>Clark Natela</td>
 											<td>#4587892</td>
 											<td>$32.78</td>
-											<td><a href="javaScript:;" class="btn btn-sm btn-success radius-30">Delivered</a>
+											<td><a href="#" class="btn btn-sm btn-success radius-30">Delivered</a>
 											</td>
 										</tr>
 									</tbody>

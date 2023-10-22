@@ -5777,3 +5777,31 @@ input::placeholder {
 
 
 }
+
+
+
+
+/* new css */
+
+.dataTables_wrapper .mdb-datatable-filter .form-control{
+	border: 0;
+    padding: 0;
+}
+
+.dataTables_wrapper .dataTables_length {
+	display:block!important;
+}
+
+.dataTables_wrapper .dataTables_length .custom-select{
+	margin:0!important;
+}
+
+
+.dataTables_wrapper table{
+	margin-top: 20px;
+}
+
+.dataTables_wrapper .pagination{
+	padding: 0;
+    border: none;
+}

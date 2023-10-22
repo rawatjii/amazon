@@ -28,7 +28,7 @@ function App() {
   var userLoginDecryptedStatus = '';
 
   const isAuthenticated = useSelector((state)=>{
-    return state.auths.UserLogin;
+    return state.auths.UserStatus;
   });
 
   useEffect(()=>{
@@ -67,7 +67,7 @@ function App() {
       if(data){
       
           if(data == 'true'){
-            dispatch(authActions.setLogin());
+            dispatch(authActions.setLogin({userName:'sandeep'}));
           }else{
             dispatch(authActions.setLogout());
           }

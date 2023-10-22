@@ -18,374 +18,374 @@ const Header = ()=>{
     return(
         <>
         <header>
-			<div class="topbar d-flex align-items-center">
-				<nav class="navbar navbar-expand gap-3">
-					<div class="mobile-toggle-menu"><i class='bx bx-menu'></i>
+			<div className="topbar d-flex align-items-center">
+				<nav className="navbar navbar-expand gap-3">
+					<div className="mobile-toggle-menu"><i className='bx bx-menu'></i>
 					</div>
-					<div class="top-menu-left d-none d-lg-block">
-				 	 <ul class="nav">
-						<li class="nav-item">
-						  <a class="nav-link" href="app-emailbox.html"><i class='bx bx-envelope'></i></a>
+					<div className="top-menu-left d-none d-lg-block">
+				 	 <ul className="nav">
+						<li className="nav-item">
+						  <a className="nav-link" href="app-emailbox.html"><i className='bx bx-envelope'></i></a>
 						</li>
-						<li class="nav-item">
-						  <a class="nav-link" href="app-chat-box.html"><i class='bx bx-message'></i></a>
+						<li className="nav-item">
+						  <a className="nav-link" href="app-chat-box.html"><i className='bx bx-message'></i></a>
 						</li>
-						<li class="nav-item">
-						  <a class="nav-link" href="app-fullcalender.html"><i class='bx bx-calendar'></i></a>
+						<li className="nav-item">
+						  <a className="nav-link" href="app-fullcalender.html"><i className='bx bx-calendar'></i></a>
 						</li>
-						<li class="nav-item">
-							<a class="nav-link" href="app-to-do.html"><i class='bx bx-check-square'></i></a>
+						<li className="nav-item">
+							<a className="nav-link" href="app-to-do.html"><i className='bx bx-check-square'></i></a>
 						</li>
 					</ul>
 				   </div>
-					<div class="search-bar flex-grow-1">
-						<div class="position-relative search-bar-box">
+					<div className="search-bar flex-grow-1">
+						<div className="position-relative search-bar-box">
 							<form>
-							  <input type="text" class="form-control search-control" autofocus placeholder="Type to search..." /> <span class="position-absolute top-50 search-show translate-middle-y"><i class='bx bx-search'></i></span>
-							   <span class="position-absolute top-50 search-close translate-middle-y"><i class='bx bx-x'></i></span>
+							  <input type="text" className="form-control search-control" autoFocus placeholder="Type to search..." /> <span className="position-absolute top-50 search-show translate-middle-y"><i className='bx bx-search'></i></span>
+							   <span className="position-absolute top-50 search-close translate-middle-y"><i className='bx bx-x'></i></span>
 						    </form>
 						</div>
 					</div>
-					<div class="top-menu ms-auto">
-						<ul class="navbar-nav align-items-center gap-1">
-							<li class="nav-item mobile-search-icon">
-								<a class="nav-link" href="javascript:;"><i class='bx bx-search'></i>
+					<div className="top-menu ms-auto">
+						<ul className="navbar-nav align-items-center gap-1">
+							<li className="nav-item mobile-search-icon">
+								<a className="nav-link" href="#"><i className='bx bx-search'></i>
 								</a>
 							</li>
-							<li class="nav-item dark-mode d-none d-sm-flex">
-								<a class="nav-link dark-mode-icon" href="javascript:;"><i class='bx bx-moon'></i>
+							<li className="nav-item dark-mode d-none d-sm-flex">
+								<a className="nav-link dark-mode-icon" href="#"><i className='bx bx-moon'></i>
 								</a>
 							</li>
-							<li class="nav-item dropdown dropdown-large">
-								<a class="nav-link dropdown-toggle dropdown-toggle-nocaret" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">	<i class='bx bx-category'></i>
+							<li className="nav-item dropdown dropdown-large">
+								<a className="nav-link dropdown-toggle dropdown-toggle-nocaret" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">	<i className='bx bx-category'></i>
 								</a>
-								<div class="dropdown-menu dropdown-menu-end">
-									<div class="row row-cols-3 g-3 p-3">
-										<div class="col text-center">
-											<div class="app-box mx-auto bg-gradient-cosmic"><i class='bx bx-group'></i>
+								<div className="dropdown-menu dropdown-menu-end">
+									<div className="row row-cols-3 g-3 p-3">
+										<div className="col text-center">
+											<div className="app-box mx-auto bg-gradient-cosmic"><i className='bx bx-group'></i>
 											</div>
-											<div class="app-title">Teams</div>
+											<div className="app-title">Teams</div>
 										</div>
-										<div class="col text-center">
-											<div class="app-box mx-auto bg-gradient-burning"><i class='bx bx-atom'></i>
+										<div className="col text-center">
+											<div className="app-box mx-auto bg-gradient-burning"><i className='bx bx-atom'></i>
 											</div>
-											<div class="app-title">Projects</div>
+											<div className="app-title">Projects</div>
 										</div>
-										<div class="col text-center">
-											<div class="app-box mx-auto bg-gradient-lush"><i class='bx bx-shield'></i>
+										<div className="col text-center">
+											<div className="app-box mx-auto bg-gradient-lush"><i className='bx bx-shield'></i>
 											</div>
-											<div class="app-title">Tasks</div>
+											<div className="app-title">Tasks</div>
 										</div>
-										<div class="col text-center">
-											<div class="app-box mx-auto bg-gradient-kyoto"><i class='bx bx-notification'></i>
+										<div className="col text-center">
+											<div className="app-box mx-auto bg-gradient-kyoto"><i className='bx bx-notification'></i>
 											</div>
-											<div class="app-title">Feeds</div>
+											<div className="app-title">Feeds</div>
 										</div>
-										<div class="col text-center">
-											<div class="app-box mx-auto bg-gradient-blues"><i class='bx bx-file'></i>
+										<div className="col text-center">
+											<div className="app-box mx-auto bg-gradient-blues"><i className='bx bx-file'></i>
 											</div>
-											<div class="app-title">Files</div>
+											<div className="app-title">Files</div>
 										</div>
-										<div class="col text-center">
-											<div class="app-box mx-auto bg-gradient-moonlit"><i class='bx bx-filter-alt'></i>
+										<div className="col text-center">
+											<div className="app-box mx-auto bg-gradient-moonlit"><i className='bx bx-filter-alt'></i>
 											</div>
-											<div class="app-title">Alerts</div>
+											<div className="app-title">Alerts</div>
 										</div>
 									</div>
 								</div>
 							</li>
-							<li class="nav-item dropdown dropdown-large">
-								<a class="nav-link dropdown-toggle dropdown-toggle-nocaret position-relative" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"> <span class="alert-count">7</span>
-									<i class='bx bx-bell'></i>
+							<li className="nav-item dropdown dropdown-large">
+								<a className="nav-link dropdown-toggle dropdown-toggle-nocaret position-relative" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"> <span className="alert-count">7</span>
+									<i className='bx bx-bell'></i>
 								</a>
-								<div class="dropdown-menu dropdown-menu-end">
-									<a href="javascript:;">
-										<div class="msg-header">
-											<p class="msg-header-title">Notifications</p>
-											<p class="msg-header-clear ms-auto">Marks all as read</p>
+								<div className="dropdown-menu dropdown-menu-end">
+									<a href="#">
+										<div className="msg-header">
+											<p className="msg-header-title">Notifications</p>
+											<p className="msg-header-clear ms-auto">Marks all as read</p>
 										</div>
 									</a>
-									<div class="header-notifications-list">
-										<a class="dropdown-item" href="javascript:;">
-											<div class="d-flex align-items-center">
-												<div class="notify bg-light-primary text-primary"><i class="bx bx-group"></i>
+									<div className="header-notifications-list">
+										<a className="dropdown-item" href="#">
+											<div className="d-flex align-items-center">
+												<div className="notify bg-light-primary text-primary"><i className="bx bx-group"></i>
 												</div>
-												<div class="flex-grow-1">
-													<h6 class="msg-name">New Customers<span class="msg-time float-end">14 Sec
+												<div className="flex-grow-1">
+													<h6 className="msg-name">New Customers<span className="msg-time float-end">14 Sec
 												ago</span></h6>
-													<p class="msg-info">5 new user registered</p>
+													<p className="msg-info">5 new user registered</p>
 												</div>
 											</div>
 										</a>
-										<a class="dropdown-item" href="javascript:;">
-											<div class="d-flex align-items-center">
-												<div class="notify bg-light-danger text-danger"><i class="bx bx-cart-alt"></i>
+										<a className="dropdown-item" href="#">
+											<div className="d-flex align-items-center">
+												<div className="notify bg-light-danger text-danger"><i className="bx bx-cart-alt"></i>
 												</div>
-												<div class="flex-grow-1">
-													<h6 class="msg-name">New Orders <span class="msg-time float-end">2 min
+												<div className="flex-grow-1">
+													<h6 className="msg-name">New Orders <span className="msg-time float-end">2 min
 												ago</span></h6>
-													<p class="msg-info">You have recived new orders</p>
+													<p className="msg-info">You have recived new orders</p>
 												</div>
 											</div>
 										</a>
-										<a class="dropdown-item" href="javascript:;">
-											<div class="d-flex align-items-center">
-												<div class="notify bg-light-success text-success"><i class="bx bx-file"></i>
+										<a className="dropdown-item" href="#">
+											<div className="d-flex align-items-center">
+												<div className="notify bg-light-success text-success"><i className="bx bx-file"></i>
 												</div>
-												<div class="flex-grow-1">
-													<h6 class="msg-name">24 PDF File<span class="msg-time float-end">19 min
+												<div className="flex-grow-1">
+													<h6 className="msg-name">24 PDF File<span className="msg-time float-end">19 min
 												ago</span></h6>
-													<p class="msg-info">The pdf files generated</p>
+													<p className="msg-info">The pdf files generated</p>
 												</div>
 											</div>
 										</a>
-										<a class="dropdown-item" href="javascript:;">
-											<div class="d-flex align-items-center">
-												<div class="notify bg-light-warning text-warning"><i class="bx bx-send"></i>
+										<a className="dropdown-item" href="#">
+											<div className="d-flex align-items-center">
+												<div className="notify bg-light-warning text-warning"><i className="bx bx-send"></i>
 												</div>
-												<div class="flex-grow-1">
-													<h6 class="msg-name">Time Response <span class="msg-time float-end">28 min
+												<div className="flex-grow-1">
+													<h6 className="msg-name">Time Response <span className="msg-time float-end">28 min
 												ago</span></h6>
-													<p class="msg-info">5.1 min avarage time response</p>
+													<p className="msg-info">5.1 min avarage time response</p>
 												</div>
 											</div>
 										</a>
-										<a class="dropdown-item" href="javascript:;">
-											<div class="d-flex align-items-center">
-												<div class="notify bg-light-info text-info"><i class="bx bx-home-circle"></i>
+										<a className="dropdown-item" href="#">
+											<div className="d-flex align-items-center">
+												<div className="notify bg-light-info text-info"><i className="bx bx-home-circle"></i>
 												</div>
-												<div class="flex-grow-1">
-													<h6 class="msg-name">New Product Approved <span
-												class="msg-time float-end">2 hrs ago</span></h6>
-													<p class="msg-info">Your new product has approved</p>
-												</div>
-											</div>
-										</a>
-										<a class="dropdown-item" href="javascript:;">
-											<div class="d-flex align-items-center">
-												<div class="notify bg-light-danger text-danger"><i class="bx bx-message-detail"></i>
-												</div>
-												<div class="flex-grow-1">
-													<h6 class="msg-name">New Comments <span class="msg-time float-end">4 hrs
-												ago</span></h6>
-													<p class="msg-info">New customer comments recived</p>
+												<div className="flex-grow-1">
+													<h6 className="msg-name">New Product Approved <span
+												className="msg-time float-end">2 hrs ago</span></h6>
+													<p className="msg-info">Your new product has approved</p>
 												</div>
 											</div>
 										</a>
-										<a class="dropdown-item" href="javascript:;">
-											<div class="d-flex align-items-center">
-												<div class="notify bg-light-success text-success"><i class='bx bx-check-square'></i>
+										<a className="dropdown-item" href="#">
+											<div className="d-flex align-items-center">
+												<div className="notify bg-light-danger text-danger"><i className="bx bx-message-detail"></i>
 												</div>
-												<div class="flex-grow-1">
-													<h6 class="msg-name">Your item is shipped <span class="msg-time float-end">5 hrs
+												<div className="flex-grow-1">
+													<h6 className="msg-name">New Comments <span className="msg-time float-end">4 hrs
 												ago</span></h6>
-													<p class="msg-info">Successfully shipped your item</p>
+													<p className="msg-info">New customer comments recived</p>
 												</div>
 											</div>
 										</a>
-										<a class="dropdown-item" href="javascript:;">
-											<div class="d-flex align-items-center">
-												<div class="notify bg-light-primary text-primary"><i class='bx bx-user-pin'></i>
+										<a className="dropdown-item" href="#">
+											<div className="d-flex align-items-center">
+												<div className="notify bg-light-success text-success"><i className='bx bx-check-square'></i>
 												</div>
-												<div class="flex-grow-1">
-													<h6 class="msg-name">New 24 authors<span class="msg-time float-end">1 day
+												<div className="flex-grow-1">
+													<h6 className="msg-name">Your item is shipped <span className="msg-time float-end">5 hrs
 												ago</span></h6>
-													<p class="msg-info">24 new authors joined last week</p>
+													<p className="msg-info">Successfully shipped your item</p>
 												</div>
 											</div>
 										</a>
-										<a class="dropdown-item" href="javascript:;">
-											<div class="d-flex align-items-center">
-												<div class="notify bg-light-warning text-warning"><i class='bx bx-door-open'></i>
+										<a className="dropdown-item" href="#">
+											<div className="d-flex align-items-center">
+												<div className="notify bg-light-primary text-primary"><i className='bx bx-user-pin'></i>
 												</div>
-												<div class="flex-grow-1">
-													<h6 class="msg-name">Defense Alerts <span class="msg-time float-end">2 weeks
+												<div className="flex-grow-1">
+													<h6 className="msg-name">New 24 authors<span className="msg-time float-end">1 day
 												ago</span></h6>
-													<p class="msg-info">45% less alerts last 4 weeks</p>
+													<p className="msg-info">24 new authors joined last week</p>
+												</div>
+											</div>
+										</a>
+										<a className="dropdown-item" href="#">
+											<div className="d-flex align-items-center">
+												<div className="notify bg-light-warning text-warning"><i className='bx bx-door-open'></i>
+												</div>
+												<div className="flex-grow-1">
+													<h6 className="msg-name">Defense Alerts <span className="msg-time float-end">2 weeks
+												ago</span></h6>
+													<p className="msg-info">45% less alerts last 4 weeks</p>
 												</div>
 											</div>
 										</a>
 									</div>
-									<a href="javascript:;">
-										<div class="text-center msg-footer">View All Notifications</div>
+									<a href="#">
+										<div className="text-center msg-footer">View All Notifications</div>
 									</a>
 								</div>
 							</li>
-							<li class="nav-item dropdown dropdown-large">
-								<a class="nav-link dropdown-toggle dropdown-toggle-nocaret position-relative" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"> <span class="alert-count">8</span>
-									<i class='bx bx-comment'></i>
+							<li className="nav-item dropdown dropdown-large">
+								<a className="nav-link dropdown-toggle dropdown-toggle-nocaret position-relative" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"> <span className="alert-count">8</span>
+									<i className='bx bx-comment'></i>
 								</a>
-								<div class="dropdown-menu dropdown-menu-end">
-									<a href="javascript:;">
-										<div class="msg-header">
-											<p class="msg-header-title">Messages</p>
-											<p class="msg-header-clear ms-auto">Marks all as read</p>
+								<div className="dropdown-menu dropdown-menu-end">
+									<a href="#">
+										<div className="msg-header">
+											<p className="msg-header-title">Messages</p>
+											<p className="msg-header-clear ms-auto">Marks all as read</p>
 										</div>
 									</a>
-									<div class="header-message-list">
-										<a class="dropdown-item" href="javascript:;">
-											<div class="d-flex align-items-center">
-												<div class="user-online">
-													<img src="assets/images/avatars/avatar-1.png" class="msg-avatar" alt="user avatar" />
+									<div className="header-message-list">
+										<a className="dropdown-item" href="#">
+											<div className="d-flex align-items-center">
+												<div className="user-online">
+													<img src="assets/images/avatars/avatar-1.png" className="msg-avatar" alt="user avatar" />
 												</div>
-												<div class="flex-grow-1">
-													<h6 class="msg-name">Daisy Anderson <span class="msg-time float-end">5 sec
+												<div className="flex-grow-1">
+													<h6 className="msg-name">Daisy Anderson <span className="msg-time float-end">5 sec
 												ago</span></h6>
-													<p class="msg-info">The standard chunk of lorem</p>
+													<p className="msg-info">The standard chunk of lorem</p>
 												</div>
 											</div>
 										</a>
-										<a class="dropdown-item" href="javascript:;">
-											<div class="d-flex align-items-center">
-												<div class="user-online">
-													<img src="assets/images/avatars/avatar-2.png" class="msg-avatar" alt="user avatar" />
+										<a className="dropdown-item" href="#">
+											<div className="d-flex align-items-center">
+												<div className="user-online">
+													<img src="assets/images/avatars/avatar-2.png" className="msg-avatar" alt="user avatar" />
 												</div>
-												<div class="flex-grow-1">
-													<h6 class="msg-name">Althea Cabardo <span class="msg-time float-end">14
+												<div className="flex-grow-1">
+													<h6 className="msg-name">Althea Cabardo <span className="msg-time float-end">14
 												sec ago</span></h6>
-													<p class="msg-info">Many desktop publishing packages</p>
+													<p className="msg-info">Many desktop publishing packages</p>
 												</div>
 											</div>
 										</a>
-										<a class="dropdown-item" href="javascript:;">
-											<div class="d-flex align-items-center">
-												<div class="user-online">
-													<img src="assets/images/avatars/avatar-3.png" class="msg-avatar" alt="user avatar" />
+										<a className="dropdown-item" href="#">
+											<div className="d-flex align-items-center">
+												<div className="user-online">
+													<img src="assets/images/avatars/avatar-3.png" className="msg-avatar" alt="user avatar" />
 												</div>
-												<div class="flex-grow-1">
-													<h6 class="msg-name">Oscar Garner <span class="msg-time float-end">8 min
+												<div className="flex-grow-1">
+													<h6 className="msg-name">Oscar Garner <span className="msg-time float-end">8 min
 												ago</span></h6>
-													<p class="msg-info">Various versions have evolved over</p>
+													<p className="msg-info">Various versions have evolved over</p>
 												</div>
 											</div>
 										</a>
-										<a class="dropdown-item" href="javascript:;">
-											<div class="d-flex align-items-center">
-												<div class="user-online">
-													<img src="assets/images/avatars/avatar-4.png" class="msg-avatar" alt="user avatar" />
+										<a className="dropdown-item" href="#">
+											<div className="d-flex align-items-center">
+												<div className="user-online">
+													<img src="assets/images/avatars/avatar-4.png" className="msg-avatar" alt="user avatar" />
 												</div>
-												<div class="flex-grow-1">
-													<h6 class="msg-name">Katherine Pechon <span class="msg-time float-end">15
+												<div className="flex-grow-1">
+													<h6 className="msg-name">Katherine Pechon <span className="msg-time float-end">15
 												min ago</span></h6>
-													<p class="msg-info">Making this the first true generator</p>
+													<p className="msg-info">Making this the first true generator</p>
 												</div>
 											</div>
 										</a>
-										<a class="dropdown-item" href="javascript:;">
-											<div class="d-flex align-items-center">
-												<div class="user-online">
-													<img src="assets/images/avatars/avatar-5.png" class="msg-avatar" alt="user avatar" />
+										<a className="dropdown-item" href="#">
+											<div className="d-flex align-items-center">
+												<div className="user-online">
+													<img src="assets/images/avatars/avatar-5.png" className="msg-avatar" alt="user avatar" />
 												</div>
-												<div class="flex-grow-1">
-													<h6 class="msg-name">Amelia Doe <span class="msg-time float-end">22 min
+												<div className="flex-grow-1">
+													<h6 className="msg-name">Amelia Doe <span className="msg-time float-end">22 min
 												ago</span></h6>
-													<p class="msg-info">Duis aute irure dolor in reprehenderit</p>
+													<p className="msg-info">Duis aute irure dolor in reprehenderit</p>
 												</div>
 											</div>
 										</a>
-										<a class="dropdown-item" href="javascript:;">
-											<div class="d-flex align-items-center">
-												<div class="user-online">
-													<img src="assets/images/avatars/avatar-6.png" class="msg-avatar" alt="user avatar" />
+										<a className="dropdown-item" href="#">
+											<div className="d-flex align-items-center">
+												<div className="user-online">
+													<img src="assets/images/avatars/avatar-6.png" className="msg-avatar" alt="user avatar" />
 												</div>
-												<div class="flex-grow-1">
-													<h6 class="msg-name">Cristina Jhons <span class="msg-time float-end">2 hrs
+												<div className="flex-grow-1">
+													<h6 className="msg-name">Cristina Jhons <span className="msg-time float-end">2 hrs
 												ago</span></h6>
-													<p class="msg-info">The passage is attributed to an unknown</p>
+													<p className="msg-info">The passage is attributed to an unknown</p>
 												</div>
 											</div>
 										</a>
-										<a class="dropdown-item" href="javascript:;">
-											<div class="d-flex align-items-center">
-												<div class="user-online">
-													<img src="assets/images/avatars/avatar-7.png" class="msg-avatar" alt="user avatar" />
+										<a className="dropdown-item" href="#">
+											<div className="d-flex align-items-center">
+												<div className="user-online">
+													<img src="assets/images/avatars/avatar-7.png" className="msg-avatar" alt="user avatar" />
 												</div>
-												<div class="flex-grow-1">
-													<h6 class="msg-name">James Caviness <span class="msg-time float-end">4 hrs
+												<div className="flex-grow-1">
+													<h6 className="msg-name">James Caviness <span className="msg-time float-end">4 hrs
 												ago</span></h6>
-													<p class="msg-info">The point of using Lorem</p>
+													<p className="msg-info">The point of using Lorem</p>
 												</div>
 											</div>
 										</a>
-										<a class="dropdown-item" href="javascript:;">
-											<div class="d-flex align-items-center">
-												<div class="user-online">
-													<img src="assets/images/avatars/avatar-8.png" class="msg-avatar" alt="user avatar" />
+										<a className="dropdown-item" href="#">
+											<div className="d-flex align-items-center">
+												<div className="user-online">
+													<img src="assets/images/avatars/avatar-8.png" className="msg-avatar" alt="user avatar" />
 												</div>
-												<div class="flex-grow-1">
-													<h6 class="msg-name">Peter Costanzo <span class="msg-time float-end">6 hrs
+												<div className="flex-grow-1">
+													<h6 className="msg-name">Peter Costanzo <span className="msg-time float-end">6 hrs
 												ago</span></h6>
-													<p class="msg-info">It was popularised in the 1960s</p>
+													<p className="msg-info">It was popularised in the 1960s</p>
 												</div>
 											</div>
 										</a>
-										<a class="dropdown-item" href="javascript:;">
-											<div class="d-flex align-items-center">
-												<div class="user-online">
-													<img src="assets/images/avatars/avatar-9.png" class="msg-avatar" alt="user avatar" />
+										<a className="dropdown-item" href="#">
+											<div className="d-flex align-items-center">
+												<div className="user-online">
+													<img src="assets/images/avatars/avatar-9.png" className="msg-avatar" alt="user avatar" />
 												</div>
-												<div class="flex-grow-1">
-													<h6 class="msg-name">David Buckley <span class="msg-time float-end">2 hrs
+												<div className="flex-grow-1">
+													<h6 className="msg-name">David Buckley <span className="msg-time float-end">2 hrs
 												ago</span></h6>
-													<p class="msg-info">Various versions have evolved over</p>
+													<p className="msg-info">Various versions have evolved over</p>
 												</div>
 											</div>
 										</a>
-										<a class="dropdown-item" href="javascript:;">
-											<div class="d-flex align-items-center">
-												<div class="user-online">
-													<img src="assets/images/avatars/avatar-10.png" class="msg-avatar" alt="user avatar" />
+										<a className="dropdown-item" href="#">
+											<div className="d-flex align-items-center">
+												<div className="user-online">
+													<img src="assets/images/avatars/avatar-10.png" className="msg-avatar" alt="user avatar" />
 												</div>
-												<div class="flex-grow-1">
-													<h6 class="msg-name">Thomas Wheeler <span class="msg-time float-end">2 days
+												<div className="flex-grow-1">
+													<h6 className="msg-name">Thomas Wheeler <span className="msg-time float-end">2 days
 												ago</span></h6>
-													<p class="msg-info">If you are going to use a passage</p>
+													<p className="msg-info">If you are going to use a passage</p>
 												</div>
 											</div>
 										</a>
-										<a class="dropdown-item" href="javascript:;">
-											<div class="d-flex align-items-center">
-												<div class="user-online">
-													<img src="assets/images/avatars/avatar-11.png" class="msg-avatar" alt="user avatar" />
+										<a className="dropdown-item" href="#">
+											<div className="d-flex align-items-center">
+												<div className="user-online">
+													<img src="assets/images/avatars/avatar-11.png" className="msg-avatar" alt="user avatar" />
 												</div>
-												<div class="flex-grow-1">
-													<h6 class="msg-name">Johnny Seitz <span class="msg-time float-end">5 days
+												<div className="flex-grow-1">
+													<h6 className="msg-name">Johnny Seitz <span className="msg-time float-end">5 days
 												ago</span></h6>
-													<p class="msg-info">All the Lorem Ipsum generators</p>
+													<p className="msg-info">All the Lorem Ipsum generators</p>
 												</div>
 											</div>
 										</a>
 									</div>
-									<a href="javascript:;">
-										<div class="text-center msg-footer">View All Messages</div>
+									<a href="#">
+										<div className="text-center msg-footer">View All Messages</div>
 									</a>
 								</div>
 							</li>
 						</ul>
 					</div>
-					<div class="user-box dropdown px-3">
-						<a class="d-flex align-items-center nav-link dropdown-toggle dropdown-toggle-nocaret" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-							<img src="assets/images/avatars/avatar-2.png" class="user-img" alt="user avatar" />
-							<div class="user-info ps-3">
-								<p class="user-name mb-0">Pauline Seitz</p>
-								<p class="designattion mb-0">Web Designer</p>
+					<div className="user-box dropdown px-3">
+						<a className="d-flex align-items-center nav-link dropdown-toggle dropdown-toggle-nocaret" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+							<img src="assets/images/avatars/avatar-2.png" className="user-img" alt="user avatar" />
+							<div className="user-info ps-3">
+								<p className="user-name mb-0">Pauline Seitz</p>
+								<p className="designattion mb-0">Web Designer</p>
 							</div>
 						</a>
-						<ul class="dropdown-menu dropdown-menu-end">
-							<li><a class="dropdown-item" href="javascript:;"><i class="bx bx-user"></i><span>Profile</span></a>
+						<ul className="dropdown-menu dropdown-menu-end">
+							<li><a className="dropdown-item" href="#"><i className="bx bx-user"></i><span>Profile</span></a>
 							</li>
-							<li><a class="dropdown-item" href="javascript:;"><i class="bx bx-cog"></i><span>Settings</span></a>
+							<li><a className="dropdown-item" href="#"><i className="bx bx-cog"></i><span>Settings</span></a>
 							</li>
-							<li><a class="dropdown-item" href="javascript:;"><i class='bx bx-home-circle'></i><span>Dashboard</span></a>
+							<li><a className="dropdown-item" href="#"><i className='bx bx-home-circle'></i><span>Dashboard</span></a>
 							</li>
-							<li><a class="dropdown-item" href="javascript:;"><i class='bx bx-dollar-circle'></i><span>Earnings</span></a>
+							<li><a className="dropdown-item" href="#"><i className='bx bx-dollar-circle'></i><span>Earnings</span></a>
 							</li>
-							<li><a class="dropdown-item" href="javascript:;"><i class='bx bx-download'></i><span>Downloads</span></a>
+							<li><a className="dropdown-item" href="#"><i className='bx bx-download'></i><span>Downloads</span></a>
 							</li>
 							<li>
-								<div class="dropdown-divider mb-0"></div>
+								<div className="dropdown-divider mb-0"></div>
 							</li>
-							<li><a class="dropdown-item" href="javascript:;"><i class='bx bx-log-out-circle'></i><span>Logout</span></a>
+							<li><a className="dropdown-item" href="#"><i className='bx bx-log-out-circle'></i><span>Logout</span></a>
 							</li>
 						</ul>
 					</div>

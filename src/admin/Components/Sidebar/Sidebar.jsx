@@ -49,7 +49,7 @@ const Sidebar = ()=>{
 
 				<li className="menu-label">Products</li>
 				<li>
-					<a href="javascript:;" className="has-arrow" aria-expanded="false">
+					<a href="#" className="has-arrow" aria-expanded="false">
 						<div className="parent-icon"><i className='bx bx-cart-alt' ></i>
 						</div>
 						<div className="menu-title">E-commerce</div>
@@ -83,7 +83,7 @@ const Sidebar = ()=>{
 				</li>
 				<li className="menu-label">Pages</li>
 				<li>
-					<a className="has-arrow" href="javascript:;" aria-expanded="false">
+					<a className="has-arrow" href="#" aria-expanded="false">
 						<div className="parent-icon"><i className='bx bx-lock-open-alt'></i>
 						</div>
 						<div className="menu-title">Authentication</div>

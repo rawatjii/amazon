@@ -1,121 +1,118 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import Header from '../../Components/Header/Header';
 import Sidebar from '../../Components/Sidebar/Sidebar';
+import { getDatabase, ref, set, onValue, remove } from "firebase/database";
+import {CDBDataTable} from 'cdbreact';
+import { getAllUsers } from '../../../firebase-config';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
+const columns = [
+	{
+	  label: 'Name',
+	  field: 'name',
+	  width: 150,
+	},
+	{
+	  label: 'Email',
+	  field: 'email',
+	  width: 270,
+	},
+	{
+	  label: 'Image',
+	  field: 'image',
+	  width: 200,
+	},
+	// {
+	// 	label: 'Actions',
+	// 	field: 'actions',
+	// 	width: 200,
+	//   },
+  ];
 
 const Users = ()=>{
+	// var usersRef;
+	// debugger;
+	const [userRows, setUserRows] = useState([])
+	const notify = (msg) => toast(msg);
+	
+	useEffect(() => {
+		const db = getDatabase();
+		const usersRef = ref(db, 'users/');
+		
+		onValue(usersRef, (snapshot) => {
+			const data = snapshot.val();
+			
+			if (data) {
+				const newUserRows = Object.entries(data).map(([key, value]) => ({
+					id: key,
+					name: value.username,
+					image: <img src={value.profile_picture} alt="" width={30}/>,
+					email: value.email,
+					// actions: <i className='bx bxs-trash' onClick={()=>userDeleteHandler(key)} style={{cursor:'pointer'}}></i>
+				}));
+		
+				setUserRows(newUserRows);
+			}
+		});
+
+	}, []);
+
+	// const userDeleteHandler = (id)=>{
+	// 	const db = getDatabase();
+	// 	const userRef = ref(db, `users/${id}`);
+
+	// 	remove(userRef)
+	// 	.then(()=>{
+	// 		notify('User deleted successfully.')
+	// 	})
+	// 	.catch((error) => {
+	// 		notify('Error deleting User: ' + error.message)
+	// 	});
+	// }
+	
+
     return(
         <>
             <Header />
             <Sidebar />
-            <div class="page-wrapper">
-                <div class="page-content">
-                    <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
-                        <div class="breadcrumb-title pe-3">eCommerce</div>
-                        <div class="ps-3">
+            <div className="page-wrapper">
+                <div className="page-content">
+                    <div className="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
+                        <div className="breadcrumb-title pe-3">Authentication</div>
+                        <div className="ps-3">
                             <nav aria-label="breadcrumb">
-                                <ol class="breadcrumb mb-0 p-0">
-                                    <li class="breadcrumb-item">
+                                <ol className="breadcrumb mb-0 p-0">
+                                    <li className="breadcrumb-item">
                                         <NavLink to="/admin">
-                                            <i class="bx bx-home-alt"></i>
+                                            <i className="bx bx-home-alt"></i>
                                         </NavLink>
                                     </li>
-                                    <li class="breadcrumb-item active" aria-current="page">Users</li>
+                                    <li className="breadcrumb-item active" aria-current="page">Users</li>
                                 </ol>
                             </nav>
                         </div>
 
                     </div>
                 
-                    <div class="card">
-                        <div class="card-body">
+                    <div className="card">
+                        <div className="card-body">
 
-                            <div class="table-responsive">
-                                <table class="table mb-0">
-                                    <thead class="table-light">
-                                        <tr>
-                                            <th>Order#</th>
-                                            <th>Company Name</th>
-                                            <th>Status</th>
-                                            <th>Total</th>
-                                            <th>Date</th>
-                                            <th>View Details</th>
-                                            <th>Actions</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>
-                                                <div class="d-flex align-items-center">
-                                                    <div>
-                                                        <input class="form-check-input me-3" type="checkbox" value="" aria-label="..." />
-                                                    </div>
-                                                    <div class="ms-2">
-                                                        <h6 class="mb-0 font-14">#OS-000354</h6>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td>Gaspur Antunes</td>
-                                            <td><div class="badge rounded-pill text-success bg-light-success p-2 text-uppercase px-3"><i class='bx bxs-circle me-1'></i>FulFilled</div></td>
-                                            <td>$485.20</td>
-                                            <td>June 10, 2020</td>
-                                            <td><button type="button" class="btn btn-primary btn-sm radius-30 px-4">View Details</button></td>
-                                            <td>
-                                                <div class="d-flex order-actions">
-                                                    <a href="javascript:;" class=""><i class='bx bxs-edit'></i></a>
-                                                    <a href="javascript:;" class="ms-3"><i class='bx bxs-trash'></i></a>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <div class="d-flex align-items-center">
-                                                    <div>
-                                                        <input class="form-check-input me-3" type="checkbox" value="" aria-label="..." />
-                                                    </div>
-                                                    <div class="ms-2">
-                                                        <h6 class="mb-0 font-14">#OS-000986</h6>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td>Gaspur Antunes</td>
-                                            <td><div class="badge rounded-pill text-info bg-light-info p-2 text-uppercase px-3"><i class='bx bxs-circle align-middle me-1'></i>Confirmed</div></td>
-                                            <td>$650.30</td>
-                                            <td>June 12, 2020</td>
-                                            <td><button type="button" class="btn btn-primary btn-sm radius-30 px-4">View Details</button></td>
-                                            <td>
-                                                <div class="d-flex order-actions">
-                                                    <a href="javascript:;" class=""><i class='bx bxs-edit'></i></a>
-                                                    <a href="javascript:;" class="ms-3"><i class='bx bxs-trash'></i></a>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <div class="d-flex align-items-center">
-                                                    <div>
-                                                        <input class="form-check-input me-3" type="checkbox" value="" aria-label="..." />
-                                                    </div>
-                                                    <div class="ms-2">
-                                                        <h6 class="mb-0 font-14">#OS-000536</h6>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td>Gaspur Antunes</td>
-                                            <td><div class="badge rounded-pill text-warning bg-light-warning p-2 text-uppercase px-3"><i class='bx bxs-circle align-middle me-1'></i>Partially shipped</div></td>
-                                            <td>$159.45</td>
-                                            <td>June 14, 2020</td>
-                                            <td><button type="button" class="btn btn-primary btn-sm radius-30 px-4">View Details</button></td>
-                                            <td>
-                                                <div class="d-flex order-actions">
-                                                    <a href="javascript:;" class=""><i class='bx bxs-edit'></i></a>
-                                                    <a href="javascript:;" class="ms-3"><i class='bx bxs-trash'></i></a>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
+							<CDBDataTable
+								striped
+								bordered
+								hover
+								// entriesOptions={[5, 20, 25]}
+								entries={5}
+								pagesAmount={4}
+								data={{
+									columns:columns,
+									rows:userRows
+								}}
+								sortable={false}
+								materialSearch={true}
+							/>
                         </div>
                     </div>
 
