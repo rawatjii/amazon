@@ -59,11 +59,12 @@ const SignIn = (props)=>{
                 }
                 localStorage.setItem('isUserSignin', JSON.stringify(item));
 
-                successNotify('User signin successfully');
                 dispatch(authActions.setLogin());
+                successNotify('User signin successfully');
                 return props.navigate('/');
             })
             .catch(err=>{
+                debugger;
                 dispatch(authActions.setLogout());
                 return notify('User not found');
             })
