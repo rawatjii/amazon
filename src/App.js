@@ -67,7 +67,7 @@ function App() {
       if(data){
       
           if(data == 'true'){
-            dispatch(authActions.setLogin({userName:'sandeep'}));
+            dispatch(authActions.setLogin());
           }else{
             dispatch(authActions.setLogout());
           }

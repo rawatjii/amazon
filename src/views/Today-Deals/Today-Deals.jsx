@@ -27,7 +27,7 @@ const Today_Deals = (props)=>{
 
     useEffect(() => {
         allProducts.map((singleProduct => {
-            singleProduct.categories.map((singleCategory) => {
+            singleProduct.categories?.map((singleCategory) => {
                 const newSingleCategory = singleCategory.replace(/\s/g, "");
                 productCategories.push(newSingleCategory);
             })

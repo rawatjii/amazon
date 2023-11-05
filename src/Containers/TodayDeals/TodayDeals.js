@@ -54,9 +54,9 @@ const TodayDeals = () => {
                     style={{width:'100%'}}
                 >
                 {fetchAllProducts.map((item, index)=>{
+                    console.log('item catgory', item.categories);
                     // const newCat = item.categories.replace(/\s/g, "").split(',')[0].replace('&','-');
-                    productCategories = [];
-                    item.categories.map((singleCategory)=>{
+                    item.categories?.map((singleCategory)=>{
                         const newSingleCategory = singleCategory.replace(/\s/g, "");
                         productCategories.push(newSingleCategory);
                         // setProductCategories([...productCategories, singleCategory])

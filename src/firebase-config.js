@@ -1,5 +1,5 @@
 import { initializeApp } from "firebase/app";
-import { getDatabase, ref, set, onValue } from "firebase/database";
+import { getDatabase, ref, set, onValue, update  } from "firebase/database";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 
 
@@ -32,5 +32,23 @@ import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
       return data;
       // console.log('all users data', data);
       // updateStarCount(postElement, data);
+    });
+  }
+
+  export function addProduct(data){
+    set(ref(db, 'products/' + data.id), {
+      id:data.id,
+      product_title:data.product_title,
+      categories:data.categories,
+      price:data.price,
+      rating:data.rating,
+      images:data.images,
+    })
+  }
+
+  export function updateProduct(productId, productData){
+    const productRef = ref(db, `products/${productId}`);
+    update(productRef,{
+      ...productData
     });
   }

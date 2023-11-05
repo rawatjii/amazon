@@ -7,7 +7,7 @@ import { useSelector } from 'react-redux';
 const PrivateRoute = ({children})=>{
     const navigate = useNavigate();
     const isAuthenticated = useSelector((state)=>{
-        return state.auths.UserLogin;
+        return state.auths.UserStatus;
     });
 
     useEffect(() => {

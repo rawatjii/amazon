@@ -4,8 +4,12 @@ import { useSelector } from "react-redux";
 import Navbar from "../../Components/Navbar/Navbar";
 import { Rating } from 'react-simple-star-rating'
 import axios from '../../axios';
+import { ToastContainer, toast } from 'react-toastify';
+import { withNavigate } from '../../Components/hoc/withNavigate/withNavigate';
+import { uploadCloudinary } from '../../upload';
+import { updateProduct } from '../../firebase-config';
 
-const CreateReview = ()=>{
+const CreateReview = (props)=>{
     const [filteredData, setFilteredData] = useState({});
     const [ratings, setRatings] = useState({
         overall:0,
@@ -19,10 +23,13 @@ const CreateReview = ()=>{
         review:'',
     })
 
+    const notify = (msg) => toast(msg);
+
     const {productId} = useParams();
 
     const headlineInput = useRef('')
-    const ReviewInput = useRef('')
+    const ReviewInput = useRef('');
+    const reviewImage = useRef('')
 
     const allProducts = useSelector((state)=>{
         return state.products.allProducts;
@@ -38,7 +45,6 @@ const CreateReview = ()=>{
 
     // Catch Rating value
     const overallHandleRating = (value) => {
-        console.log('overall rating', value);
         setRatings({...ratings, ['overall']:value})
     }
 
@@ -60,21 +66,32 @@ const CreateReview = ()=>{
         setRatings({...ratings, [e.target.name]:0})
     }
 
-    const onReviewSubmit = (e)=>{
+    const onReviewSubmit = async (e)=>{
+        e.preventDefault();
         var formData = {};
-        formData = {...ratings, ...reviews};
 
-        axios.put(`/${productId}.json`, formData)
-        .then(response=>{
-            console.log('product updated successfully');
-        })
-        .catch(err=>{
-            console.error("Error", err);
-        })
+        try{
+            const res = await uploadCloudinary(reviewImage.current.files[0]);
 
-        // const data = {
+            formData = {
+                ...ratings,
+                headline:headlineInput.current.value,
+                review:ReviewInput.current.value,
+                reviewImage:res.url
+            };
 
-        // }
+            // console.log('productId',productId);
+            await updateProduct('9317e88d-51d1-49d7-9a89-45995828740d', {
+                productReview:formData
+            })
+
+            notify("Review Added Successfully");
+            return props.navigate('/');
+        }
+        catch(err){
+            notify("Review couldn't added. Error: " + err);
+        }
+        
     }
 
     return(
@@ -150,7 +167,8 @@ const CreateReview = ()=>{
                     <small>Shoppers find images more helpful than text alone.</small>
                     <input name='headline' 
                     type="file"
-                    className='form-control' placeholder="What's most important to know?" />
+                    className='form-control'
+                    ref={reviewImage} />
 
                     <hr />
 
@@ -166,4 +184,4 @@ const CreateReview = ()=>{
     )
 }
 
-export default CreateReview;
+export default withNavigate(CreateReview);

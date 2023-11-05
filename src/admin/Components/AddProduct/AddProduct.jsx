@@ -10,7 +10,9 @@ import FormControl from '@mui/material/FormControl';
 import ListItemText from '@mui/material/ListItemText';
 import Select from '@mui/material/Select';
 import Checkbox from '@mui/material/Checkbox';
+import { ToastContainer, toast } from 'react-toastify';
 import { uploadCloudinary } from '../../../upload';
+import { addProduct } from '../../../firebase-config';
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -50,6 +52,8 @@ const AddProduct = ()=>{
             originalPrice:''
         }
     })
+
+    const notify = (msg) => toast(msg);
 
     const originalPrice = useRef('');
     const offerPrice = useRef('');
@@ -103,30 +107,37 @@ const AddProduct = ()=>{
                 const res = await uploadCloudinary(selectedImages[i]);
                 arr.push(res);
                 // setPostData({...postData, images:[...postData.images, res]});
+
+                const data = {
+                    id:uuidv4(),
+                    product_title:postData.product_title,
+                    categories:postData.product_category,
+                    price:{
+                        originalPrice:originalPrice.current.value,
+                        offerPrice:offerPrice.current.value
+                    },
+                    rating:0,
+                    images:arr,
+                }
+
+                await addProduct(data);
+                notify("Product Added Successfully");
+
             }
         }catch(error){
-            console.log('error',error);
+            notify("Product Couldn't upload, Error: "+error);
         }
         
-        const data = {
-            id:uuidv4(),
-            product_title:postData.product_title,
-            categories:postData.product_category,
-            price:{
-                originalPrice:originalPrice.current.value,
-                offerPrice:offerPrice.current.value
-            },
-            rating:0,
-            images:arr,
-        }
+        
 
-        axios.post('/products.json', data)
-        .then(response => {
-            console.log('POST request successful', response.data);
-        })
-        .catch(error=>{
-            console.error('POST request error', error);
-        })
+        // axios.post('/products.json', data)
+        
+        // .then(response => {
+        //     console.log('POST request successful', response.data);
+        // })
+        // .catch(error=>{
+        //     console.error('POST request error', error);
+        // })
     }
 
     return(
