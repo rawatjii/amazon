@@ -59,7 +59,7 @@ const SignIn = (props)=>{
                 }
                 localStorage.setItem('isUserSignin', JSON.stringify(item));
 
-                dispatch(authActions.setLogin());
+                dispatch(authActions.setLogin({email:emailInputValue}));
                 successNotify('User signin successfully');
                 return props.navigate('/');
             })

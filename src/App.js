@@ -20,6 +20,7 @@ import PrivateRoute from './views/Auth/PrivateRoute';
 import CryptoJS from "crypto-js";
 import SignIn from './views/Auth/SignIn/SignIn';
 import Redirect from './Components/Redirect/Redirect';
+import { fetchUserData } from './firebase-config';
 // css
 import './App.css';
 
@@ -45,6 +46,11 @@ function App() {
 
   useEffect(() => {
     dispatch(fetchProducts());
+
+    // fetch user by email
+
+    const userData = fetchUserData()
+    console.log('userData',userData );
 
     try{
       const now = new Date()

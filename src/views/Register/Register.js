@@ -99,7 +99,7 @@ class Register extends Component{
             createUserWithEmailAndPassword(this.auth, emailInputValue, passwordInputValue)
             .then((userCredential)=>{
                 // const user = userCredential;
-                writeUserData(userCredential.user.uid,nameInputValue,emailInputValue,'https://cdn.pixabay.com/photo/2017/01/30/23/52/female-2022387_640.png');
+                writeUserData(userCredential.user.uid, nameInputValue, emailInputValue,'https://cdn.pixabay.com/photo/2017/01/30/23/52/female-2022387_640.png');
                 this.notify("User Sign Up Successfully");
                 return this.props.navigate('/signin');
             })

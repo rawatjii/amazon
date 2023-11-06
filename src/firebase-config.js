@@ -1,5 +1,5 @@
 import { initializeApp } from "firebase/app";
-import { getDatabase, ref, set, onValue, update  } from "firebase/database";
+import { getDatabase, ref, set, onValue, update, query, orderByChild, equalTo, get  } from "firebase/database";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 
 
@@ -17,8 +17,29 @@ import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
   const database = getDatabase(firebaseApp);
   const db = getDatabase();
 
+  export function fetchUserData() {
+    const usersRef = ref(db, 'users');
+    const emailQuery = query(usersRef, orderByChild('email'), equalTo('sandeep@gmail.com'));
+
+    get(emailQuery)
+    .then((snapshot) => {
+      if (snapshot.exists()) {
+        // The user data is available in the snapshot's val()
+        const userData = snapshot.val();
+        return userData;
+      } else {
+        console.log('User not found.');
+      }
+    })
+    .catch((error) => {
+      console.error('Error fetching user data:', error);
+    });
+
+  }
+
   export function writeUserData(userId, name, email, imageUrl) {
     set(ref(db, 'users/' + userId), {
+      userId:userId,
       username: name,
       email: email,
       profile_picture : imageUrl,
