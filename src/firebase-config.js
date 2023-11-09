@@ -17,23 +17,34 @@ import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
   const database = getDatabase(firebaseApp);
   const db = getDatabase();
 
-  export function fetchUserData() {
+  export async function fetchUserData(userEmail) {
     const usersRef = ref(db, 'users');
-    const emailQuery = query(usersRef, orderByChild('email'), equalTo('sandeep@gmail.com'));
+    if(!userEmail){
+      return null;
+    }
+    const emailQuery = query(usersRef, orderByChild('email'), equalTo(userEmail));
 
-    get(emailQuery)
-    .then((snapshot) => {
-      if (snapshot.exists()) {
+    const snapshot = await get(emailQuery)
+    if (snapshot.exists()) {
         // The user data is available in the snapshot's val()
         const userData = snapshot.val();
-        return userData;
+        return userData;  
       } else {
         console.log('User not found.');
       }
-    })
-    .catch((error) => {
-      console.error('Error fetching user data:', error);
-    });
+    // .then((snapshot) => {
+    //   if (snapshot.exists()) {
+    //     // The user data is available in the snapshot's val()
+    //     const userData = snapshot.val();
+    //     return userData;
+    //   } else {
+    //     console.log('User not found.');
+    //   }
+    // }
+    // )
+    // .catch((error) => {
+    //   console.error('Error fetching user data:', error);
+    // });
 
   }
 

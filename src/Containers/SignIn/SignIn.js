@@ -8,6 +8,7 @@ import defaultImage from '../../assets/default.jpg';
 import { connect } from 'react-redux';
 import { authActions } from '../../store/reducers/authReducer';
 import { Link } from 'react-router-dom';
+import { useEffect } from 'react';
 
 const Backdrop = (props)=>{
     return(
@@ -15,9 +16,15 @@ const Backdrop = (props)=>{
     );
 }
 
+const userName = null;
+
 const SignIn = (props)=>{
     const [dropdown, setDropdown] = useState(false)
     const isAuth = useSelector((state)=>state.auths.UserLogin)
+
+    useEffect((state)=>{
+        userName = state.auths.UserData.username;
+    }, [])
 
     const showDropdown = () => {
         setDropdown(true)

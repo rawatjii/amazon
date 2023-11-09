@@ -44,17 +44,18 @@ function App() {
 
   const dispatch = useDispatch();
 
-  useEffect(() => {
+  useEffect(async () => {
     dispatch(fetchProducts());
 
     // fetch user by email
 
-    const userData = fetchUserData()
-    console.log('userData',userData );
+    // const userData = fetchUserData()
+    // console.log('userData',userData );
 
     try{
       const now = new Date()
       const userStatusObj = JSON.parse(localStorage.getItem('isUserSignin'));
+      const userEmail = localStorage.getItem('userEmail');
 
       if(!userStatusObj){
         return null;
@@ -73,7 +74,8 @@ function App() {
       if(data){
       
           if(data == 'true'){
-            dispatch(authActions.setLogin());
+            const userData = await fetchUserData(userEmail);
+            dispatch(authActions.setLogin({email:userEmail, userData:Object.values(userData)[0]}));
           }else{
             dispatch(authActions.setLogout());
           }

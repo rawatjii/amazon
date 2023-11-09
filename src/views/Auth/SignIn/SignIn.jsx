@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
@@ -8,6 +8,7 @@ import { withNavigate } from '../../../Components/hoc/withNavigate/withNavigate'
 import { authActions } from '../../../store/reducers/authReducer';
 import Button from '@mui/material/Button';
 import axios from 'axios';
+import { fetchUserData } from '../../../firebase-config';
 // logo
 import logoDark from '../../../assets/logo-dark.png';
 
@@ -28,7 +29,9 @@ const SignIn = (props)=>{
     const notify = (msg) => toast(msg);
     const successNotify = (msg) => toast.success(msg);
 
-    const userLoginHandler = (e)=>{
+    
+
+    const userLoginHandler = async (e)=>{
         e.preventDefault();
         const emailInputValue = emailRef.current.value;
         const passwordInputValue = passwordRef.current.value;
@@ -46,28 +49,34 @@ const SignIn = (props)=>{
         }
 
         if((emailInputValue && passwordInputValue) !== ''){
-            axios.post(`https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${process.env.REACT_APP_API_KEY}`, {email:emailInputValue, password:passwordInputValue,returnSecureToken:true})
-            .then(res=>{
+            try{
+                const response = axios.post(`https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${process.env.REACT_APP_API_KEY}`, {email:emailInputValue, password:passwordInputValue,returnSecureToken:true});
+
                 const now = new Date();
                 const data = CryptoJS.AES.encrypt(
                     JSON.stringify('true'),
                     `${process.env.REACT_APP_SECRET_KEY}`
                 ).toString();
+
                 const item = {
                     value:data,
                     expiration:now.getTime() + (`${process.env.REACT_APP_AUTH_EXPIRE_TIME}` * 60000)
                 }
-                localStorage.setItem('isUserSignin', JSON.stringify(item));
 
-                dispatch(authActions.setLogin({email:emailInputValue}));
+                localStorage.setItem('isUserSignin', JSON.stringify(item));
+                
+                const userData = await fetchUserData(emailInputValue);
+                localStorage.setItem('userEmail', Object.values(userData)[0].email);
+
+                dispatch(authActions.setLogin({email:emailInputValue, userData:Object.values(userData)[0]}));
                 successNotify('User signin successfully');
                 return props.navigate('/');
-            })
-            .catch(err=>{
-                debugger;
+
+            }
+            catch(err){
                 dispatch(authActions.setLogout());
                 return notify('User not found');
-            })
+            }
         }
     };
 

@@ -1,7 +1,9 @@
 import * as React from 'react';
 import {useState, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import ReactDOM from 'react-dom';
 import AppBar from '@mui/material/AppBar';
+import { ToastContainer, toast } from 'react-toastify';
 import Toolbar from '@mui/material/Toolbar';
 import Container from '@mui/material/Container';
 
@@ -13,6 +15,7 @@ import ReturnOrders from '../../Containers/ReturnOrders/ReturnOrders';
 import CartLink from './CartLink/CartLink'
 import Search from './Search/Search';
 import NavMenus from './NavMenus/NavMenus';
+import { authActions } from '../../store/reducers/authReducer';
 
 // logo
 import logo from '../../assets/logo.png';
@@ -21,7 +24,11 @@ import './Navbar.css'
 const Navbar = (props) => {
   
   const [showSidebarMenu, setShowSidebarMenu] = useState(false);
-  const CategoryMenus = ["Amazon miniTV", "Sell","Best Seller","Mobiles","Today's Deals","Customer Service","New Releases","Prime","Electronics","Home & Kitchen","Amazon Pay","Gift Ideas","Fashion","Computers","Books","Coupons","Beauty & Personal Care","Toys & Games"];
+  const CategoryMenus = ["Aazon miniTV", "Sell","Best Seller","Mobiles","Today's Deals","Customer Service","New Releases","Prime","Electronics","Home & Kitchen","Amazon Pay","Gift Ideas","Fashion","Computers","Books","Coupons","Beauty & Personal Care","Toys & Games"];
+
+  const dispatch = useDispatch();
+  
+  const notify = (msg) => toast(msg);
 
   const showSideMenu = ()=>{
     setShowSidebarMenu(true)
@@ -29,6 +36,13 @@ const Navbar = (props) => {
 
   const hideSideMenu = ()=>{
     setShowSidebarMenu(false)
+  }
+  
+  const logoutHandler = ()=>{
+    localStorage.removeItem('isUserSignin');
+    localStorage.removeItem('userEmail');
+    dispatch(authActions.setLogout());
+    notify('User logout successfully');
   }
 
   return (
@@ -44,6 +58,8 @@ const Navbar = (props) => {
                 <SignIn />
                 <ReturnOrders />
                 <CartLink />
+
+                <button onClick={logoutHandler}>Logout</button>
 
               </Toolbar>
             </Container>

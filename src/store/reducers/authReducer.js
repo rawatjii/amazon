@@ -14,7 +14,7 @@ const authSlice = createSlice({
         setLogin:(state, action)=>{
             state.UserStatus = true;
             state.UserEmail = action.payload.email;
-            state.UserData = action.payload.userData
+            state.UserData = {...action.payload.userData}
         },
         setLogout:(state)=>{
             state.UserStatus = false;
