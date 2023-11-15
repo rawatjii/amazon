@@ -18,27 +18,38 @@ const Result = ()=>{
         return state.products.allProducts;
     })
     
-    const resultProducts = useSelector((state)=>{
-        return state.products.searchedProducts;
+    const searchKeyword = useSelector((state)=>{
+        return state.search.searchKeyword;
     });
 
     useEffect(() => {
-        if(resultProducts.length === 0){
-            const searchParams = new URLSearchParams(window.location.search);
-            const searchCategory = searchParams.get('product');
+        const searchParams = new URLSearchParams(window.location.search);
+        const searchInput = searchParams.get('product');
+        allProducts.filter((singleProd)=>{
+            return singleProd.product_title.toLowerCase().includes(searchInput.toLowerCase())
+        })
+        .map((filteredProduct)=>{
+            // setFilteredProducts([filteredProduct])
+            FilteredProductsAll.push(filteredProduct)
+        })
+        setFilteredProducts(FilteredProductsAll)
 
-            allProducts.filter((singleProd)=>{
-                return singleProd.name.toLowerCase().includes(searchCategory.toLowerCase())
-            })
-            .map((filteredProduct)=>{
-                FilteredProductsAll.push(filteredProduct)
-            })
-            setFilteredProducts(FilteredProductsAll)
-        }else{
-            setFilteredProducts(resultProducts);
-        }
+        // if(resultProducts.length === 0){
+        //     const searchParams = new URLSearchParams(window.location.search);
+        //     const searchCategory = searchParams.get('product');
+
+        //     allProducts.filter((singleProd)=>{
+        //         return singleProd.name.toLowerCase().includes(searchCategory.toLowerCase())
+        //     })
+        //     .map((filteredProduct)=>{
+        //         FilteredProductsAll.push(filteredProduct)
+        //     })
+        //     setFilteredProducts(FilteredProductsAll)
+        // }else{
+        //     setFilteredProducts(resultProducts);
+        // }
         // setAllCategories(allproductsCategories)
-    }, [resultProducts, allProducts]);
+    }, [allProducts, searchKeyword]);
 
     return(
         <>
@@ -56,6 +67,58 @@ const Result = ()=>{
                                 return <li key={index}>{singleCategory}</li>
                             })}
                         </ul>
+
+                        <div className="filter_widget">
+                            <h4 className="title">Brands</h4>
+                            <ul>
+                                <li>
+                                    <label htmlFor="brand1">   
+                                        <input type="checkbox" name='brands' id='brand1' />
+                                        Brand1
+                                    </label>
+                                </li>
+                                <li>
+                                    <label htmlFor="brand2">   
+                                        <input type="checkbox" name='brands' id='brand2' />
+                                        Brand2
+                                    </label>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div className="filter_widget">
+                            <h4 className="title">Price</h4>
+                            <form action="">
+                                <input type="text" placeholder='₹ Min' />
+                                <input type="text" placeholder='₹ Max' />
+                                <button type='submit'>Go</button>
+                            </form>
+                        </div>
+
+                        <div className="filter_widget">
+                            <h4 className="title">Deals & Discounts</h4>
+                            <ul>
+                                <li>
+                                    <a href="">All Discounts</a>
+                                </li>
+                                <li>
+                                    <a href="">Today's Deals</a>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div className="filter_widget">
+                            <h4 className="title">Availability</h4>
+                            <ul>
+                                <li>
+                                    <label htmlFor="availability">   
+                                        <input type="checkbox" name='brands' id='availability' />
+                                        Include Out of Stock
+                                    </label>
+                                </li>
+                            </ul>
+                        </div>
+
                     </div>
 
                     <div className="col_9 right_col">
@@ -68,11 +131,11 @@ const Result = ()=>{
                                                 <img src={product.images.image1} alt="thumbnail" className="img-fluid" />
                                             </div>
                                             <div className={classes.contents}>
-                                                <p className={classes.name}>{product.name}</p>
+                                                <p className={classes.name}>{product.product_title}</p>
                                                 <span className="today_deal">Deal of the Day</span>
                                                 <p className={classes.price}>
                                                     <sup>₹</sup>
-                                                    <span className={classes.currentPrice}>{product.price.discountPrice.toLocaleString()}</span>
+                                                    <span className={classes.currentPrice}>{product.price.offerPrice.toLocaleString()}</span>
     
                                                     <span className="old">M.R.P: <s>₹{product.price.originalPrice.toLocaleString()}</s></span>
                                                     <span className={classes.discount}>({Math.round(((product.price.originalPrice - product.price.discountPrice) / product.price.originalPrice) * 100)}% off)</span>

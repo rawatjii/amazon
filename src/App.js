@@ -20,6 +20,9 @@ import PrivateRoute from './views/Auth/PrivateRoute';
 import CryptoJS from "crypto-js";
 import SignIn from './views/Auth/SignIn/SignIn';
 import Redirect from './Components/Redirect/Redirect';
+import AdminProducts from './admin/views/Products/Products';
+import EditProducts from './admin/views/Products/Edit-products';
+import Brands from './admin/views/Brands/Brands';
 import { fetchUserData } from './firebase-config';
 // css
 import './App.css';
@@ -104,6 +107,9 @@ function App() {
             <Route exact path='/today-deals' element={<Today_Deals />} />
             <Route exact path='/result' element={<Result />} />
             <Route exact path='/admin' element={<Dashboard />} />
+            <Route exact path='/admin/products' element={<AdminProducts />} />
+            <Route exact path='/admin/edit-product/:productId' element={<EditProducts />} />
+            <Route exact path='/admin/brands' element={<Brands   />} />
             <Route exact path='/admin/users' element={<Users />} />
             <Route exact path='/admin/add-products' element={<AddProduct />} />
             <Route exact path='/:productId' element={<SingleProductDetail />} />

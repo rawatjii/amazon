@@ -22,9 +22,9 @@ const SignIn = (props)=>{
     const [dropdown, setDropdown] = useState(false)
     const isAuth = useSelector((state)=>state.auths.UserLogin)
 
-    useEffect((state)=>{
-        userName = state.auths.UserData.username;
-    }, [])
+    const userName = useSelector((state)=>{
+        return state.auths.UserData?.username;
+    });
 
     const showDropdown = () => {
         setDropdown(true)
@@ -38,7 +38,7 @@ const SignIn = (props)=>{
         <>
             <div className='signIn header_item dropdown_menu' onMouseEnter={showDropdown} onMouseLeave={hideDropdown}>
                 <div className='main'>
-                    <small>Hello, sign in</small>
+                    <small>Hello, {!userName ? 'sign in' : userName}</small>
                     <p>Account & Lists</p>
                 </div>
 

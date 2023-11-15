@@ -56,7 +56,7 @@ const Sidebar = ()=>{
 					</a>
 					<ul className='mm-collapse'>
 						<li> 
-							<NavLink href="ecommerce-products.html">
+							<NavLink to='/admin/products'>
 								<i className="bx bx-right-arrow-alt"></i>
 								Products
 							</NavLink>
@@ -81,6 +81,23 @@ const Sidebar = ()=>{
 						</li>
 					</ul>
 				</li>
+
+				<li className="menu-label">CMS</li>
+				<li>
+					<a className="has-arrow" href="#" aria-expanded="false">
+						<div className="parent-icon"><i className='bx bx-lock-open-alt'></i>
+						</div>
+						<div className="menu-title">CMS</div>
+					</a>
+					<ul className='mm-collapse'>
+						<li> 
+							<NavLink to="/admin/brands">
+								<i className="bx bx-right-arrow-alt"></i>Brands
+							</NavLink>
+						</li>
+					</ul>
+				</li>
+
 				<li className="menu-label">Pages</li>
 				<li>
 					<a className="has-arrow" href="#" aria-expanded="false">

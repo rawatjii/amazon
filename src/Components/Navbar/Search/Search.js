@@ -7,6 +7,7 @@ import Select from '@mui/material/Select';
 import TextField from '@mui/material/TextField';
 import SearchIcon from '@mui/icons-material/Search';
 import { useSelector, useDispatch } from "react-redux";
+import { setSearchKeyword } from "../../../store/reducers/searchReducer";
 import {setSearchedProducts} from '../../../store/reducers/productsReducer'
 
 
@@ -25,6 +26,10 @@ const Search = ()=>{
     })
 
     useEffect(()=>{
+        const searchParams = new URLSearchParams(window.location.search);
+        const searchInput = searchParams.get('product');
+        setSearchInput(searchInput)
+        console.log('searchInput',searchInput);
         // const searchParams = new URLSearchParams(window.location.search);
         // const productCatg = searchParams.get('cat');
         // console.log('productCatg',productCatg);
@@ -44,27 +49,29 @@ const Search = ()=>{
 
     const searchProduct = (e)=>{
         e.preventDefault();
-        navigate(`/result?product=${searchInput}`);
+
         if(searchInput.trim() == ''){
             return;
         }else{
-            // console.log('allProducts',allProducts);
-            allProducts.filter((singleProd)=>{
-                return singleProd.name.toLowerCase().includes(searchInput.toLowerCase())
-                // if(singleProd.name.includes(searchInput)){
-                //     FilteredProductsAll.push(singleProd)
-                //     // return ;
-                // }else{
-                //     FilteredProductsAll = []
-                // }
-            })
-            .map((filteredProduct)=>{
-                FilteredProductsAll.push(filteredProduct)
-            })
+            // allProducts.filter((singleProd)=>{
+            //     return singleProd.product_title.toLowerCase().includes(searchInput.toLowerCase())
+            //     // if(singleProd.name.includes(searchInput)){
+            //     //     FilteredProductsAll.push(singleProd)
+            //     //     // return ;
+            //     // }else{
+            //     //     FilteredProductsAll = []
+            //     // }
+            // })
+            // .map((filteredProduct)=>{
+            //     FilteredProductsAll.push(filteredProduct)
+            // })
             
             // console.log('FilteredProductsAll',FilteredProductsAll);
-            dispatch(setSearchedProducts(FilteredProductsAll))
+            // dispatch(setSearchedProducts(FilteredProductsAll));
+            dispatch(setSearchKeyword(searchInput))
+            navigate(`/result?product=${searchInput}`);
         }
+
         
         // .map(filteredProd =>{
         //     FilteredProductsAll.push(filteredProd)
@@ -76,24 +83,24 @@ const Search = ()=>{
     return(
         <div className='header_item search_card'>
             <form onSubmit={(e)=>searchProduct(e)}>
-            <FormControl className='category_input no-fieldset' color='secondary'>
-                <Select
-                    value={age}
-                    onChange={handleChange}
-                    displayEmpty
-                >
-                    <MenuItem value="">All Categories</MenuItem>
-                    <MenuItem value={10}>Electronics</MenuItem>
-                    <MenuItem value={20}>Mobile</MenuItem>
-                    <MenuItem value={30}>Others</MenuItem>
-                </Select>
-            </FormControl>
-            
-            <TextField className='search_input no-fieldset' placeholder="Search Amazon.in" id="outlined-basic" onChange={searchInputChange} />
+                <FormControl className='category_input no-fieldset' color='secondary'>
+                    <Select
+                        value={age}
+                        onChange={handleChange}
+                        displayEmpty
+                    >
+                        <MenuItem value="">All Categories</MenuItem>
+                        <MenuItem value={10}>Electronics</MenuItem>
+                        <MenuItem value={20}>Mobile</MenuItem>
+                        <MenuItem value={30}>Others</MenuItem>
+                    </Select>
+                </FormControl>
+                
+                <TextField className='search_input no-fieldset' placeholder="Search Amazon.in" id="outlined-basic" onChange={searchInputChange} value={searchInput} />
 
-            <Button variant="contained" color='secondary' className='search_btn no-fieldset' type="submit">
-                <SearchIcon />
-            </Button>
+                <Button variant="contained" color='secondary' className='search_btn no-fieldset' type="submit">
+                    <SearchIcon />
+                </Button>
             </form>
         </div>
     )

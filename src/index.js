@@ -7,12 +7,14 @@ import { configureStore } from '@reduxjs/toolkit';
 import { Provider } from 'react-redux';
 import authReducer from './store/reducers/authReducer';
 import prodReducer from './store/reducers/productsReducer';
+import searchReducer from './store/reducers/searchReducer';
 import { CookiesProvider } from 'react-cookie';
 
 const store = configureStore({
   reducer:{
     auths:authReducer,
-    products:prodReducer
+    products:prodReducer,
+    search:searchReducer,
   }
 })
 
