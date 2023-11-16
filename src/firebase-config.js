@@ -84,3 +84,10 @@ import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
       ...productData
     });
   }
+
+  export function writeBrands(userId, brandName) {
+    set(ref(db, 'brands/' + userId), {
+      userId:userId,
+      brand: brandName,
+    });
+  }

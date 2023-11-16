@@ -1,28 +1,21 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { NavLink } from 'react-router-dom';
+import { Modal, Button } from "react-bootstrap";
 import Header from '../../Components/Header/Header';
 import Sidebar from '../../Components/Sidebar/Sidebar';
 import { getDatabase, ref, set, onValue, remove } from "firebase/database";
 import {CDBDataTable} from 'cdbreact';
+import { v4 as uuidv4 } from 'uuid';
 import { getAllUsers } from '../../../firebase-config';
 import { ToastContainer, toast } from 'react-toastify';
+import { writeBrands } from '../../../firebase-config';
 import 'react-toastify/dist/ReactToastify.css';
 
 const columns = [
 	{
 	  label: 'Brand Name',
-	  field: 'brand-name',
+	  field: 'brandName',
 	  width: 150,
-	},
-	{
-	  label: 'Email',
-	  field: 'email',
-	  width: 270,
-	},
-	{
-	  label: 'Image',
-	  field: 'image',
-	  width: 200,
 	},
 	{
         label: 'Actions',
@@ -32,45 +25,49 @@ const columns = [
   ];
 
 const Brands = ()=>{
-	// var usersRef;
-	// debugger;
-	const [userRows, setUserRows] = useState([])
-	const notify = (msg) => toast(msg);
-	
-	useEffect(() => {
+	const [brandRows, setBrandRows] = useState([]);
+	const [show, setShow] = useState(false);
+
+	const brandName = useRef('');
+
+	const handleClose = () => setShow(false);
+  	const handleShow = () => setShow(true);
+	const successNotify = (msg) => toast.success(msg);
+	const openModal = (id)=>{
+		setShow(true);
+	}
+
+	useEffect(()=>{
 		const db = getDatabase();
-		const usersRef = ref(db, 'users/');
-		
-		onValue(usersRef, (snapshot) => {
+		const brandRef = ref(db, 'brands/')
+
+		onValue(brandRef, (snapshot)=>{
 			const data = snapshot.val();
-			
-			if (data) {
-				const newUserRows = Object.entries(data).map(([key, value]) => ({
-					id: key,
-					name: value.username,
-					image: <img src={value.profile_picture} alt="" width={30}/>,
-					email: value.email,
-					// actions: <i className='bx bxs-trash' onClick={()=>userDeleteHandler(key)} style={{cursor:'pointer'}}></i>
-				}));
-		
-				setUserRows(newUserRows);
+
+			if(data){
+				debugger
+				const brandRows = Object.entries(data).map(([key, value])=>{
+					return{
+						brandName:value.brand,
+						actions:[
+							<button href='' key={`edit_${key}`} onClick={()=>openModal(value.userId)}>Edit</button>,
+							<a href='' key={`remove_${key}`}>Remove</a>
+						]
+					}
+				})
+
+				setBrandRows(brandRows)
 			}
-		});
+		})
+	}, [])
+	
 
-	}, []);
-
-	// const userDeleteHandler = (id)=>{
-	// 	const db = getDatabase();
-	// 	const userRef = ref(db, `users/${id}`);
-
-	// 	remove(userRef)
-	// 	.then(()=>{
-	// 		notify('User deleted successfully.')
-	// 	})
-	// 	.catch((error) => {
-	// 		notify('Error deleting User: ' + error.message)
-	// 	});
-	// }
+	const brandSubmitHandler = (e)=>{
+		e.preventDefault();
+		writeBrands(uuidv4(), brandName.current.value);
+		successNotify('Brand Added successfully');
+		// id:uuidv4(),
+	}
 	
 
     return(
@@ -98,6 +95,9 @@ const Brands = ()=>{
                 
                     <div className="card">
                         <div className="card-body">
+						<Button variant="primary" onClick={handleShow}>
+							Add Brand
+						</Button>
 
 							<CDBDataTable
 								striped
@@ -108,7 +108,7 @@ const Brands = ()=>{
 								pagesAmount={4}
 								data={{
 									columns:columns,
-									rows:userRows
+									rows:brandRows
 								}}
 								sortable={false}
 								materialSearch={true}
@@ -119,6 +119,28 @@ const Brands = ()=>{
 
                 </div>
             </div>
+
+			<Modal show={show} onHide={handleClose}>
+				<form onSubmit={brandSubmitHandler}>
+					
+				<Modal.Header closeButton>
+					<Modal.Title>Add Brand</Modal.Title>
+				</Modal.Header>
+				<Modal.Body>
+					<label htmlFor="">Brand</label>
+					<input type="text" className='form-control' placeholder='Enter Brand Name' ref={brandName} />
+				</Modal.Body>
+				<Modal.Footer>
+					<Button vraiant="secondary" onClick={handleClose}>
+						Close
+					</Button>
+					<Button variant="primary" onClick={handleClose} type='submit'>
+						Save Changes
+					</Button>
+				</Modal.Footer>
+				
+				</form>
+			</Modal>
         </>
     )
 }
