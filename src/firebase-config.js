@@ -91,3 +91,16 @@ import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
       brand: brandName,
     });
   }
+
+
+  export async function getBrandById(brandId){
+    const brandData = ref(db, `brands/${brandId}`);
+    const snapshot = await get(brandData)
+
+    if (snapshot.exists()) {
+      const data = snapshot.val();
+      return data;  
+    } else {
+      console.log('brand not found.');
+    }
+  }

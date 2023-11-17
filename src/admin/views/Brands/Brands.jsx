@@ -9,6 +9,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { getAllUsers } from '../../../firebase-config';
 import { ToastContainer, toast } from 'react-toastify';
 import { writeBrands } from '../../../firebase-config';
+import { getBrandById } from '../../../firebase-config';
 import 'react-toastify/dist/ReactToastify.css';
 
 const columns = [
@@ -24,18 +25,35 @@ const columns = [
     },
   ];
 
-const Brands = ()=>{
+  const Brands = () => {
 	const [brandRows, setBrandRows] = useState([]);
 	const [show, setShow] = useState(false);
-
+	const [showModal, setShowModal] = useState(false);
+  
 	const brandName = useRef('');
-
+	const editBrandName = useRef();
 	const handleClose = () => setShow(false);
-  	const handleShow = () => setShow(true);
+	const handleShow = () => setShow(true);
+  
 	const successNotify = (msg) => toast.success(msg);
-	const openModal = (id)=>{
-		setShow(true);
-	}
+  
+	const openModal = async (e, id) => {
+		debugger;
+	  e.preventDefault();
+	  try {
+		  setShowModal(true);
+		  const brandData = await getBrandById(id);
+		  if (editBrandName.current) {
+			  editBrandName.current.value = brandData.brand;
+			}
+	  } catch (err) {
+		console.log(err);
+	  }
+	};
+  
+	const hideModal = () => {
+	  setShowModal(false);
+	};
 
 	useEffect(()=>{
 		const db = getDatabase();
@@ -45,12 +63,11 @@ const Brands = ()=>{
 			const data = snapshot.val();
 
 			if(data){
-				debugger
 				const brandRows = Object.entries(data).map(([key, value])=>{
 					return{
 						brandName:value.brand,
 						actions:[
-							<button href='' key={`edit_${key}`} onClick={()=>openModal(value.userId)}>Edit</button>,
+							<button href='' key={`edit_${key}`} onClick={(e)=>openModal(e, value.userId)}>Edit</button>,
 							<a href='' key={`remove_${key}`}>Remove</a>
 						]
 					}
@@ -62,13 +79,11 @@ const Brands = ()=>{
 	}, [])
 	
 
-	const brandSubmitHandler = (e)=>{
+	const brandSubmitHandler = (e) => {
 		e.preventDefault();
 		writeBrands(uuidv4(), brandName.current.value);
 		successNotify('Brand Added successfully');
-		// id:uuidv4(),
-	}
-	
+	  };
 
     return(
         <>
@@ -121,26 +136,44 @@ const Brands = ()=>{
             </div>
 
 			<Modal show={show} onHide={handleClose}>
-				<form onSubmit={brandSubmitHandler}>
-					
-				<Modal.Header closeButton>
-					<Modal.Title>Add Brand</Modal.Title>
-				</Modal.Header>
-				<Modal.Body>
-					<label htmlFor="">Brand</label>
-					<input type="text" className='form-control' placeholder='Enter Brand Name' ref={brandName} />
-				</Modal.Body>
-				<Modal.Footer>
-					<Button vraiant="secondary" onClick={handleClose}>
-						Close
-					</Button>
-					<Button variant="primary" onClick={handleClose} type='submit'>
-						Save Changes
-					</Button>
-				</Modal.Footer>
-				
-				</form>
-			</Modal>
+        <form onSubmit={brandSubmitHandler}>
+          <Modal.Header closeButton>
+            <Modal.Title>Add Brand</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <label htmlFor="">Brand</label>
+            <input type="text" className="form-control" placeholder="Enter Brand Name" ref={brandName} />
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={handleClose}>
+              Close
+            </Button>
+            <Button variant="primary" type="submit">
+              Save Changes
+            </Button>
+          </Modal.Footer>
+        </form>
+      </Modal>
+
+      <Modal show={showModal} onHide={hideModal}>
+        <form>
+          <Modal.Header closeButton>
+            <Modal.Title>Edit Brand</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <label htmlFor="">Brand</label>
+            <input type="text" className="form-control" placeholder="Enter Brand Name" ref={editBrandName} />
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={hideModal}>
+              Close
+            </Button>
+            <Button variant="primary" onClick={hideModal} type="submit">
+              Save Changes
+            </Button>
+          </Modal.Footer>
+        </form>
+      </Modal>
         </>
     )
 }
