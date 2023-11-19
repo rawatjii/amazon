@@ -63,15 +63,14 @@ const TodayDeals = () => {
                     });
 
                     const categoryText = productCategories.join('-')
-                    const thumbnail = item.images[0].url;
-                    // console.log('newcategory',newCat);
+                    const thumbnail = item.images?.[0].url;
 
                     return <SwiperSlide key={item.id}>
                         <div className="single_product">
                         {/* onClick={()=>setRelatedCategory(item.category)} */}
                             <Link to={`/today-deals?cat=${categoryText}`} >
                                 <div className="thumbnail">
-                                    <Image src={thumbnail} className="w-100" />
+                                    <Image src={thumbnail ? thumbnail : process.env.REACT_APP_NO_PRODUCT_IMAGE_URL} className="w-100" />
                                 </div>
                                 <div className="details">
                                     <p className="deals">

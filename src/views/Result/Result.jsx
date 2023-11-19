@@ -128,7 +128,7 @@ const Result = ()=>{
                                 filterProducts.map((product, Index)=>{
                                     return <div className={classes.singleProduct} key={Index}>
                                             <div className={classes.thumbnail}>
-                                                <img src={product.images.image1} alt="thumbnail" className="img-fluid" />
+                                                <img src={product.images ? product.images.image1 : process.env.REACT_APP_NO_PRODUCT_IMAGE_URL} alt="thumbnail" className="img-fluid" />
                                             </div>
                                             <div className={classes.contents}>
                                                 <p className={classes.name}>{product.product_title}</p>

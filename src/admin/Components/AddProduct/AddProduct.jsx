@@ -1,4 +1,4 @@
-import React, {useRef, useState} from 'react';
+import React, {useRef, useState, useEffect} from 'react';
 import Sidebar from '../Sidebar/Sidebar';
 import Header from '../Header/Header';
 import axios from '../../../axios';
@@ -11,6 +11,8 @@ import ListItemText from '@mui/material/ListItemText';
 import Select from '@mui/material/Select';
 import Checkbox from '@mui/material/Checkbox';
 import { ToastContainer, toast } from 'react-toastify';
+import validator from 'validator';
+import { getAllBrands } from '../../../firebase-config';
 import { uploadCloudinary } from '../../../upload';
 import { addProduct } from '../../../firebase-config';
 
@@ -42,6 +44,12 @@ const AddProduct = ()=>{
 
     const [images, setImages] = useState([])
     const [links, setLinks] = useState([])
+    const [brands, setBrands] = useState([]);
+
+    const [validationError, setValidationError] = useState({
+        product_title:null,
+        images:null
+    })
 
     const [postData, setPostData] = useState({
         id:'',
@@ -50,13 +58,36 @@ const AddProduct = ()=>{
         price:{
             offerPrice:'',
             originalPrice:''
-        }
+        },
+        images:[],
+        brand:'',
     })
 
     const notify = (msg) => toast(msg);
 
     const originalPrice = useRef('');
     const offerPrice = useRef('');
+
+    useEffect(()=>{
+        const fetchBrandData = async()=>{
+            try{
+                const allBrandsData = await getAllBrands()
+                const allBrandsArray = Object.values(allBrandsData).map(data=>{
+                    return {
+                        value:data.brand.toLowerCase(),
+                        label:data.brand
+                    }
+                })
+                console.log('allBrandsArray',allBrandsArray);
+                setBrands(allBrandsArray)
+            }catch(error){
+                console.error('Error from edit products: ', error.message);
+            }
+        }
+        
+        fetchBrandData();
+        
+    }, [])
 
     const handleInputChange = (e)=>{
         const inputName = e.target.name;
@@ -98,46 +129,42 @@ const AddProduct = ()=>{
         let arr = [];
         const selectedImages = Object.values(postData.images);
 
-        // selectedImages.map(singlePostData => {
-        //     console.log('singlePostData',singlePostData.name);
-        // })
+        setValidationError({
+            ...validationError,
+            product_title: validator.isEmpty(postData.product_title),
+            images:postData.images.length === 0 ? true : false,
+            offerPrice:validator.isEmpty(offerPrice.current.value),
+            brand:validator.isEmpty(postData.brand)
+        })
 
-        try{
-            for(let i = 0; i < selectedImages.length; i++){
-                const res = await uploadCloudinary(selectedImages[i]);
-                arr.push(res);
-                // setPostData({...postData, images:[...postData.images, res]});
-
-                const data = {
-                    id:uuidv4(),
-                    product_title:postData.product_title,
-                    categories:postData.product_category,
-                    price:{
-                        originalPrice:originalPrice.current.value,
-                        offerPrice:offerPrice.current.value
-                    },
-                    rating:0,
-                    images:arr,
-                }
-
-                await addProduct(data);
-                notify("Product Added Successfully");
-
-            }
-        }catch(error){
-            notify("Product Couldn't upload, Error: "+error);
-        }
-        
         
 
-        // axios.post('/products.json', data)
+        // try{
+        //     for(let i = 0; i < selectedImages.length; i++){
+        //         const res = await uploadCloudinary(selectedImages[i]);
+        //         arr.push(res);
+        //         // setPostData({...postData, images:[...postData.images, res]});
+        //     }
+        //     const data = {
+        //         id:uuidv4(),
+        //         product_title:postData.product_title,
+        //         categories:postData.product_category,
+        //         price:{
+        //             originalPrice:originalPrice.current.value,
+        //             offerPrice:offerPrice.current.value
+        //         },
+        //         ratings:[],
+        //         images:arr,
+        //         brand:''
+        //     }
+
+        //     await addProduct(data);
+        //     notify("Product Added Successfully");
+        // }catch(error){
+        //     notify("Product Couldn't upload, Error: "+error);
+        // }
         
-        // .then(response => {
-        //     console.log('POST request successful', response.data);
-        // })
-        // .catch(error=>{
-        //     console.error('POST request error', error);
-        // })
+        
     }
 
     return(
@@ -160,18 +187,6 @@ const AddProduct = ()=>{
 							</ol>
 						</nav>
 					</div>
-					<div className="ms-auto">
-						<div className="btn-group">
-							<button type="button" className="btn btn-primary">Settings</button>
-							<button type="button" className="btn btn-primary split-bg-primary dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown">	<span className="visually-hidden">Toggle Dropdown</span>
-							</button>
-							<div className="dropdown-menu dropdown-menu-right dropdown-menu-lg-end">	<a className="dropdown-item" href="#">Action</a>
-								<a className="dropdown-item" href="#">Another action</a>
-								<a className="dropdown-item" href="#">Something else here</a>
-								<div className="dropdown-divider"></div>	<a className="dropdown-item" href="#">Separated link</a>
-							</div>
-						</div>
-					</div>
 				</div>
 				{/* end breadcrumb */}
 
@@ -187,6 +202,7 @@ const AddProduct = ()=>{
                                             <div className="mb-3">
                                                 <label htmlFor="inputProductTitle" className="form-label">Product Title</label>
                                                 <input type="text" className="form-control" name='product_title' id="inputProductTitle" onChange={handleInputChange} value={postData.product_title} placeholder="Enter product title" />
+                                                {validationError.product_title ? <span className="error">Please enter Product Title</span> : null}
                                             </div>
                                             <div className="mb-3">
                                                 <label htmlFor="inputProductDescription" className="form-label">Description</label>
@@ -194,7 +210,8 @@ const AddProduct = ()=>{
                                             </div>
                                             <div className="mb-3">
                                                 <label htmlFor="inputProductDescription" className="form-label">Product Images</label>
-                                                <input id="image-uploadify" type="file" accept="image/*" onChange={productImageHandler} multiple />
+                                                <input className='form-control' id="image-uploadify" type="file" accept="image/*" onChange={productImageHandler} multiple />
+                                                {validationError.images ? <span className="error">Please select product images</span> : null}
                                             </div>
                                         </div>
                                     </div>
@@ -202,30 +219,16 @@ const AddProduct = ()=>{
                                         <div className="border border-3 p-4 rounded">
                                         <div className="row g-3">
                                             <div className="col-md-6">
+                                                <label htmlFor="inputCompareatprice" className="form-label">Offer Price</label>
+                                                <input type="number" className="form-control" id="inputCompareatprice" placeholder="00" ref={offerPrice} />
+                                                {validationError.offerPrice ? <span className="error">Please enter offer price</span> : null}
+                                            </div>
+
+                                            <div className="col-md-6">
                                                 <label htmlFor="inputPrice" className="form-label">Original Price</label>
                                                 <input type="number" className="form-control" id="inputPrice" placeholder="00" ref={originalPrice} />
                                             </div>
-                                            <div className="col-md-6">
-                                                <label htmlFor="inputCompareatprice" className="form-label">Offer Price</label>
-                                                <input type="number" className="form-control" id="inputCompareatprice" placeholder="00" ref={offerPrice} />
-                                            </div>
-                                            {/* <div className="col-md-6">
-                                                <label htmlFor="inputCostPerPrice" className="form-label">Cost Per Price</label>
-                                                <input type="email" className="form-control" id="inputCostPerPrice" placeholder="00.00" />
-                                            </div>
-                                            <div className="col-md-6">
-                                                <label htmlFor="inputStarPoints" className="form-label">Star Points</label>
-                                                <input type="password" className="form-control" id="inputStarPoints" placeholder="00.00" />
-                                            </div> */}
-                                            <div className="col-12">
-                                                <label htmlFor="inputProductType" className="form-label">Product Type</label>
-                                                <select className="form-select" id="inputProductType">
-                                                    <option></option>
-                                                    <option value="1">One</option>
-                                                    <option value="2">Two</option>
-                                                    <option value="3">Three</option>
-                                                </select>
-                                            </div>
+
                                             <div className="col-12">
                                                 <label htmlFor="inputProductType" className="form-label">Product Category</label>
                                                 <FormControl sx={{ width: '100%' }}>
@@ -252,27 +255,18 @@ const AddProduct = ()=>{
                                                 </FormControl>
                                             </div>
                                             <div className="col-12">
-                                                <label htmlFor="inputVendor" className="form-label">Vendor</label>
-                                                <select className="form-select" id="inputVendor">
-                                                    <option></option>
-                                                    <option value="1">One</option>
-                                                    <option value="2">Two</option>
-                                                    <option value="3">Three</option>
-                                                </select>
+                                                <label htmlFor="inputVendor" className="form-label">Brand</label>
+                                                <FormControl sx={{ width: '100%' }}>
+                                                    <Select name='brand' onChange={handleInputChange}>
+                                                        {brands.map(singleBrand =>(
+                                                            <MenuItem value={singleBrand.value}>{singleBrand.label}</MenuItem>
+                                                        ))}   
+                                                    </Select> 
+                                                    {validationError.brand ? <span className="error">Please select product brand</span> : null}   
+                                                </FormControl>
+                                                
                                             </div>
-                                            <div className="col-12">
-                                                <label htmlFor="inputCollection" className="form-label">Collection</label>
-                                                <select className="form-select" id="inputCollection">
-                                                    <option></option>
-                                                    <option value="1">One</option>
-                                                    <option value="2">Two</option>
-                                                    <option value="3">Three</option>
-                                                </select>
-                                            </div>
-                                            <div className="col-12">
-                                                <label htmlFor="inputProductTags" className="form-label">Product Tags</label>
-                                                <input type="text" className="form-control" id="inputProductTags" placeholder="Enter Product Tags" />
-                                            </div>
+
                                             <div className="col-12">
                                                 <div className="d-grid">
                                                     <button type="submit" className="btn btn-primary">Save Product</button>

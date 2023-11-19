@@ -22,12 +22,16 @@ import SignIn from './views/Auth/SignIn/SignIn';
 import Redirect from './Components/Redirect/Redirect';
 import AdminProducts from './admin/views/Products/Products';
 import EditProducts from './admin/views/Products/Edit-products';
+import ViewAdminProduct from './admin/views/Products/view';
 import Brands from './admin/views/Brands/Brands';
+import Categories from './admin/views/Categories/Categories';
 import { fetchUserData } from './firebase-config';
 // css
 import './App.css';
 
 function App() {
+
+  const baseUrl = process.env.REACT_APP_BASE_URL;
 
   var userLoginDecryptedStatus = '';
 
@@ -47,75 +51,77 @@ function App() {
 
   const dispatch = useDispatch();
 
-  useEffect(async () => {
-    dispatch(fetchProducts());
+  useEffect(() => {
+    const fetchApp = async ()=>{
+      dispatch(fetchProducts());
 
-    // fetch user by email
+      // fetch user by email
 
-    // const userData = fetchUserData()
-    // console.log('userData',userData );
+      // const userData = fetchUserData()
+      // console.log('userData',userData );
 
-    try{
-      const now = new Date()
-      const userStatusObj = JSON.parse(localStorage.getItem('isUserSignin'));
-      const userEmail = localStorage.getItem('userEmail');
+      try{
+        const now = new Date()
+        const userStatusObj = JSON.parse(localStorage.getItem('isUserSignin'));
+        const userEmail = localStorage.getItem('userEmail');
 
-      if(!userStatusObj){
-        return null;
-      }
+        if(!userStatusObj){
+          return null;
+        }
 
-      if(now.getTime() > userStatusObj.expiration){
-        debugger;
-        localStorage.removeItem('isUserSignin');
-        return dispatch(authActions.setLogout());
-      }
+        if(now.getTime() > userStatusObj.expiration){
+          debugger;
+          localStorage.removeItem('isUserSignin');
+          return dispatch(authActions.setLogout());
+        }
 
-      var userLoginEncryptedStatus = userStatusObj.value;
-      var bytes = CryptoJS.AES.decrypt(userLoginEncryptedStatus, `${process.env.REACT_APP_SECRET_KEY}`);
-      var data = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
+        var userLoginEncryptedStatus = userStatusObj.value;
+        var bytes = CryptoJS.AES.decrypt(userLoginEncryptedStatus, `${process.env.REACT_APP_SECRET_KEY}`);
+        var data = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
 
-      if(data){
-      
-          if(data == 'true'){
-            const userData = await fetchUserData(userEmail);
-            dispatch(authActions.setLogin({email:userEmail, userData:Object.values(userData)[0]}));
-          }else{
-            dispatch(authActions.setLogout());
-          }
+        if(data){
+        
+            if(data == 'true'){
+              const userData = await fetchUserData(userEmail);
+              dispatch(authActions.setLogin({email:userEmail, userData:Object.values(userData)[0]}));
+            }else{
+              dispatch(authActions.setLogout());
+            }
 
-      }else{
-        console.error("Data could not be decrypted or is not valid JSON.");
+        }else{
+          console.error("Data could not be decrypted or is not valid JSON.");
+          dispatch(authActions.setLogout());
+        }
+
+      }catch(err){
+        console.error('An error occurred during decryption or parsing:',err);
         dispatch(authActions.setLogout());
       }
-
-    }catch(err){
-      console.error('An error occurred during decryption or parsing:',err);
-      dispatch(authActions.setLogout());
     }
 
-    
-
-    
+    fetchApp();
   }, []);
 
   return (
     <BrowserRouter>
       <ThemeProvider theme={colorTheme}>
           <Routes>
-            <Route exact path='/signin' element={isAuthenticated === false ? <SignIn /> : <Redirect el="/" /> } />
-            <Route exact path='/register' element={!isAuthenticated ? <Register /> : <Redirect el="/" />} />
-            <Route exact path='/today-deals' element={<Today_Deals />} />
-            <Route exact path='/result' element={<Result />} />
-            <Route exact path='/admin' element={<Dashboard />} />
-            <Route exact path='/admin/products' element={<AdminProducts />} />
-            <Route exact path='/admin/edit-product/:productId' element={<EditProducts />} />
-            <Route exact path='/admin/brands' element={<Brands   />} />
-            <Route exact path='/admin/users' element={<Users />} />
-            <Route exact path='/admin/add-products' element={<AddProduct />} />
-            <Route exact path='/:productId' element={<SingleProductDetail />} />
-            <Route exact path='/create-review/:productId' element={<PrivateRoute><CreateReview /></PrivateRoute>} />
+            <Route exact path={`/signin`} element={isAuthenticated === false ? <SignIn /> : <Redirect el="/" /> } />
+            <Route exact path={`/register`} element={!isAuthenticated ? <Register /> : <Redirect el="/" />} />
+            <Route exact path={`/today-deals`} element={<Today_Deals />} />
+            <Route exact path={`/result`} element={<Result />} />
+            <Route exact path={`/admin`} element={<Dashboard />} />
+            <Route exact path={`/admin/products`} element={<AdminProducts />} />
+            <Route exact path={`/admin/edit-product/:productId`} element={<EditProducts />} />
+            <Route exact path={`/admin/view-product/:productId`} element={<ViewAdminProduct />} />
+            <Route exact path={`/admin/brands`} element={<Brands />} />
+            <Route exact path={`/admin/categories`} element={<Categories />} />
+            <Route exact path={`/admin/users`} element={<Users />} />
+            <Route exact path={`/admin/add-products`} element={<AddProduct />} />
+            <Route exact path={`/:productId`} element={<SingleProductDetail />} />
+            <Route exact path={`/create-review/:productId`} element={<PrivateRoute><CreateReview /></PrivateRoute>} />
             {/* <PrivateRoute exact path='/create-review/:productId' loggedIn="false" element={<CreateReview />} /> */}
-            <Route exact path='/' element={<Home />} />
+            <Route exact path={`/`} element={<Home />} />
           </Routes>
         </ThemeProvider>
 

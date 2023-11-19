@@ -6,14 +6,14 @@ import Sidebar from '../../Components/Sidebar/Sidebar';
 import { getDatabase, ref, set, onValue, remove } from "firebase/database";
 import {CDBDataTable} from 'cdbreact';
 import { v4 as uuidv4 } from 'uuid';
-import { getAllUsers, updateBrand, removeBrand, writeBrands, getBrandById } from '../../../firebase-config';
+import { getAllUsers, updateBrand, removeBrand, addCategory, getBrandById, getAllCategories } from '../../../firebase-config';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const columns = [
 	{
-	  label: 'Brand Name',
-	  field: 'brandName',
+	  label: 'Category Name',
+	  field: 'categoryName',
 	  width: 150,
 	},
 	{
@@ -23,12 +23,12 @@ const columns = [
     },
   ];
 
-  const Brands = () => {
-	const [brandRows, setBrandRows] = useState([]);
+  const Categories = () => {
+	const [categoryRows, setCategoryRows] = useState([]);
 	const [show, setShow] = useState(false);
 	const [showModal, setShowModal] = useState(false);
   
-	const brandName = useRef('');
+	const categoryName = useRef('');
 	const editBrandName = useRef();
 	const editBrandId = useRef()
 
@@ -56,38 +56,70 @@ const columns = [
 	  setShowModal(false);
 	};
 
-	useEffect(()=>{
-		const db = getDatabase();
-		const brandRef = ref(db, 'brands/')
-
-		onValue(brandRef, (snapshot)=>{
-			const data = snapshot.val();
-
-			if(data){
-				const brandRows = Object.entries(data).map(([key, value])=>{
-					return{
-						brandName:value.brand,
+	const allCategories = async ()=>{
+		try{
+			const allCategoriesData = await getAllCategories()
+			if(allCategoriesData){
+				const categoryRowsData = Object.values(allCategoriesData).map(category=>{
+					return {
+						categoryName:category.category,
 						actions:[
-							<button key={`edit_${key}`} onClick={(e)=>openModal(e, value.brandId)}>Edit</button>,
-							<a key={`remove_${key}`} onClick={()=>removeBrandHandler(value.brandId)}>Remove</a>
+							<button key={`edit_${category.id}`} >Edit</button>,
+							<a key={`remove_${category.id}`} >Remove</a>
 						]
 					}
 				})
-
-				setBrandRows(brandRows)
+				setCategoryRows(categoryRowsData)
+				console.log('allCategoriesData',allCategoriesData);
 			}else{
-				setBrandRows([])
+				setCategoryRows([])
 			}
-		})
+		}catch(err){
+			setCategoryRows([])
+		}
+
+		
+	}
+
+	useEffect(()=>{
+		allCategories()
 	}, [])
+
 	
 
-	const brandSubmitHandler = async (e) => {
+		// const db = getDatabase();
+		// const brandRef = ref(db, 'brands/')
+
+		// onValue(brandRef, (snapshot)=>{
+		// 	const data = snapshot.val();
+
+		// 	if(data){
+		// 		const brandRows = Object.entries(data).map(([key, value])=>{
+		// 			return{
+		// 				brandName:value.brand,
+		// 				actions:[
+		// 					<button key={`edit_${key}`} onClick={(e)=>openModal(e, value.brandId)}>Edit</button>,
+		// 					<a key={`remove_${key}`} onClick={()=>removeBrandHandler(value.brandId)}>Remove</a>
+		// 				]
+		// 			}
+		// 		})
+
+		// 		setCategoryRows(brandRows)
+		// 	}else{
+		// 		setCategoryRows([])
+		// 	}
+		// })
+	
+
+	const categorySubmitHandler = async (e) => {
 		e.preventDefault();
 		try{
-			await writeBrands(uuidv4(), brandName.current.value);
+			await addCategory(uuidv4(), categoryName.current.value);
+			successNotify('Category Added successfully');
+
+			// Trigger a re-fetch of categories after adding a new category
+			allCategories()
 			setShow(false);
-			successNotify('Brand Added successfully');
 		}
 		catch(err){
 			errorNotify(err.message);
@@ -127,7 +159,7 @@ const columns = [
                                             <i className="bx bx-home-alt"></i>
                                         </NavLink>
                                     </li>
-                                    <li className="breadcrumb-item active" aria-current="page">Brands</li>
+                                    <li className="breadcrumb-item active" aria-current="page">Categories</li>
                                 </ol>
                             </nav>
                         </div>
@@ -137,7 +169,7 @@ const columns = [
                     <div className="card">
                         <div className="card-body">
 						<Button variant="primary" onClick={handleShow}>
-							Add Brand
+							Add Categories
 						</Button>
 
 							<CDBDataTable
@@ -149,7 +181,7 @@ const columns = [
 								pagesAmount={4}
 								data={{
 									columns:columns,
-									rows:brandRows
+									rows:categoryRows
 								}}
 								sortable={false}
 								materialSearch={true}
@@ -162,13 +194,13 @@ const columns = [
             </div>
 
 			<Modal show={show} onHide={handleClose}>
-        <form onSubmit={brandSubmitHandler}>
+        <form onSubmit={categorySubmitHandler}>
           <Modal.Header closeButton>
-            <Modal.Title>Add Brand</Modal.Title>
+            <Modal.Title>Add Category</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <label htmlFor="">Brand</label>
-            <input type="text" className="form-control" placeholder="Enter Brand Name" ref={brandName} />
+            <label htmlFor="">Category</label>
+            <input type="text" className="form-control" placeholder="Enter Category Name" ref={categoryName} />
           </Modal.Body>
           <Modal.Footer>
             <Button variant="secondary" onClick={handleClose}>
@@ -205,4 +237,4 @@ const columns = [
     )
 }
 
-export default Brands;
+export default Categories;

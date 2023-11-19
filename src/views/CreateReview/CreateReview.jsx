@@ -72,16 +72,16 @@ const CreateReview = (props)=>{
 
         try{
             const res = await uploadCloudinary(reviewImage.current.files[0]);
-
+debugger;
             formData = {
                 ...ratings,
                 headline:headlineInput.current.value,
                 review:ReviewInput.current.value,
                 reviewImage:res.url
             };
-
-            // console.log('productId',productId);
-            await updateProduct('9317e88d-51d1-49d7-9a89-45995828740d', {
+            console.log('formData',formData);
+            console.log('productId',productId);
+            await updateProduct(productId, {
                 productReview:formData
             })
 

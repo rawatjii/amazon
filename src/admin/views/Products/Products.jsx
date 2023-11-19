@@ -93,30 +93,32 @@ const Products = ()=>{
                         {
                             allProducts.map((singleProduct, index)=>{
                                 return <div className="col" key={index}>
-                                    <div className="card">
-                                        <img src={singleProduct.images[0].url} className="card-img-top" alt="..." />
-                                        <div className="">
-                                            <div className="position-absolute top-0 end-0 m-3 product-discount"><span className="">-10%</span></div>
-                                        </div>
-                                        <div className="card-body">
-                                            <h6 className="card-title cursor-pointer">{singleProduct.product_title}</h6>
-                                            <div className="clearfix">
-                                                <p className="mb-0 float-start"><strong>0</strong> Sales</p>
-                                                <p className="mb-0 float-end fw-bold"><span className="me-2 text-decoration-line-through text-secondary">₹{singleProduct.price.originalPrice}</span><span>₹{singleProduct.price.offerPrice}</span></p>
+                                    <Link to={`/admin/view-product/${singleProduct.id}`}>
+                                        <div className="card">
+                                            <img src={singleProduct.images ? singleProduct.images?.[0].url : process.env.REACT_APP_NO_PRODUCT_IMAGE_URL} className="card-img-top" alt="..." />
+                                            <div className="">
+                                                <div className="position-absolute top-0 end-0 m-3 product-discount"><span className="">-10%</span></div>
                                             </div>
-                                            <div className="d-flex align-items-center mt-3 fs-6">
-                                            <div className="cursor-pointer">
-                                                <i className='bx bxs-star text-warning'></i>
-                                                <i className='bx bxs-star text-warning'></i>
-                                                <i className='bx bxs-star text-warning'></i>
-                                                <i className='bx bxs-star text-warning'></i>
-                                                <i className='bx bxs-star text-secondary'></i>
-                                            </div>	
-                                            <p className="mb-0 ms-auto">4.2(182)</p>
-                                            <Link to={`/admin/edit-product/${singleProduct.id}`}>Edit</Link>
+                                            <div className="card-body">
+                                                <h6 className="card-title cursor-pointer">{singleProduct.product_title}</h6>
+                                                <div className="clearfix">
+                                                    <p className="mb-0 float-start"><strong>0</strong> Sales</p>
+                                                    <p className="mb-0 float-end fw-bold"><span className="me-2 text-decoration-line-through text-secondary">₹{singleProduct.price.originalPrice}</span><span>₹{singleProduct.price.offerPrice}</span></p>
+                                                </div>
+                                                <div className="d-flex align-items-center mt-3 fs-6">
+                                                <div className="cursor-pointer">
+                                                    <i className='bx bxs-star text-warning'></i>
+                                                    <i className='bx bxs-star text-warning'></i>
+                                                    <i className='bx bxs-star text-warning'></i>
+                                                    <i className='bx bxs-star text-warning'></i>
+                                                    <i className='bx bxs-star text-secondary'></i>
+                                                </div>	
+                                                <p className="mb-0 ms-auto">4.2(182)</p>
+                                                {/* <Link to={`/admin/edit-product/${singleProduct.id}`}>Edit</Link> */}
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
+                                    </Link>
                                 </div>
                             })
 

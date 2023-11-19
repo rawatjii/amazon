@@ -95,6 +95,11 @@ const Sidebar = ()=>{
 								<i className="bx bx-right-arrow-alt"></i>Brands
 							</NavLink>
 						</li>
+						<li> 
+							<NavLink to="/admin/categories">
+								<i className="bx bx-right-arrow-alt"></i>Categories
+							</NavLink>
+						</li>
 					</ul>
 				</li>
 

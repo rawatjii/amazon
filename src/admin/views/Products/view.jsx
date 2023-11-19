@@ -1,16 +1,36 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useState, useRef} from "react";
 import Select from 'react-select';
 import Sidebar from "../../Components/Sidebar/Sidebar";
 import Header from "../../Components/Header/Header";
 import { useParams, useSearchParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { getAllBrands } from "../../../firebase-config";
+import styles from './product.module.css'
 
-const EditProducts = ()=>{
+const ViewProduct = ()=>{
 
     const [currentProduct, setCurrentProduct] = useState({})
     const [brands, setBrands] = useState([]);
+    const [activeImage, setActiveImage] = useState();
+
     const {productId} = useParams();
+    const refs = useRef([]);
+
+    const addRefs = (el)=>{
+        if(el && !refs.current.includes(el)){
+            refs.current.push(el);
+        }
+    }
+
+    const hoverHandler = (imageUrl, i)=>{
+        setActiveImage(imageUrl);
+        refs.current[i].classList.add(styles.thumbnail_active);
+        for(var j = 0; j < currentProduct.images.length; j++){
+            if(i !== j){
+                refs.current[j].classList.remove(styles.thumbnail_active);
+            }
+        }
+    }
 
     const allProducts = useSelector((state)=>{
         return state.products.allProducts;
@@ -64,47 +84,41 @@ const EditProducts = ()=>{
                                 </ol>
                             </nav>
                         </div>
-                        <div className="ms-auto">
-                            <div className="btn-group">
-                                <button type="button" className="btn btn-primary">Settings</button>
-                                <button type="button" className="btn btn-primary split-bg-primary dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown">	<span className="visually-hidden">Toggle Dropdown</span>
-                                </button>
-                                <div className="dropdown-menu dropdown-menu-right dropdown-menu-lg-end">	<a className="dropdown-item" href="#">Action</a>
-                                    <a className="dropdown-item" href="#">Another action</a>
-                                    <a className="dropdown-item" href="#">Something else here</a>
-                                    <div className="dropdown-divider"></div>	<a className="dropdown-item" href="#">Separated link</a>
-                                </div>
-                            </div>
-                        </div>
+
                     </div>
 
                     <div className="card">
                         <div className="row g-0">
                         <div className="col-md-4 border-end">
-                            <img src="assets/images/products/13.png" className="img-fluid" alt="..." />
+                            <img src={activeImage ? activeImage : process.env.REACT_APP_NO_PRODUCT_IMAGE_URL} className="img-fluid" alt="..." />
                             <div className="row mb-3 row-cols-auto g-2 justify-content-center mt-3">
-                                <div className="col"><img src="assets/images/products/12.png" width="70" className="border rounded cursor-pointer" alt="" /></div>
-                                <div className="col"><img src="assets/images/products/11.png" width="70" className="border rounded cursor-pointer" alt="" /></div>
-                                <div className="col"><img src="assets/images/products/14.png" width="70" className="border rounded cursor-pointer" alt="" /></div>
-                                <div className="col"><img src="assets/images/products/15.png" width="70" className="border rounded cursor-pointer" alt="" /></div>
+                                {currentProduct.images?.map((image, i)=>{
+                                    return (
+                                        <div className={`col ${i == 0 ? styles.thumbnail_active : ''}`} onMouseOver={()=>hoverHandler(image.url, i)} key={i} ref={addRefs}>
+                                            <img src={image.url} width="70" className="border rounded cursor-pointer" alt="" />
+                                        </div>
+                                    )
+                                })}
                             </div>
                         </div>
                         <div className="col-md-8">
                             <div className="card-body">
-                                <input type="text" value={currentProduct.id} className="form-control" hidden readOnly />
-
-                                <div className="form-group mb-2">
-                                    <label htmlFor="">Product Name</label>
-                                    <input type="text" className="form-control" value={currentProduct.product_title} readOnly />
+                                <h4 className="card-title">{currentProduct.product_title}</h4>
+                                <div className="d-flex gap-3 py-3">
+                                    <div className="cursor-pointer">
+                                        <i className='bx bxs-star text-warning'></i>
+                                        <i className='bx bxs-star text-warning'></i>
+                                        <i className='bx bxs-star text-warning'></i>
+                                        <i className='bx bxs-star text-warning'></i>
+                                        <i className='bx bxs-star text-secondary'></i>
+                                    </div>	
+                                    <div>142 reviews</div>
+                                    <div className="text-success"><i className='bx bxs-cart-alt align-middle'></i> 134 orders</div>
                                 </div>
 
-                                <div className="form-group mb-2">
-
-                                    <label htmlFor="">Brands</label>
-                                    <Select
-                                        defaultValue={null}
-                                        options={brands}
-                                    />
+                                <div class="mb-3"> 
+                                    <span class="price h4">₹{currentProduct.price.offerPrice}</span> 
+                                    <span class="text-muted">₹{currentProduct.price.originalPrice}</span> 
                                 </div>
 
                                 <div className="row">
@@ -125,6 +139,9 @@ const EditProducts = ()=>{
                             
                             <p className="card-text fs-6">Virgil Abloh’s Off-White is a streetwear-inspired collection that continues to break away from the conventions of mainstream fashion. Made in Italy, these black and brown Odsy-1000 low-top sneakers.</p>
                             <dl className="row">
+                                <dt className="col-sm-3">Brand</dt>
+                                <dd className="col-sm-9">{currentProduct.brand ? currentProduct.brand : 'No Brand Selected'}</dd>
+
                                 <dt className="col-sm-3">Model#</dt>
                                 <dd className="col-sm-9">Odsy-1000</dd>
                             
@@ -311,5 +328,5 @@ const EditProducts = ()=>{
     )
 }
 
-export default EditProducts;
+export default ViewProduct;
 

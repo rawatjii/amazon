@@ -50,7 +50,7 @@ const Search = ()=>{
     const searchProduct = (e)=>{
         e.preventDefault();
 
-        if(searchInput.trim() == ''){
+        if(searchInput?.trim() == ''){
             return;
         }else{
             // allProducts.filter((singleProd)=>{

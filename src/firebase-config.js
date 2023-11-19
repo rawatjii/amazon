@@ -1,5 +1,5 @@
 import { initializeApp } from "firebase/app";
-import { getDatabase, ref, set, onValue, update, query, orderByChild, equalTo, get  } from "firebase/database";
+import { getDatabase, ref, set, onValue, update, query, orderByChild, equalTo, get, remove  } from "firebase/database";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 
 
@@ -67,29 +67,65 @@ import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
     });
   }
 
-  export function addProduct(data){
-    set(ref(db, 'products/' + data.id), {
-      id:data.id,
-      product_title:data.product_title,
-      categories:data.categories,
-      price:data.price,
-      rating:data.rating,
-      images:data.images,
-    })
+  export async function addProduct(data){
+    try{
+      await set(ref(db, 'products/' + data.id), data)
+    }
+    catch(err){
+      throw err;
+    }
   }
 
-  export function updateProduct(productId, productData){
+  export async function updateProduct(productId, productData){
     const productRef = ref(db, `products/${productId}`);
-    update(productRef,{
-      ...productData
-    });
+
+    try{
+      await update(productRef,{
+        ...productData
+      });
+    }catch(err){
+      throw err
+    }
+    
   }
 
-  export function writeBrands(userId, brandName) {
-    set(ref(db, 'brands/' + userId), {
-      userId:userId,
-      brand: brandName,
-    });
+  export async function getAllBrands(){
+    const brandRef = ref(db, 'brands/');
+    const snapshot = await get(brandRef)
+
+    if (snapshot.exists()) {
+      const data = snapshot.val();
+      return data;  
+    } else {
+      console.log('brand not found.');
+    }
+
+  }
+
+  export async function writeBrands(brandId, brandName) {
+    try{
+      const allBrands = await getAllBrands();
+      var allBrandsName = [];
+
+      if(allBrands){
+        allBrandsName = Object.values(allBrands).map((data)=>{
+          return data.brand;
+        })
+      }
+
+      if(allBrandsName.includes(brandName)){
+        throw new Error('Brand Name Already Exists');
+      }else{
+        await set(ref(db, 'brands/' + brandId), {
+          brandId:brandId,
+          brand: brandName,
+        });
+      }
+
+    }catch(err){
+      throw err;
+    }
+    
   }
 
 
@@ -104,3 +140,68 @@ import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
       console.log('brand not found.');
     }
   }
+
+  export async function updateBrand(brandId, data){
+    const brandRef = ref(db, `brands/${brandId}`);
+    
+    try{
+      await update(brandRef, {
+        ...data
+      });
+    }catch(err){
+      console.log(err);
+      throw err;
+    }
+    
+  }
+
+  export async function removeBrand(brandId){
+    const brandRef = ref(db, `brands/${brandId}`);
+
+    try{  
+      await remove(brandRef);
+    }catch(error){
+      throw error;
+    }
+  }
+
+  export async function getAllCategories(){
+    const categoryRef = ref(db, 'categories/');
+    const snapshot = await get(categoryRef)
+
+    if (snapshot.exists()) {
+      const data = snapshot.val();
+      return data;  
+    } else {
+      console.log('Category not found.');
+    }
+
+  }
+
+  export async function addCategory(categoryId, categoryName) {
+    try{
+      // const allBrands = await getAllBrands();
+      var allCategoriesName = [];
+
+      // if(allBrands){
+      //   allBrandsName = Object.values(allBrands).map((data)=>{
+      //     return data.brand;
+      //   })
+      // }
+
+      if(allCategoriesName.includes(categoryName)){
+        throw new Error('Category Already Exists');
+      }else{
+        await set(ref(db, 'categories/' + categoryId), {
+          Id:categoryId,
+          category: categoryName,
+        });
+      }
+
+    }catch(err){
+      throw err;
+    }
+    
+  }
+
+ 
