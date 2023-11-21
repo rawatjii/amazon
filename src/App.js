@@ -24,7 +24,8 @@ import AdminProducts from './admin/views/Products/Products';
 import EditProducts from './admin/views/Products/Edit-products';
 import ViewAdminProduct from './admin/views/Products/view';
 import Brands from './admin/views/Brands/Brands';
-import Categories from './admin/views/Categories/Categories';
+import Categories from './admin/views/Categories/Index';
+import SubCategories from './admin/views/Categories/SubCategories';
 import { fetchUserData } from './firebase-config';
 // css
 import './App.css';
@@ -116,6 +117,7 @@ function App() {
             <Route exact path={`/admin/view-product/:productId`} element={<ViewAdminProduct />} />
             <Route exact path={`/admin/brands`} element={<Brands />} />
             <Route exact path={`/admin/categories`} element={<Categories />} />
+            <Route exact path={`/admin/categories/:id`} element={<SubCategories />} />
             <Route exact path={`/admin/users`} element={<Users />} />
             <Route exact path={`/admin/add-products`} element={<AddProduct />} />
             <Route exact path={`/:productId`} element={<SingleProductDetail />} />

@@ -180,20 +180,20 @@ import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 
   export async function addCategory(categoryId, categoryName) {
     try{
-      // const allBrands = await getAllBrands();
+      const allCategories = await getAllCategories();
       var allCategoriesName = [];
 
-      // if(allBrands){
-      //   allBrandsName = Object.values(allBrands).map((data)=>{
-      //     return data.brand;
-      //   })
-      // }
+      if(allCategories){
+        allCategoriesName = Object.values(allCategories).map((data)=>{
+          return data.category;
+        })
+      }
 
       if(allCategoriesName.includes(categoryName)){
         throw new Error('Category Already Exists');
       }else{
         await set(ref(db, 'categories/' + categoryId), {
-          Id:categoryId,
+          id:categoryId,
           category: categoryName,
         });
       }
@@ -202,6 +202,16 @@ import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
       throw err;
     }
     
+  }
+
+  export async function removeCategory(brandId){
+    const categoryRef = ref(db, `categories/${brandId}`);
+
+    try{  
+      await remove(categoryRef);
+    }catch(error){
+      throw error;
+    }
   }
 
  
