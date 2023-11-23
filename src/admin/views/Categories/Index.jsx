@@ -6,7 +6,7 @@ import Sidebar from '../../Components/Sidebar/Sidebar';
 import { getDatabase, ref, set, onValue, remove } from "firebase/database";
 import {CDBDataTable} from 'cdbreact';
 import { v4 as uuidv4 } from 'uuid';
-import { getAllUsers, updateBrand, removeCategory, addCategory, getBrandById, getAllCategories } from '../../../firebase-config';
+import { getAllUsers, updateCategory, removeCategory, addCategory, getCategoryById, getAllCategories } from '../../../firebase-config';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -29,8 +29,8 @@ const columns = [
 	const [showModal, setShowModal] = useState(false);
   
 	const categoryName = useRef('');
-	const editBrandName = useRef();
-	const editBrandId = useRef()
+	const editCategoryName = useRef();
+	const editCategoryId = useRef();
 
 	const handleClose = () => setShow(false);
 	const handleShow = () => setShow(true);
@@ -42,10 +42,10 @@ const columns = [
 	  e.preventDefault();
 	  try {
 		  setShowModal(true);
-		  const brandData = await getBrandById(id);
-		  if (editBrandName.current) {
-				editBrandId.current.value = brandData.brandId;
-			  editBrandName.current.value = brandData.brand;
+		  const categoryData = await getCategoryById(id);
+		  if (editCategoryName.current) {
+			editCategoryId.current.value = categoryData.id;
+			  editCategoryName.current.value = categoryData.category;
 			}
 	  } catch (err) {
 		console.log(err);
@@ -65,6 +65,7 @@ const columns = [
 						categoryName:category.category,
 						actions:[
 							<Link key={`edit_${category.id}`} to={category.id}>Add Sub Categories</Link>,
+							<button key={`edit_${category.id}`} onClick={(e)=>openModal(e, category.id)}>Edit</button>,
 							<a key={`remove_${category.id}`} onClick={()=>{removeCategoryHandler(category.id)}} >Remove</a>
 						]
 					}
@@ -125,16 +126,17 @@ const columns = [
 		}
 	};
 
-	const editBrandHandler = (e)=>{
+	const editCategoryHandler = (e)=>{
 		e.preventDefault();
-		const id = editBrandId.current.value;
-		const brandData = {
-			brand:editBrandName.current.value,
-			brandId:id
+		const id = editCategoryId.current.value;
+		const categoryData = {
+			category:editCategoryName.current.value,
+			id:id
 		}
 
-		updateBrand(id, brandData);
-		successNotify('Brand Edit successfully');
+		updateCategory(id, categoryData);
+		successNotify('Category Update successfully');
+		allCategories();
 	}
 
 	const removeCategoryHandler = async(id)=>{
@@ -216,14 +218,14 @@ const columns = [
       </Modal>
 
       <Modal show={showModal} onHide={hideModal}>
-        <form onSubmit={editBrandHandler}>
+        <form onSubmit={editCategoryHandler}>
           <Modal.Header closeButton>
-            <Modal.Title>Edit Brand</Modal.Title>
+            <Modal.Title>Edit Category</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-			<input type="hidden" ref={editBrandId} className='form-control' />
-            <label htmlFor="">Brand</label>
-            <input type="text" className="form-control" placeholder="Enter Brand Name" ref={editBrandName} />
+			<input type="hidden" ref={editCategoryId} className='form-control' />
+            <label htmlFor="">Category</label>
+            <input type="text" className="form-control" placeholder="Enter Category Name" ref={editCategoryName} />
           </Modal.Body>
           <Modal.Footer>
             <Button variant="secondary" onClick={hideModal}>

@@ -1,12 +1,12 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useParams } from 'react-router-dom';
 import { Modal, Button } from "react-bootstrap";
 import Header from '../../Components/Header/Header';
 import Sidebar from '../../Components/Sidebar/Sidebar';
 import { getDatabase, ref, set, onValue, remove } from "firebase/database";
 import {CDBDataTable} from 'cdbreact';
 import { v4 as uuidv4 } from 'uuid';
-import { getAllUsers, updateBrand, removeBrand, writeBrands, getBrandById } from '../../../firebase-config';
+import { getAllUsers, updateBrand, removeBrand, writeBrands, getBrandById, addSubCategory } from '../../../firebase-config';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -25,10 +25,13 @@ const columns = [
 
   const SubCategories = () => {
 	const [brandRows, setBrandRows] = useState([]);
+	const [subCatInput, setSubCatInput] = useState(false);
 	const [show, setShow] = useState(false);
 	const [showModal, setShowModal] = useState(false);
+
+	const {id} = useParams();
   
-	const brandName = useRef('');
+	const subCategoryName = useRef('');
 	const editBrandName = useRef();
 	const editBrandId = useRef()
 
@@ -82,10 +85,17 @@ const columns = [
 	}, [])
 	
 
-	const brandSubmitHandler = async (e) => {
+	const subCategorySubmitHandler = async (e) => {
 		e.preventDefault();
+
+		if(subCategoryName.current.value === ''){
+			setSubCatInput(true);
+			return;
+		}
+
 		try{
-			await writeBrands(uuidv4(), brandName.current.value);
+			return ;
+			await addSubCategory(id, subCategoryName.current.value);
 			setShow(false);
 			successNotify('Brand Added successfully');
 		}
@@ -142,7 +152,7 @@ const columns = [
                     <div className="card">
                         <div className="card-body">
 						<Button variant="primary" onClick={handleShow}>
-							Add Brand
+							Add Sub Category
 						</Button>
 
 							<CDBDataTable
@@ -167,13 +177,14 @@ const columns = [
             </div>
 
 			<Modal show={show} onHide={handleClose}>
-        <form onSubmit={brandSubmitHandler}>
+        <form onSubmit={subCategorySubmitHandler}>
           <Modal.Header closeButton>
-            <Modal.Title>Add Brand</Modal.Title>
+            <Modal.Title>Add Sub Category</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <label htmlFor="">Brand</label>
-            <input type="text" className="form-control" placeholder="Enter Brand Name" ref={brandName} />
+            <label htmlFor="">Sub Category</label>
+            <input type="text" className="form-control" placeholder="Enter Sub Category" ref={subCategoryName} />
+			{subCatInput ? <span className='error'>Please enter sub category</span> : null}
           </Modal.Body>
           <Modal.Footer>
             <Button variant="secondary" onClick={handleClose}>

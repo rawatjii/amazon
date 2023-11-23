@@ -1,6 +1,6 @@
 import { initializeApp } from "firebase/app";
 import { getDatabase, ref, set, onValue, update, query, orderByChild, equalTo, get, remove  } from "firebase/database";
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { getAuth, createUserWithEmailAndPassword, debugErrorMap } from "firebase/auth";
 
 
   const firebaseConfig = {
@@ -165,6 +165,18 @@ import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
     }
   }
 
+  export async function getCategoryById(categoryId){
+    const categoryData = ref(db, `categories/${categoryId}`);
+    const snapshot = await get(categoryData)
+
+    if (snapshot.exists()) {
+      const data = snapshot.val();
+      return data;  
+    } else {
+      console.log('Category not found.');
+    }
+  }
+
   export async function getAllCategories(){
     const categoryRef = ref(db, 'categories/');
     const snapshot = await get(categoryRef)
@@ -212,6 +224,78 @@ import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
     }catch(error){
       throw error;
     }
+  }
+
+  export async function updateCategory(categoryId, categoryName){
+    const categoriesRef = ref(db, `categories/${categoryId}`);
+    
+    try{
+      await update(categoriesRef, {
+        category:categoryName
+      });
+    }catch(err){
+      console.log(err);
+      throw err;
+    }
+    
+  }
+
+
+  export async function addSubCategory(categoryId, subCategoryName){
+    // try{
+    //   debugger;
+    //   const allCategories = await getAllCategories();
+    //   var allSubCategories = [];
+
+    //   if(allCategories){
+    //     console.log('allCategories',allCategories);
+    //     Object.values(allCategories)
+    //     allSubCategories = Object.values(allCategories).map((data)=>{
+    //       return data.subCategories;
+    //     })
+    //   }
+
+    //   if(allSubCategories[0].includes(subCategoryName)){
+    //     throw new Error('Sub Category Name Already Exists');
+    //   }else{
+    //     const categoryData = await getCategoryById(categoryId);
+    //     prevSubcategoryArray = [...categoryData.subCategories];
+
+    //     await updateCategory([...prevSubcategoryArray, subCategoryName])
+    //   }
+
+    // }catch(err){
+    //   throw err;
+    // }
+
+
+
+
+
+
+
+
+    // try{
+    //   if(subCategoryName !== ''){
+    //     const brandRef = ref(db, `categories/${categoryId}`);
+    //     const snapshot = await get(brandRef);
+    //     var prevSubcategoryArray = [];
+  
+    //     if(snapshot.exists()){
+    //       const data = snapshot.val();
+    //       prevSubcategoryArray = [...data.subCategories];
+    //     }
+    //     await update(brandRef, {
+    //       subCategories:[...prevSubcategoryArray, subCategoryName]
+    //       // ...data
+    //     });
+    //   }
+      
+    // }catch(err){
+    //   console.log(err);
+    //   throw err;
+    // }
+    
   }
 
  
