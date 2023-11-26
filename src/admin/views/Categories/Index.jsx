@@ -64,7 +64,7 @@ const columns = [
 					return {
 						categoryName:category.category,
 						actions:[
-							<Link key={`edit_${category.id}`} to={category.id}>Add Sub Categories</Link>,
+							<Link key={`category_${category.id}`} to={category.id}>Add Sub Categories</Link>,
 							<button key={`edit_${category.id}`} onClick={(e)=>openModal(e, category.id)}>Edit</button>,
 							<a key={`remove_${category.id}`} onClick={()=>{removeCategoryHandler(category.id)}} >Remove</a>
 						]
@@ -129,12 +129,12 @@ const columns = [
 	const editCategoryHandler = (e)=>{
 		e.preventDefault();
 		const id = editCategoryId.current.value;
-		const categoryData = {
-			category:editCategoryName.current.value,
-			id:id
-		}
+		// const categoryData = {
+		// 	category:editCategoryName.current.value,
+		// 	id:id
+		// }
 
-		updateCategory(id, categoryData);
+		updateCategory(id, editCategoryName.current.value);
 		successNotify('Category Update successfully');
 		allCategories();
 	}

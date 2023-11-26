@@ -241,61 +241,75 @@ import { getAuth, createUserWithEmailAndPassword, debugErrorMap } from "firebase
   }
 
 
-  export async function addSubCategory(categoryId, subCategoryName){
-    // try{
-    //   debugger;
-    //   const allCategories = await getAllCategories();
-    //   var allSubCategories = [];
+  export async function addSubCategory(categoryId, subCategoryId, subCategoryName){
+    try{
+      if(subCategoryName !== ''){
+        var allSubCategoriesName = [];
+        const allCategoriesData = await getAllCategories();
 
-    //   if(allCategories){
-    //     console.log('allCategories',allCategories);
-    //     Object.values(allCategories)
-    //     allSubCategories = Object.values(allCategories).map((data)=>{
-    //       return data.subCategories;
-    //     })
-    //   }
+        if(allCategoriesData){
+          const allCatData = Object.values(allCategoriesData).map((data)=>{
+            if(data.hasOwnProperty('subCategories')){
+              return data.subCategories;
+            }
+          })
 
-    //   if(allSubCategories[0].includes(subCategoryName)){
-    //     throw new Error('Sub Category Name Already Exists');
-    //   }else{
-    //     const categoryData = await getCategoryById(categoryId);
-    //     prevSubcategoryArray = [...categoryData.subCategories];
+          allCatData.map(item=>{
+            if(item){
+              Object.values(item).map(singleSubCat =>{
+                allSubCategoriesName.push(singleSubCat.category)
+              })
+            }
+          })
+          
+        }
 
-    //     await updateCategory([...prevSubcategoryArray, subCategoryName])
-    //   }
+        if(allSubCategoriesName.includes(subCategoryName)){
+          throw new Error('Sub Category Already Exists');
+        }
 
-    // }catch(err){
-    //   throw err;
-    // }
-
-
-
-
-
-
-
-
-    // try{
-    //   if(subCategoryName !== ''){
-    //     const brandRef = ref(db, `categories/${categoryId}`);
-    //     const snapshot = await get(brandRef);
-    //     var prevSubcategoryArray = [];
-  
-    //     if(snapshot.exists()){
-    //       const data = snapshot.val();
-    //       prevSubcategoryArray = [...data.subCategories];
-    //     }
-    //     await update(brandRef, {
-    //       subCategories:[...prevSubcategoryArray, subCategoryName]
-    //       // ...data
-    //     });
-    //   }
+        await set(ref(db, 'categories/' + categoryId + '/subCategories/' + subCategoryId), {
+          id:subCategoryId,
+          category: subCategoryName,
+        });
+      }
       
-    // }catch(err){
-    //   console.log(err);
-    //   throw err;
-    // }
+    }catch(err){
+      console.log(err);
+      throw err;
+    }
     
+  }
+
+  export async function updateSubCategory(categoryId, subCategoryId, categoryData){
+    try{
+      // var subCategoryPos = null;
+
+      // const categoryData = await getCategoryById(categoryId);
+      //   Object.values(categoryData.subCategories).map((data)=>{
+      //     if(data.id === subCategoryId){
+      //       subCategoryPos = index;
+      //     }
+      //   })
+        
+        const categoriesRef = ref(db, `categories/${categoryId}/subCategories/${subCategoryId}`);  
+        await update(categoriesRef, categoryData)
+    }catch(err){
+      console.log(err);
+      throw err;
+    }
+    
+  }
+
+  export async function removeSubCategory(categoryId, subCategoryId){
+    try{
+
+      const subCategoriesRef = ref(db, `categories/${categoryId}/subCategories/${subCategoryId}`);
+      await remove(subCategoriesRef);
+
+    }catch(err){
+      throw err;
+    }
   }
 
  

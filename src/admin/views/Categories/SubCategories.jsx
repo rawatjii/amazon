@@ -1,19 +1,19 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { NavLink, useParams } from 'react-router-dom';
+import { NavLink, useParams, Link } from 'react-router-dom';
 import { Modal, Button } from "react-bootstrap";
 import Header from '../../Components/Header/Header';
 import Sidebar from '../../Components/Sidebar/Sidebar';
 import { getDatabase, ref, set, onValue, remove } from "firebase/database";
 import {CDBDataTable} from 'cdbreact';
 import { v4 as uuidv4 } from 'uuid';
-import { getAllUsers, updateBrand, removeBrand, writeBrands, getBrandById, addSubCategory } from '../../../firebase-config';
+import { getCategoryById, updateSubCategory, removeBrand, removeSubCategory, addSubCategory } from '../../../firebase-config';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const columns = [
 	{
-	  label: 'Brand Name',
-	  field: 'brandName',
+	  label: 'Sub Category',
+	  field: 'subCategory',
 	  width: 150,
 	},
 	{
@@ -24,7 +24,7 @@ const columns = [
   ];
 
   const SubCategories = () => {
-	const [brandRows, setBrandRows] = useState([]);
+	const [categoryRows, setCategoryRows] = useState([]);
 	const [subCatInput, setSubCatInput] = useState(false);
 	const [show, setShow] = useState(false);
 	const [showModal, setShowModal] = useState(false);
@@ -32,8 +32,8 @@ const columns = [
 	const {id} = useParams();
   
 	const subCategoryName = useRef('');
-	const editBrandName = useRef();
-	const editBrandId = useRef()
+	const editCategoryName = useRef();
+	const editCategoryId = useRef()
 
 	const handleClose = () => setShow(false);
 	const handleShow = () => setShow(true);
@@ -41,14 +41,20 @@ const columns = [
 	const successNotify = (msg) => toast.success(msg);
 	const errorNotify = (msg) => toast.error(msg);
   
-	const openModal = async (e, id) => {
+	const openModal = async (e, subCategoryId) => {
 	  e.preventDefault();
 	  try {
 		  setShowModal(true);
-		  const brandData = await getBrandById(id);
-		  if (editBrandName.current) {
-				editBrandId.current.value = brandData.brandId;
-			  editBrandName.current.value = brandData.brand;
+		  const allCategoryData = await getCategoryById(id);
+		  if (editCategoryName.current) {
+				editCategoryId.current.value = subCategoryId;
+
+				Object.values(allCategoryData.subCategories).map(data=>{
+					if(data.id === subCategoryId){
+						editCategoryName.current.value = data.category;
+					}
+				})
+
 			}
 	  } catch (err) {
 		console.log(err);
@@ -59,29 +65,39 @@ const columns = [
 	  setShowModal(false);
 	};
 
-	useEffect(()=>{
-		const db = getDatabase();
-		const brandRef = ref(db, 'brands/')
+	const allSubCategories = async ()=>{
+		try{
 
-		onValue(brandRef, (snapshot)=>{
-			const data = snapshot.val();
-
-			if(data){
-				const brandRows = Object.entries(data).map(([key, value])=>{
-					return{
-						brandName:value.brand,
-						actions:[
-							<button key={`edit_${key}`} onClick={(e)=>openModal(e, value.brandId)}>Edit</button>,
-							<a key={`remove_${key}`} onClick={()=>removeBrandHandler(value.brandId)}>Remove</a>
-						]
-					}
-				})
-
-				setBrandRows(brandRows)
+			const allCategories = await getCategoryById(id);
+			if(allCategories){
+				console.log('allCategories',allCategories);
+				if(allCategories.hasOwnProperty('subCategories')){
+					const categoryRowsData = Object.values(allCategories.subCategories).map(category=>{
+						return {
+							subCategory:category.category,
+							actions:[
+								<button key={`edit_${category.id}`} onClick={(e)=>openModal(e, category.id)}>Edit</button>,
+								<a key={`remove_${category.id}`} onClick={()=>{removeCategoryHandler(id, category.id)}} >Remove</a>
+							]
+						}
+					})
+					setCategoryRows(categoryRowsData)
+				}else{
+					
+					setCategoryRows([])
+				}
 			}else{
-				setBrandRows([])
+				setCategoryRows([])
 			}
-		})
+
+		}catch(err){
+			console.log(err)
+		}
+		
+	}
+
+	useEffect(()=>{
+		allSubCategories()
 	}, [])
 	
 
@@ -94,31 +110,33 @@ const columns = [
 		}
 
 		try{
-			return ;
-			await addSubCategory(id, subCategoryName.current.value);
+			await addSubCategory(id, uuidv4(), subCategoryName.current.value);
 			setShow(false);
-			successNotify('Brand Added successfully');
+			successNotify('Sub Category Added successfully');
+			allSubCategories()
 		}
 		catch(err){
 			errorNotify(err.message);
 		}
 	};
 
-	const editBrandHandler = (e)=>{
+	const editSubCategoryHandler = async(e)=>{
 		e.preventDefault();
-		const id = editBrandId.current.value;
-		const brandData = {
-			brand:editBrandName.current.value,
-			brandId:id
+		const subCategoryId = editCategoryId.current.value;
+		const subCategoryData = {
+			category:editCategoryName.current.value,
+			// brandId:id
 		}
 
-		updateBrand(id, brandData);
-		successNotify('Brand Edit successfully');
+		await updateSubCategory(id, subCategoryId, subCategoryData);
+		successNotify('Sub Category Updated Successfully');
+		allSubCategories()
 	}
 
-	const removeBrandHandler = (id)	=>{
-		removeBrand(id);
-		successNotify('Brand Deleted successfully');
+	const removeCategoryHandler = async(catId, subCatId)=>{
+		await removeSubCategory(catId, subCatId);
+		successNotify('Sub Category Deleted successfully');
+		allSubCategories()
 	}
 
     return(
@@ -164,7 +182,7 @@ const columns = [
 								pagesAmount={4}
 								data={{
 									columns:columns,
-									rows:brandRows
+									rows:categoryRows
 								}}
 								sortable={false}
 								materialSearch={true}
@@ -176,36 +194,36 @@ const columns = [
                 </div>
             </div>
 
-			<Modal show={show} onHide={handleClose}>
-        <form onSubmit={subCategorySubmitHandler}>
-          <Modal.Header closeButton>
-            <Modal.Title>Add Sub Category</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            <label htmlFor="">Sub Category</label>
-            <input type="text" className="form-control" placeholder="Enter Sub Category" ref={subCategoryName} />
-			{subCatInput ? <span className='error'>Please enter sub category</span> : null}
-          </Modal.Body>
-          <Modal.Footer>
-            <Button variant="secondary" onClick={handleClose}>
-              Close
-            </Button>
-            <Button variant="primary" type="submit">
-              Save Changes
-            </Button>
-          </Modal.Footer>
-        </form>
-      </Modal>
+		<Modal show={show} onHide={handleClose}>
+			<form onSubmit={subCategorySubmitHandler}>
+				<Modal.Header closeButton>
+					<Modal.Title>Add Sub Category</Modal.Title>
+				</Modal.Header>
+				<Modal.Body>
+					<label htmlFor="">Sub Category</label>
+					<input type="text" className="form-control" placeholder="Enter Sub Category" ref={subCategoryName} />
+					{subCatInput ? <span className='error'>Please enter sub category</span> : null}
+				</Modal.Body>
+				<Modal.Footer>
+					<Button variant="secondary" onClick={handleClose}>
+					Close
+					</Button>
+					<Button variant="primary" type="submit">
+					Save Changes
+					</Button>
+				</Modal.Footer>
+			</form>
+		</Modal>
 
       <Modal show={showModal} onHide={hideModal}>
-        <form onSubmit={editBrandHandler}>
+        <form onSubmit={editSubCategoryHandler}>
           <Modal.Header closeButton>
-            <Modal.Title>Edit Brand</Modal.Title>
+            <Modal.Title>Edit Sub Category</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-			<input type="hidden" ref={editBrandId} className='form-control' />
-            <label htmlFor="">Brand</label>
-            <input type="text" className="form-control" placeholder="Enter Brand Name" ref={editBrandName} />
+			<input type="hidden" ref={editCategoryId} className='form-control' />
+            <label htmlFor="">Sub Category</label>
+            <input type="text" className="form-control" placeholder="Sub Category" ref={editCategoryName} />
           </Modal.Body>
           <Modal.Footer>
             <Button variant="secondary" onClick={hideModal}>
