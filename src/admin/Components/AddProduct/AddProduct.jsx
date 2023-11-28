@@ -12,7 +12,7 @@ import Select from '@mui/material/Select';
 import Checkbox from '@mui/material/Checkbox';
 import { ToastContainer, toast } from 'react-toastify';
 import validator from 'validator';
-import { getAllBrands } from '../../../firebase-config';
+import { getAllBrands, getAllCategories, getCategoryById } from '../../../firebase-config';
 import { uploadCloudinary } from '../../../upload';
 import { addProduct } from '../../../firebase-config';
 
@@ -45,6 +45,8 @@ const AddProduct = ()=>{
     const [images, setImages] = useState([])
     const [links, setLinks] = useState([])
     const [brands, setBrands] = useState([]);
+    const [categories, setCategories] = useState([]);
+    const [subCategories, setSubCategories] = useState([]);
 
     const [validationError, setValidationError] = useState({
         product_title:null,
@@ -55,6 +57,7 @@ const AddProduct = ()=>{
         id:'',
         product_title:'',
         product_category:[],
+        product_subCategory:[],
         price:{
             offerPrice:'',
             originalPrice:''
@@ -68,25 +71,83 @@ const AddProduct = ()=>{
     const originalPrice = useRef('');
     const offerPrice = useRef('');
 
-    useEffect(()=>{
-        const fetchBrandData = async()=>{
-            try{
-                const allBrandsData = await getAllBrands()
-                const allBrandsArray = Object.values(allBrandsData).map(data=>{
-                    return {
-                        value:data.brand.toLowerCase(),
-                        label:data.brand
-                    }
-                })
-                console.log('allBrandsArray',allBrandsArray);
-                setBrands(allBrandsArray)
-            }catch(error){
-                console.error('Error from edit products: ', error.message);
-            }
+    const fetchProductCategories = async()=>{
+        try{
+            const allCategoryData = await getAllCategories();
+            const allCategoriesArray = Object.values(allCategoryData).map(data=>{
+                return {
+                    value:data.category.toLowerCase(),
+                    label:data.category,
+                    id:data.id,
+                }
+            })
+            setCategories(allCategoriesArray)
+        }catch(err){
+            console.log(err);
         }
-        
+    }
+
+    const fetchProductSubCategories = async(id)=>{
+        try{
+            const allCategoryData = await getCategoryById(id);
+            console.log('allCategoryData',allCategoryData);
+            if(allCategoryData){
+                if(allCategoryData.hasOwnProperty('subCategories')){
+					const categoryRowsData = Object.values(allCategoryData.subCategories).map(category=>{
+						return {
+                            value:category.category.toLowerCase(),
+                            label:category.category
+                        }
+					})
+                    console.log('categoryRowsData',categoryRowsData );
+					// setSubCategories(categoryRowsData)
+				}else{
+					setSubCategories([])
+				}
+            }else{
+                setSubCategories([])
+            }
+
+
+            // const allCategoriesArray = Object.values(allCategoryData).map(data=>{
+            //     if(data.hasOwnProperty('subCategories')){
+            //         return Object.values(data.subCategories).map(data=>{
+            //             return {
+            //                 value:data.category.toLowerCase(),
+            //                 label:data.category
+            //             } 
+            //         })
+            //         setSubCategories(allCategoriesArray)
+                       
+            //     }else{
+            //         setSubCategories([])
+            //     }
+                
+            // })
+            // console.log('allCategoriesArray',allCategoriesArray);
+        }catch(err){
+            console.log(err);
+        }
+    }
+
+    const fetchBrandData = async()=>{
+        try{
+            const allBrandsData = await getAllBrands()
+            const allBrandsArray = Object.values(allBrandsData).map(data=>{
+                return {
+                    value:data.brand.toLowerCase(),
+                    label:data.brand
+                }
+            })
+            setBrands(allBrandsArray)
+        }catch(error){
+            console.error('Error from edit products: ', error.message);
+        }
+    }
+
+    useEffect(()=>{
         fetchBrandData();
-        
+        fetchProductCategories();
     }, [])
 
     const handleInputChange = (e)=>{
@@ -100,14 +161,17 @@ const AddProduct = ()=>{
     }
 
     const categoryInputChange = (event) => {
+        debugger;
         const {
-          target: { value },
+          target: { value, id },
         } = event;
 
         setPostData({
             ...postData,
-            product_category:typeof value === 'string' ? value.split(',') : value,
+            product_category:typeof value === 'string' ? {value:value.split(','), id:id} : {value:value, id:value},
         })
+
+        fetchProductSubCategories(id);
 
         // setPersonName(
         //   // On autofill we get a stringified value.
@@ -236,21 +300,53 @@ const AddProduct = ()=>{
                                                     <Select
                                                     labelId="demo-multiple-checkbox-label"
                                                     id="demo-multiple-checkbox"
-                                                    multiple
                                                     displayEmpty
                                                     name="product_category"
                                                     value={postData.product_category}
                                                     onChange={categoryInputChange}
                                                     // input={<OutlinedInput label="Tag" />}
-                                                    renderValue={(selected) => selected.join(', ')}
+                                                    renderValue={(selected) => selected.value}
                                                     MenuProps={MenuProps}
                                                     >
-                                                    {names.map((name) => (
+                                                    {categories.map(singleCategory =>(
+                                                        <MenuItem value={singleCategory.value} id={singleCategory.id}>{singleCategory.label}</MenuItem>
+                                                    ))}
+                                                    {/* {names.map((name) => (
                                                         <MenuItem key={name} value={name}>
                                                         <Checkbox checked={postData.product_category.indexOf(name) > -1} />
                                                         <ListItemText primary={name} />
                                                         </MenuItem>
-                                                    ))}
+                                                    ))} */}
+                                                    </Select>
+                                                </FormControl>
+                                            </div>
+                                            <div className="col-12">
+                                                <label htmlFor="inputProductType" className="form-label">Product Sub Categories</label>
+                                                <FormControl sx={{ width: '100%' }}>
+                                                    {/* <InputLabel id="demo-multiple-checkbox-label">Product Category</InputLabel> */}
+                                                    <Select
+                                                    labelId="sub-category-label"
+                                                    id="sub-category"
+                                                    displayEmpty
+                                                    multiple
+                                                    name="product_sub_category"
+                                                    value={postData.product_subCategory}
+                                                    onChange={categoryInputChange}
+                                                    defaultValue="Please select product category first"
+                                                    // input={<OutlinedInput label="Tag" />}
+                                                    renderValue={(selected) => selected.join(', ')}
+                                                    MenuProps={MenuProps}
+                                                    >
+                                                        {subCategories.length > 0 ? subCategories.map(singleCategory =>(
+                                                            <MenuItem value={singleCategory.value}>{singleCategory.label}</MenuItem>
+                                                        )) : <MenuItem disabled>Choose Product Category</MenuItem>}
+                                                    
+                                                    {/* {names.map((name) => (
+                                                        <MenuItem key={name} value={name}>
+                                                        <Checkbox checked={postData.product_category.indexOf(name) > -1} />
+                                                        <ListItemText primary={name} />
+                                                        </MenuItem>
+                                                    ))} */}
                                                     </Select>
                                                 </FormControl>
                                             </div>
@@ -260,7 +356,7 @@ const AddProduct = ()=>{
                                                     <Select name='brand' onChange={handleInputChange}>
                                                         {brands.map(singleBrand =>(
                                                             <MenuItem value={singleBrand.value}>{singleBrand.label}</MenuItem>
-                                                        ))}   
+                                                        ))}
                                                     </Select> 
                                                     {validationError.brand ? <span className="error">Please select product brand</span> : null}   
                                                 </FormControl>
