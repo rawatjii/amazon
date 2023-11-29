@@ -100,13 +100,15 @@ const AddProduct = ()=>{
                         }
 					})
                     console.log('categoryRowsData',categoryRowsData );
-					// setSubCategories(categoryRowsData)
-				}else{
+					setSubCategories(categoryRowsData)
+				}
+                else{
 					setSubCategories([])
 				}
-            }else{
-                setSubCategories([])
             }
+            // else{
+            //     setSubCategories([])
+            // }
 
 
             // const allCategoriesArray = Object.values(allCategoryData).map(data=>{
@@ -160,24 +162,44 @@ const AddProduct = ()=>{
         })
     }
 
-    const categoryInputChange = (event) => {
-        debugger;
-        const {
-          target: { value, id },
-        } = event;
+    const categoryInputChange = async(event) => {
+        try{
+            
+            const {
+                target: { value },
+            } = event;
 
-        setPostData({
-            ...postData,
-            product_category:typeof value === 'string' ? {value:value.split(','), id:id} : {value:value, id:value},
-        })
+            const allCategoryData = await getCategoryById(value);
+            const selectedCategory = allCategoryData.category;
 
-        fetchProductSubCategories(id);
+            setPostData({
+                ...postData,
+                product_category:typeof selectedCategory === 'string' ? {value:selectedCategory.split(',')} : {value:selectedCategory},
+            })
 
+            fetchProductSubCategories(value);
+        }catch(err){
+
+        }
+        
         // setPersonName(
         //   // On autofill we get a stringified value.
         //   typeof value === 'string' ? value.split(',') : value,
         // );
     };
+
+    const subCategoryInputChange = (event)=>{
+        console.log('event',event);
+
+        const {
+            target: { value },
+          } = event;
+
+        setPostData({
+            ...postData,
+            product_subCategory:value
+        })
+    }
 
     const productImageHandler = (e)=>{
         setPostData({
@@ -190,6 +212,7 @@ const AddProduct = ()=>{
 
     const submitFunc = async(e)=>{
         e.preventDefault();
+        
         let arr = [];
         const selectedImages = Object.values(postData.images);
 
@@ -200,34 +223,6 @@ const AddProduct = ()=>{
             offerPrice:validator.isEmpty(offerPrice.current.value),
             brand:validator.isEmpty(postData.brand)
         })
-
-        
-
-        // try{
-        //     for(let i = 0; i < selectedImages.length; i++){
-        //         const res = await uploadCloudinary(selectedImages[i]);
-        //         arr.push(res);
-        //         // setPostData({...postData, images:[...postData.images, res]});
-        //     }
-        //     const data = {
-        //         id:uuidv4(),
-        //         product_title:postData.product_title,
-        //         categories:postData.product_category,
-        //         price:{
-        //             originalPrice:originalPrice.current.value,
-        //             offerPrice:offerPrice.current.value
-        //         },
-        //         ratings:[],
-        //         images:arr,
-        //         brand:''
-        //     }
-
-        //     await addProduct(data);
-        //     notify("Product Added Successfully");
-        // }catch(error){
-        //     notify("Product Couldn't upload, Error: "+error);
-        // }
-        
         
     }
 
@@ -309,7 +304,8 @@ const AddProduct = ()=>{
                                                     MenuProps={MenuProps}
                                                     >
                                                     {categories.map(singleCategory =>(
-                                                        <MenuItem value={singleCategory.value} id={singleCategory.id}>{singleCategory.label}</MenuItem>
+                                                        <MenuItem key={singleCategory.id} value={singleCategory.id}>{singleCategory.label}</MenuItem>
+                                                        // id={singleCategory.id}
                                                     ))}
                                                     {/* {names.map((name) => (
                                                         <MenuItem key={name} value={name}>
@@ -331,7 +327,7 @@ const AddProduct = ()=>{
                                                     multiple
                                                     name="product_sub_category"
                                                     value={postData.product_subCategory}
-                                                    onChange={categoryInputChange}
+                                                    onChange={subCategoryInputChange}
                                                     defaultValue="Please select product category first"
                                                     // input={<OutlinedInput label="Tag" />}
                                                     renderValue={(selected) => selected.join(', ')}
@@ -339,7 +335,7 @@ const AddProduct = ()=>{
                                                     >
                                                         {subCategories.length > 0 ? subCategories.map(singleCategory =>(
                                                             <MenuItem value={singleCategory.value}>{singleCategory.label}</MenuItem>
-                                                        )) : <MenuItem disabled>Choose Product Category</MenuItem>}
+                                                        )) : <MenuItem disabled>No Record Found</MenuItem>}
                                                     
                                                     {/* {names.map((name) => (
                                                         <MenuItem key={name} value={name}>
