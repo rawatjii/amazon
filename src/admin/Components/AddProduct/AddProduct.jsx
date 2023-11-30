@@ -66,10 +66,11 @@ const AddProduct = ()=>{
         brand:'',
     })
 
-    const notify = (msg) => toast(msg);
+	const successNotify = (msg) => toast.success(msg);
 
     const originalPrice = useRef('');
     const offerPrice = useRef('');
+    const productCategoryRef = useRef([]);
 
     const fetchProductCategories = async()=>{
         try{
@@ -221,8 +222,13 @@ const AddProduct = ()=>{
             product_title: validator.isEmpty(postData.product_title),
             images:postData.images.length === 0 ? true : false,
             offerPrice:validator.isEmpty(offerPrice.current.value),
-            brand:validator.isEmpty(postData.brand)
+            brand:validator.isEmpty(postData.brand),
+            productCategory:postData.product_category.length == 0 ? true : false,
+            productSubCategory:postData.product_subCategory.length == 0 ? true : false,
         })
+
+        await addProduct(postData)
+        successNotify('Product added successfully')
         
     }
 
@@ -314,6 +320,7 @@ const AddProduct = ()=>{
                                                         </MenuItem>
                                                     ))} */}
                                                     </Select>
+                                                    {validationError.productCategory ? <span className="error">Please select product category</span> : null}
                                                 </FormControl>
                                             </div>
                                             <div className="col-12">
@@ -344,6 +351,7 @@ const AddProduct = ()=>{
                                                         </MenuItem>
                                                     ))} */}
                                                     </Select>
+                                                    {validationError.productSubCategory ? <span className="error">Please select product sub categories</span> : null}
                                                 </FormControl>
                                             </div>
                                             <div className="col-12">
