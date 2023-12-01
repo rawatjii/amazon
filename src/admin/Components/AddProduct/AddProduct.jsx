@@ -49,14 +49,18 @@ const AddProduct = ()=>{
     const [subCategories, setSubCategories] = useState([]);
 
     const [validationError, setValidationError] = useState({
-        product_title:null,
-        images:null
+        product_title: false,
+        images:false,
+        offerPrice:false,
+        brand:false,
+        productCategory:false,
+        productSubCategory:false,
     })
 
     const [postData, setPostData] = useState({
         id:'',
         product_title:'',
-        product_category:[],
+        product_category:'',
         product_subCategory:[],
         price:{
             offerPrice:'',
@@ -213,9 +217,6 @@ const AddProduct = ()=>{
 
     const submitFunc = async(e)=>{
         e.preventDefault();
-        
-        let arr = [];
-        const selectedImages = Object.values(postData.images);
 
         setValidationError({
             ...validationError,
@@ -227,8 +228,23 @@ const AddProduct = ()=>{
             productSubCategory:postData.product_subCategory.length == 0 ? true : false,
         })
 
-        await addProduct(postData)
-        successNotify('Product added successfully')
+        if(!validationError.validationError && !validationError.images && !validationError.offerPrice && !validationError.productCategory && !validationError.productSubCategory && !validationError.brand){
+            return;
+        }
+        else{
+            setPostData({
+                ...postData,
+                id:uuidv4()
+            })
+            
+            let arr = [];
+            const selectedImages = Object.values(postData.images);
+    
+            await addProduct(postData)
+            successNotify('Product added successfully')
+        }
+
+        
         
     }
 
@@ -299,15 +315,15 @@ const AddProduct = ()=>{
                                                 <FormControl sx={{ width: '100%' }}>
                                                     {/* <InputLabel id="demo-multiple-checkbox-label">Product Category</InputLabel> */}
                                                     <Select
-                                                    labelId="demo-multiple-checkbox-label"
-                                                    id="demo-multiple-checkbox"
-                                                    displayEmpty
-                                                    name="product_category"
-                                                    value={postData.product_category}
-                                                    onChange={categoryInputChange}
-                                                    // input={<OutlinedInput label="Tag" />}
-                                                    renderValue={(selected) => selected.value}
-                                                    MenuProps={MenuProps}
+                                                        // labelId="demo-multiple-checkbox-label"
+                                                        // id="demo-multiple-checkbox"
+                                                        displayEmpty
+                                                        name="product_category"
+                                                        value={postData.product_category}
+                                                        onChange={categoryInputChange}
+                                                        // input={<OutlinedInput label="Tag" />}
+                                                        renderValue={(selected) => selected.value}
+                                                        MenuProps={MenuProps}
                                                     >
                                                     {categories.map(singleCategory =>(
                                                         <MenuItem key={singleCategory.id} value={singleCategory.id}>{singleCategory.label}</MenuItem>

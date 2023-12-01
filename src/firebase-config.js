@@ -68,6 +68,7 @@ import { getAuth, createUserWithEmailAndPassword, debugErrorMap } from "firebase
   }
 
   export async function addProduct(data){
+    debugger
     try{
       await set(ref(db, 'products/' + data.id), data)
     }
