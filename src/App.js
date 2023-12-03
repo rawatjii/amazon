@@ -52,54 +52,54 @@ function App() {
 
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    const fetchApp = async ()=>{
-      dispatch(fetchProducts());
+  const fetchApp = async ()=>{
+    dispatch(fetchProducts());
 
-      // fetch user by email
+    // fetch user by email
 
-      // const userData = fetchUserData()
-      // console.log('userData',userData );
+    // const userData = fetchUserData()
+    // console.log('userData',userData );
 
-      try{
-        const now = new Date()
-        const userStatusObj = JSON.parse(localStorage.getItem('isUserSignin'));
-        const userEmail = localStorage.getItem('userEmail');
+    try{
+      const now = new Date()
+      const userStatusObj = JSON.parse(localStorage.getItem('isUserSignin'));
+      const userEmail = localStorage.getItem('userEmail');
 
-        if(!userStatusObj){
-          return null;
-        }
+      if(!userStatusObj){
+        return null;
+      }
 
-        if(now.getTime() > userStatusObj.expiration){
-          debugger;
-          localStorage.removeItem('isUserSignin');
-          return dispatch(authActions.setLogout());
-        }
+      if(now.getTime() > userStatusObj.expiration){
+        debugger;
+        localStorage.removeItem('isUserSignin');
+        return dispatch(authActions.setLogout());
+      }
 
-        var userLoginEncryptedStatus = userStatusObj.value;
-        var bytes = CryptoJS.AES.decrypt(userLoginEncryptedStatus, `${process.env.REACT_APP_SECRET_KEY}`);
-        var data = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
+      var userLoginEncryptedStatus = userStatusObj.value;
+      var bytes = CryptoJS.AES.decrypt(userLoginEncryptedStatus, `${process.env.REACT_APP_SECRET_KEY}`);
+      var data = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
 
-        if(data){
-        
-            if(data == 'true'){
-              const userData = await fetchUserData(userEmail);
-              dispatch(authActions.setLogin({email:userEmail, userData:Object.values(userData)[0]}));
-            }else{
-              dispatch(authActions.setLogout());
-            }
+      if(data){
+      
+          if(data == 'true'){
+            const userData = await fetchUserData(userEmail);
+            dispatch(authActions.setLogin({email:userEmail, userData:Object.values(userData)[0]}));
+          }else{
+            dispatch(authActions.setLogout());
+          }
 
-        }else{
-          console.error("Data could not be decrypted or is not valid JSON.");
-          dispatch(authActions.setLogout());
-        }
-
-      }catch(err){
-        console.error('An error occurred during decryption or parsing:',err);
+      }else{
+        console.error("Data could not be decrypted or is not valid JSON.");
         dispatch(authActions.setLogout());
       }
-    }
 
+    }catch(err){
+      console.error('An error occurred during decryption or parsing:',err);
+      dispatch(authActions.setLogout());
+    }
+  }
+
+  useEffect(() => {
     fetchApp();
   }, []);
 

@@ -39,7 +39,7 @@ const productsSlice = createSlice({
 
 export const fetchProducts = ()=>{
     return async (dispatch)=>{
-        dispatch(fetchProductsStart());
+        await dispatch(fetchProductsStart());
         try{
             const dataArr = [];
             const response = await axios.get('/products.json');
@@ -50,13 +50,13 @@ export const fetchProducts = ()=>{
                 // console.log('products thunk', dataArr);
     
                 // dispatch(fetchAllProducts(dataArr))
-                dispatch(fetchProductsSuccess(dataArr)); 
+                await dispatch(fetchProductsSuccess(dataArr)); 
             }else{
                 throw new Error('Failed to fetch products')
             }
             
         }catch(err){
-            dispatch(fetchProductsFailure());
+            await dispatch(fetchProductsFailure());
             return console.error('Error While Fetching Projects');
         }
     }

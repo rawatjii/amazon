@@ -79,17 +79,6 @@ const EditProducts = ()=>{
                     </div>
 
                     <div className="card">
-                        <div className="row g-0">
-                        <div className="col-md-4 border-end">
-                            <img src="assets/images/products/13.png" className="img-fluid" alt="..." />
-                            <div className="row mb-3 row-cols-auto g-2 justify-content-center mt-3">
-                                <div className="col"><img src="assets/images/products/12.png" width="70" className="border rounded cursor-pointer" alt="" /></div>
-                                <div className="col"><img src="assets/images/products/11.png" width="70" className="border rounded cursor-pointer" alt="" /></div>
-                                <div className="col"><img src="assets/images/products/14.png" width="70" className="border rounded cursor-pointer" alt="" /></div>
-                                <div className="col"><img src="assets/images/products/15.png" width="70" className="border rounded cursor-pointer" alt="" /></div>
-                            </div>
-                        </div>
-                        <div className="col-md-8">
                             <div className="card-body">
                                 <input type="text" value={currentProduct.id} className="form-control" hidden readOnly />
 
@@ -177,8 +166,6 @@ const EditProducts = ()=>{
                                 <a href="#" className="btn btn-outline-primary"><span className="text">Add to cart</span> <i className='bx bxs-cart-alt'></i></a>
                             </div>
                             </div>
-                        </div>
-                        </div>
                         <hr/>
                         <div className="card-body">
                             <ul className="nav nav-tabs nav-primary mb-0" role="tablist">

@@ -2,7 +2,7 @@ import React, {useEffect, useState, useRef} from "react";
 import Select from 'react-select';
 import Sidebar from "../../Components/Sidebar/Sidebar";
 import Header from "../../Components/Header/Header";
-import { useParams, useSearchParams } from "react-router-dom";
+import { Link, useParams, useSearchParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { getAllBrands } from "../../../firebase-config";
 import styles from './product.module.css'
@@ -90,7 +90,7 @@ const ViewProduct = ()=>{
                     <div className="card">
                         <div className="row g-0">
                         <div className="col-md-4 border-end">
-                            <img src={activeImage ? activeImage : process.env.REACT_APP_NO_PRODUCT_IMAGE_URL} className="img-fluid" alt="..." />
+                            <img src={activeImage ? activeImage : currentProduct.images?.[0].url} className="img-fluid" alt="..." />
                             <div className="row mb-3 row-cols-auto g-2 justify-content-center mt-3">
                                 {currentProduct.images?.map((image, i)=>{
                                     return (
@@ -116,25 +116,9 @@ const ViewProduct = ()=>{
                                     <div className="text-success"><i className='bx bxs-cart-alt align-middle'></i> 134 orders</div>
                                 </div>
 
-                                <div class="mb-3"> 
-                                    <span class="price h4">₹{currentProduct.price.offerPrice}</span> 
-                                    <span class="text-muted">₹{currentProduct.price.originalPrice}</span> 
-                                </div>
-
-                                <div className="row">
-                                    <div className="col-md-6">
-                                        <div className="form-group mb-2">
-                                            <label htmlFor="">Original Price</label>
-                                            <input type="text" className="form-control me-2" value={`₹ ${currentProduct?.price?.originalPrice}`} />
-                                        </div>
-                                    </div>
-
-                                    <div className="col-md-6">
-                                        <div className="form-group mb-2">
-                                            <label htmlFor="">Offer Price</label>
-                                            <input type="text" className="form-control me-2" value={`₹ ${currentProduct?.price?.offerPrice}`} />
-                                        </div>
-                                    </div>
+                                <div className="mb-3"> 
+                                    <span className="price h4">₹{currentProduct.price?.offerPrice}</span> 
+                                    <span className="text-muted">/₹{currentProduct.price?.originalPrice}</span> 
                                 </div>
                             
                             <p className="card-text fs-6">Virgil Abloh’s Off-White is a streetwear-inspired collection that continues to break away from the conventions of mainstream fashion. Made in Italy, these black and brown Odsy-1000 low-top sneakers.</p>
@@ -142,55 +126,24 @@ const ViewProduct = ()=>{
                                 <dt className="col-sm-3">Brand</dt>
                                 <dd className="col-sm-9">{currentProduct.brand ? currentProduct.brand : 'No Brand Selected'}</dd>
 
-                                <dt className="col-sm-3">Model#</dt>
-                                <dd className="col-sm-9">Odsy-1000</dd>
-                            
-                                <dt className="col-sm-3">Color</dt>
-                                <dd className="col-sm-9">Brown</dd>
-                            
-                                <dt className="col-sm-3">Delivery</dt>
-                                <dd className="col-sm-9">Russia, USA, and Europe </dd>
+                                <dt className="col-sm-3">Category</dt>
+                                <dd className="col-sm-9">{currentProduct.product_category ? currentProduct.product_category : 'No Category Selected'}</dd>
+
+                                <dt className="col-sm-3">Sub Categories</dt>
+                                <dd className="col-sm-9">
+                                    {currentProduct.product_subCategory?.map((singleCategory, index)=>(
+                                        <React.Fragment key={index}>
+                                            {index > 0 && ', '}
+                                            {singleCategory}
+                                        </React.Fragment>
+                                    ))}
+                                    
+                                    {/* {currentProduct.product_subCategory ? currentProduct.product_category : 'No Category Selected'} */}
+                                    </dd>
                             </dl>
                             <hr />
-                            <div className="row row-cols-auto row-cols-1 row-cols-md-3 align-items-center">
-                                <div className="col">
-                                    <label className="form-label">Quantity</label>
-                                    <div className="input-group input-spinner">
-                                        <button className="btn btn-white" type="button" id="button-plus"> + </button>
-                                        <input type="text" className="form-control" value="1" readOnly />
-                                        <button className="btn btn-white" type="button" id="button-minus"> − </button>
-                                    </div>
-                                </div> 
-                                <div className="col">
-                                        <label className="form-label">Select size</label>
-                                        <div className="">
-                                            <label className="form-check form-check-inline">
-                                            <input type="radio" className="form-check-input custom-control-input"  name="select_size"  />
-                                            <div className="form-check-label">Small</div>
-                                            </label>
-                                            <label className="form-check form-check-inline">
-                                                <input type="radio" className="form-check-input custom-control-input"  name="select_size"  />
-                                                <div className="form-check-label">Medium</div>
-                                            </label>
-
-                                            <label className="form-check form-check-inline">
-                                                <input type="radio" className="form-check-input custom-control-input"   name="select_size"  />
-                                                <div className="form-check-label">Large</div>
-                                            </label>
-                                        </div>
-                                </div> 
-                                <div className="col">
-                                    <label className="form-label">Select Color</label>
-                                    <div className="color-indigators d-flex align-items-center gap-2">
-                                        <div className="color-indigator-item bg-primary"></div> 
-                                        <div className="color-indigator-item bg-danger"></div> 
-                                        <div className="color-indigator-item bg-success"></div> 
-                                        <div className="color-indigator-item bg-warning"></div> 
-                                    </div>
-                                </div>
-                            </div>
                             <div className="d-flex gap-3 mt-3">
-                                <a href="#" className="btn btn-primary">Buy Now</a>
+                                <Link to={`/admin/edit-product/${productId}`} className="btn btn-primary">Edit Product</Link>
                                 <a href="#" className="btn btn-outline-primary"><span className="text">Add to cart</span> <i className='bx bxs-cart-alt'></i></a>
                             </div>
                             </div>

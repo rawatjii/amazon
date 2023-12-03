@@ -1,14 +1,25 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import Header from '../../Components/Header/Header';
 import Sidebar from '../../Components/Sidebar/Sidebar';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { useState } from 'react';
+import { fetchProducts } from '../../../store/reducers/productsReducer';
 
 const Products = ()=>{
 
-    const allProducts = useSelector((state)=>{
+    const dispatch = useDispatch();
+
+    const [allProducts, setAllProducts] = useState([])
+
+    const fetchAllProducts = useSelector((state)=>{
         return state.products.allProducts
     })
+
+    useEffect(()=>{
+        setAllProducts(fetchAllProducts)
+
+    }, [fetchAllProducts])
 
     console.log('allProducts',allProducts);
 
