@@ -8,6 +8,7 @@ import { getAllBrands } from "../../../firebase-config";
 
 const EditProducts = ()=>{
 
+    const [productTitle, setProductTitle] = useState('')
     const [currentProduct, setCurrentProduct] = useState({})
     const [brands, setBrands] = useState([]);
     const {productId} = useParams();
@@ -24,27 +25,37 @@ const EditProducts = ()=>{
         })
     } , [allProducts]);
 
+    const fetchBrandData = async()=>{
+        try{
+            const allBrandsData = await getAllBrands()
+            const allBrandsArray = Object.values(allBrandsData).map(data=>{
+                return {
+                    value:data.brand.toLowerCase(),
+                    label:data.brand
+                }
+            })
+            
+            setBrands(allBrandsArray)
+        }catch(error){
+            console.error('Error from edit products: ', error.message);
+        }
+    }
+
 
     useEffect(()=>{
-        const fetchBrandData = async()=>{
-            try{
-                const allBrandsData = await getAllBrands()
-                const allBrandsArray = Object.values(allBrandsData).map(data=>{
-                    return {
-                        value:data.brand.toLowerCase(),
-                        label:data.brand
-                    }
-                })
-                
-                setBrands(allBrandsArray)
-            }catch(error){
-                console.error('Error from edit products: ', error.message);
-            }
-        }
-        
         fetchBrandData();
-        
     }, [])
+
+    // Set productTitle when currentProduct changes
+    useEffect(() => {
+        setProductTitle(currentProduct.product_title || ''); // Handle cases where product_title is undefined
+        console.log(currentProduct.images);
+    }, [currentProduct]);
+
+    const titleChangeHandler = (e)=>{
+        console.log('e',e.target.value  );
+        setProductTitle(e.target.value)
+    }
 
     return(
         <>
@@ -83,8 +94,19 @@ const EditProducts = ()=>{
                                 <input type="text" value={currentProduct.id} className="form-control" hidden readOnly />
 
                                 <div className="form-group mb-2">
-                                    <label htmlFor="">Product Name</label>
-                                    <input type="text" className="form-control" value={currentProduct.product_title} readOnly />
+                                    <label htmlFor="">Product Title</label>
+                                    <input type="text" className="form-control" value={productTitle} onChange={titleChangeHandler} />
+                                </div>
+
+                                <div className="form-group mb-2">
+                                    <label htmlFor="">Product Images</label>
+                                    <input className="form-control" id="image-uploadify" type="file" accept="image/*" multiple="" />
+                                    <div className="previewImages">
+                                        {currentProduct.images.map(item=>(
+                                            <img src={item.url} />
+                                        ))}
+                                    </div>
+
                                 </div>
 
                                 <div className="form-group mb-2">
