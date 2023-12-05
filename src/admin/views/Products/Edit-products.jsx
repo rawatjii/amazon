@@ -1,15 +1,23 @@
 import React, {useEffect, useState} from "react";
-import Select from 'react-select';
+import Select from '@mui/material/Select';
+import MenuItem from '@mui/material/MenuItem';
 import Sidebar from "../../Components/Sidebar/Sidebar";
+import FormControl from '@mui/material/FormControl';
 import Header from "../../Components/Header/Header";
 import { useParams, useSearchParams } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { getAllBrands } from "../../../firebase-config";
+import { getAllBrands, getAllCategories } from "../../../firebase-config";
+import { uploadCloudinary } from "../../../upload";
 
 const EditProducts = ()=>{
 
-    const [productTitle, setProductTitle] = useState('')
+    const [productTitle, setProductTitle] = useState('');
+    const [productImages, setProductImages] = useState([])
     const [currentProduct, setCurrentProduct] = useState({})
+    const [originalPrice, setOriginalPrice] = useState('');
+    const [offerPrice, setOfferPrice] = useState('');
+    const [productCategory, setProductCategory] = useState('');
+    const [allCategories, setAllCategories] = useState([]);
     const [brands, setBrands] = useState([]);
     const {productId} = useParams();
 
@@ -49,12 +57,70 @@ const EditProducts = ()=>{
     // Set productTitle when currentProduct changes
     useEffect(() => {
         setProductTitle(currentProduct.product_title || ''); // Handle cases where product_title is undefined
-        console.log(currentProduct.images);
+        setProductImages(currentProduct.images);
+        setOriginalPrice(currentProduct.price?.originalPrice);
+        setOfferPrice(currentProduct.price?.offerPrice);
+        setProductCategory(currentProduct.product_category);
+        fetchProductCategories();
+        console.log('productImages',productImages);
     }, [currentProduct]);
+
+    const fetchProductCategories = async()=>{
+        try{
+            const allCategoryData = await getAllCategories();
+            const allCategoriesArray = Object.values(allCategoryData).map(data=>{
+                return {
+                    value:data.category.toLowerCase(),
+                    label:data.category,
+                    id:data.id,
+                }
+            })
+            setAllCategories(allCategoriesArray)
+        }catch(err){
+            console.log(err);
+        }
+    }
 
     const titleChangeHandler = (e)=>{
         console.log('e',e.target.value  );
         setProductTitle(e.target.value)
+    }
+
+    const removeImageHandler = (publicId)=>{
+        const filteredImages = productImages.filter(item=>{
+            return item.publicId !== publicId;
+        })
+        // console.log('filteredImages',filteredImages);
+        setProductImages(filteredImages)
+    }
+
+    const imageUploadHandler = async(e)=>{
+        const selectedFiles = e.target.files
+        console.log('imageE',e.target.files);
+
+        let arr = [];
+        const selectedImages = Object.values(selectedFiles);
+
+        for(let i = 0; i < selectedImages.length; i++){
+            const res = await uploadCloudinary(selectedImages[i]);
+            arr.push(res);
+            // setPostData({...postData, images:[...postData.images, res]});
+        }
+
+        setProductImages([
+            ...productImages,
+            ...arr
+        ])
+
+        e.target.value = null;
+    }
+
+    const originalPriceChangeHandler = (e)=>{
+        setOriginalPrice(e.target.value)
+    }
+
+    const offerPriceChangeHandler = (e)=>{
+        setOfferPrice(e.target.value)
     }
 
     return(
@@ -100,13 +166,52 @@ const EditProducts = ()=>{
 
                                 <div className="form-group mb-2">
                                     <label htmlFor="">Product Images</label>
-                                    <input className="form-control" id="image-uploadify" type="file" accept="image/*" multiple="" />
-                                    <div className="previewImages">
-                                        {currentProduct.images.map(item=>(
-                                            <img src={item.url} />
+                                    <input className="form-control" id="image-uploadify" type="file" accept="image/*" multiple onChange={imageUploadHandler} />
+                                    <div className="previewImages mt-2 d-flex">
+                                        {productImages?.map((item, index)=>(
+                                            <div key={index} className="single_img">
+                                                <img src={item.url} width={80} />
+                                                <span className="delete" id={item.publicId} onClick={()=>removeImageHandler(item.publicId)} style={{height:'20px', width:'20px', display:'inline-flex', background:'red', color:'#fff', alignItems:'center', justifyContent:'center', cursor:'pointer'}}>&times;</span>
+                                            </div>
                                         ))}
                                     </div>
+                                </div>
 
+                                <div className="row">
+                                    <div className="col-md-6">
+                                        <div className="form-group mb-2">
+                                            <label htmlFor="">Original Price</label>
+                                            <input type="text" className="form-control me-2" value={`${originalPrice}`} onChange={originalPriceChangeHandler} />
+                                        </div>
+                                    </div>
+
+                                    <div className="col-md-6">
+                                        <div className="form-group mb-2">
+                                            <label htmlFor="">Offer Price</label>
+                                            <input type="text" className="form-control me-2" value={`${offerPrice}`} onChange={offerPriceChangeHandler} />
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <div className="form-group mb-2">
+
+                                    <label htmlFor="">Product Category</label>
+                                    <FormControl sx={{ width: '100%' }}>
+                                        <Select
+                                            displayEmpty
+                                            value={productCategory}
+                                            defaultValue={null}
+                                        >
+                                            <MenuItem disabled value="">
+                                                <em>Select Product Category</em>
+                                            </MenuItem>
+                                            {allCategories.map(singleCategory =>(
+                                                <MenuItem key={singleCategory.id} id={singleCategory.id} value={singleCategory.label}>{singleCategory.label}</MenuItem>
+                                                // id={singleCategory.id}
+                                            ))}
+                                        </Select>
+                                    </FormControl>
                                 </div>
 
                                 <div className="form-group mb-2">
@@ -116,22 +221,6 @@ const EditProducts = ()=>{
                                         defaultValue={null}
                                         options={brands}
                                     />
-                                </div>
-
-                                <div className="row">
-                                    <div className="col-md-6">
-                                        <div className="form-group mb-2">
-                                            <label htmlFor="">Original Price</label>
-                                            <input type="text" className="form-control me-2" value={`₹ ${currentProduct?.price?.originalPrice}`} />
-                                        </div>
-                                    </div>
-
-                                    <div className="col-md-6">
-                                        <div className="form-group mb-2">
-                                            <label htmlFor="">Offer Price</label>
-                                            <input type="text" className="form-control me-2" value={`₹ ${currentProduct?.price?.offerPrice}`} />
-                                        </div>
-                                    </div>
                                 </div>
                             
                             <p className="card-text fs-6">Virgil Abloh’s Off-White is a streetwear-inspired collection that continues to break away from the conventions of mainstream fashion. Made in Italy, these black and brown Odsy-1000 low-top sneakers.</p>
