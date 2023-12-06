@@ -6,7 +6,7 @@ import FormControl from '@mui/material/FormControl';
 import Header from "../../Components/Header/Header";
 import { useParams, useSearchParams } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { getAllBrands, getAllCategories } from "../../../firebase-config";
+import { getAllBrands, getAllCategories, getCategoryById } from "../../../firebase-config";
 import { uploadCloudinary } from "../../../upload";
 
 const EditProducts = ()=>{
@@ -17,6 +17,7 @@ const EditProducts = ()=>{
     const [originalPrice, setOriginalPrice] = useState('');
     const [offerPrice, setOfferPrice] = useState('');
     const [productCategory, setProductCategory] = useState('');
+    const [productSubCategory, setProductSubCategory] = useState([]);
     const [allCategories, setAllCategories] = useState([]);
     const [brands, setBrands] = useState([]);
     const {productId} = useParams();
@@ -62,6 +63,7 @@ const EditProducts = ()=>{
         setOfferPrice(currentProduct.price?.offerPrice);
         setProductCategory(currentProduct.product_category);
         fetchProductCategories();
+        fetchProductSubCategories(productId)
         console.log('productImages',productImages);
     }, [currentProduct]);
 
@@ -121,6 +123,40 @@ const EditProducts = ()=>{
 
     const offerPriceChangeHandler = (e)=>{
         setOfferPrice(e.target.value)
+    }
+
+    const categoryChangeHandler = (e)=>{
+        console.log('e.target',e.props);
+        setProductCategory(e.target.value)
+    }
+
+    const subCategoryChangeHandler = (event)=>{
+        const selectedValues = event.target.value;
+        setProductSubCategory(selectedValues)
+    }
+
+    const fetchProductSubCategories = async(id)=>{
+        try{
+            const allCategoryData = await getCategoryById(id);
+            if(allCategoryData){
+                if(allCategoryData.hasOwnProperty('subCategories')){
+					const categoryRowsData = Object.values(allCategoryData.subCategories).map(category=>{
+						return {
+                            value:[category.category.toLowerCase()],
+                            label:category.category,
+                            id:category.id
+                        }
+					})
+                    console.log('categoryRowsData',categoryRowsData );
+					setProductSubCategory(categoryRowsData)
+				}
+                else{
+					setProductSubCategory([])
+				}
+            }
+        }catch(err){
+            console.log(err);
+        }
     }
 
     return(
@@ -193,26 +229,40 @@ const EditProducts = ()=>{
                                     </div>
                                 </div>
 
-
                                 <div className="form-group mb-2">
-
                                     <label htmlFor="">Product Category</label>
                                     <FormControl sx={{ width: '100%' }}>
                                         <Select
                                             displayEmpty
                                             value={productCategory}
                                             defaultValue={null}
+                                            onChange={categoryChangeHandler}
                                         >
                                             <MenuItem disabled value="">
                                                 <em>Select Product Category</em>
                                             </MenuItem>
                                             {allCategories.map(singleCategory =>(
                                                 <MenuItem key={singleCategory.id} id={singleCategory.id} value={singleCategory.label}>{singleCategory.label}</MenuItem>
-                                                // id={singleCategory.id}
                                             ))}
                                         </Select>
                                     </FormControl>
                                 </div>
+
+                                <div className="form-group mb-2">
+                                    <label htmlFor="inputProductType" className="form-label">Product Sub Categories</label>
+                                    <FormControl sx={{ width: '100%' }}>
+                                        <Select
+                                            multiple
+                                            name="product_sub_category"
+                                            value={productSubCategory}
+                                            onChange={subCategoryChangeHandler}
+                                            >
+                                            {productSubCategory.length > 0 ? productSubCategory.map(singleCategory =>(
+                                                <MenuItem key={singleCategory.id} id={singleCategory.id} value={singleCategory.value}>{singleCategory.label}</MenuItem>
+                                            )) : <MenuItem disabled>No Record Found</MenuItem>}
+                                        </Select>
+                                </FormControl>
+                            </div>
 
                                 <div className="form-group mb-2">
 

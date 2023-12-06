@@ -45,7 +45,7 @@ const AddProduct = (props)=>{
     const [postData, setPostData] = useState({
         id:uuidv4(),
         product_title:'',
-        product_category:'',
+        product_category:{},
         product_subCategory:[],
         price:{
             offerPrice:'',
@@ -154,7 +154,10 @@ const AddProduct = (props)=>{
 
         setPostData({
             ...postData,
-            product_category:value,
+            product_category:{
+                id:id,
+                value:value
+            },
         })
 
         fetchProductSubCategories(id);
@@ -318,7 +321,7 @@ const AddProduct = (props)=>{
                                                 <FormControl sx={{ width: '100%' }}>
                                                 <Select
                                                     displayEmpty
-                                                    value={postData.product_category}
+                                                    value={postData.product_category?.value}
                                                     onChange={categoryInputChange}
                                                     MenuProps={MenuProps}
                                                     >
@@ -335,7 +338,7 @@ const AddProduct = (props)=>{
                                                 </FormControl>
                                             </div>
 
-                                            <div className="col-12">
+                                            {/* <div className="col-12">
                                                 <label htmlFor="inputProductType" className="form-label">Product Sub Categories</label>
                                                 <FormControl sx={{ width: '100%' }}>
                                                     <Select
@@ -364,7 +367,7 @@ const AddProduct = (props)=>{
                                                     {validationError.brand ? <span className="error">Please select product brand</span> : null}   
                                                 </FormControl>
                                                 
-                                            </div>
+                                            </div> */}
 
                                             <div className="col-12">
                                                 <div className="d-grid">
