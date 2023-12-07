@@ -57,14 +57,15 @@ const EditProducts = ()=>{
 
     // Set productTitle when currentProduct changes
     useEffect(() => {
+        console.log('currentProduct',currentProduct);
+        console.log('allCategories',allCategories);
         setProductTitle(currentProduct.product_title || ''); // Handle cases where product_title is undefined
         setProductImages(currentProduct.images);
         setOriginalPrice(currentProduct.price?.originalPrice);
         setOfferPrice(currentProduct.price?.offerPrice);
         setProductCategory(currentProduct.product_category);
         fetchProductCategories();
-        fetchProductSubCategories(productId)
-        console.log('productImages',productImages);
+        fetchProductSubCategories(currentProduct.product_category)
     }, [currentProduct]);
 
     const fetchProductCategories = async()=>{
@@ -78,6 +79,57 @@ const EditProducts = ()=>{
                 }
             })
             setAllCategories(allCategoriesArray)
+        }catch(err){
+            console.log(err);
+        }
+    }
+
+    const fetchProductSubCategories = async(categoryName)=>{
+        debugger;
+        try{
+            const allCategoryData = await getAllCategories();
+            console.log('allCategoryData',allCategoryData);
+            if(allCategoryData){
+                    
+                const categoryRowsData = Object.values(allCategoryData).map(data=>{
+                    if(data.hasOwnProperty('subCategories')){
+                        if(data.category === categoryName){
+                            return Object.values(data.subCategories).map(category=>{
+                                return {
+                                    value:category.category.toLowerCase(),
+                                    label:category.category,
+                                    // id:category.id
+                                }
+                            })
+                        }
+                    }
+                })
+                console.log('categoryRowsData',categoryRowsData );
+                setProductSubCategory(categoryRowsData)
+            }
+            else{
+                setProductSubCategory([])
+            }
+
+
+            // const allCategoryData = await getAllCategories();
+            // console.log('allCategoryData',allCategoryData);
+            // if(allCategoryData){
+            //     if(allCategoryData.hasOwnProperty('subCategories')){
+			// 		const categoryRowsData = Object.values(allCategoryData.subCategories).map(category=>{
+			// 			return {
+            //                 value:[category.category.toLowerCase()],
+            //                 label:category.category,
+            //                 // id:category.id
+            //             }
+			// 		})
+            //         console.log('categoryRowsData',categoryRowsData );
+			// 		setProductSubCategory(categoryRowsData)
+			// 	}
+            //     else{
+			// 		setProductSubCategory([])
+			// 	}
+            // }
         }catch(err){
             console.log(err);
         }
@@ -133,30 +185,6 @@ const EditProducts = ()=>{
     const subCategoryChangeHandler = (event)=>{
         const selectedValues = event.target.value;
         setProductSubCategory(selectedValues)
-    }
-
-    const fetchProductSubCategories = async(id)=>{
-        try{
-            const allCategoryData = await getCategoryById(id);
-            if(allCategoryData){
-                if(allCategoryData.hasOwnProperty('subCategories')){
-					const categoryRowsData = Object.values(allCategoryData.subCategories).map(category=>{
-						return {
-                            value:[category.category.toLowerCase()],
-                            label:category.category,
-                            id:category.id
-                        }
-					})
-                    console.log('categoryRowsData',categoryRowsData );
-					setProductSubCategory(categoryRowsData)
-				}
-                else{
-					setProductSubCategory([])
-				}
-            }
-        }catch(err){
-            console.log(err);
-        }
     }
 
     return(
