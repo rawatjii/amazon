@@ -17,8 +17,9 @@ const EditProducts = ()=>{
     const [originalPrice, setOriginalPrice] = useState('');
     const [offerPrice, setOfferPrice] = useState('');
     const [productCategory, setProductCategory] = useState('');
-    const [productSubCategory, setProductSubCategory] = useState([]);
+    const [productSubCategories, setProductSubCategories] = useState([]);
     const [allCategories, setAllCategories] = useState([]);
+    const [allSubCategories, setAllSubCategories] = useState([]);
     const [brands, setBrands] = useState([]);
     const {productId} = useParams();
 
@@ -65,8 +66,16 @@ const EditProducts = ()=>{
         setOfferPrice(currentProduct.price?.offerPrice);
         setProductCategory(currentProduct.product_category);
         fetchProductCategories();
-        fetchProductSubCategories(currentProduct.product_category)
-    }, [currentProduct]);
+        fetchProductSubCategories(currentProduct.product_category);
+        getProductSubCategories(productId);
+    }, [currentProduct, productId]);
+
+    const getProductSubCategories = (test)=>{ 
+        console.log('currentProduct',currentProduct);
+        currentProduct.product_subCategory.map(item=>{
+            setProductSubCategories([...productSubCategories, item])
+        })
+    }
 
     const fetchProductCategories = async()=>{
         try{
@@ -83,32 +92,42 @@ const EditProducts = ()=>{
             console.log(err);
         }
     }
-
+    
     const fetchProductSubCategories = async(categoryName)=>{
         debugger;
         try{
             const allCategoryData = await getAllCategories();
             console.log('allCategoryData',allCategoryData);
             if(allCategoryData){
+
+                const allCategoryArrayData = Object.values(allCategoryData).map(data=>{
+                    return data;
+                })
+
+                const filteredCategories = allCategoryArrayData.filter((data)=>{
+                    return data.hasOwnProperty('subCategories');
+                })
+
+                console.log('filteredCategories',filteredCategories);
                     
-                const categoryRowsData = Object.values(allCategoryData).map(data=>{
+                const categoryRowsData = Object.values(filteredCategories).flatMap(data=>{
                     if(data.hasOwnProperty('subCategories')){
                         if(data.category === categoryName){
-                            return Object.values(data.subCategories).map(category=>{
-                                return {
-                                    value:category.category.toLowerCase(),
-                                    label:category.category,
-                                    // id:category.id
+                            return Object.values(data.subCategories).map(subCategoryData=>(
+                                {
+                                    value:subCategoryData.category.toLowerCase(),
+                                    label:subCategoryData.category,
+                                    id:subCategoryData.id
                                 }
-                            })
+                            ))
                         }
                     }
                 })
                 console.log('categoryRowsData',categoryRowsData );
-                setProductSubCategory(categoryRowsData)
+                setAllSubCategories(categoryRowsData)
             }
             else{
-                setProductSubCategory([])
+                setAllSubCategories([])
             }
 
 
@@ -184,8 +203,10 @@ const EditProducts = ()=>{
 
     const subCategoryChangeHandler = (event)=>{
         const selectedValues = event.target.value;
-        setProductSubCategory(selectedValues)
+        setProductSubCategories(selectedValues)
     }
+
+    console.log('Product Sub Categories', productSubCategories);
 
     return(
         <>
@@ -282,11 +303,11 @@ const EditProducts = ()=>{
                                         <Select
                                             multiple
                                             name="product_sub_category"
-                                            value={productSubCategory}
+                                            value={productSubCategories}
                                             onChange={subCategoryChangeHandler}
                                             >
-                                            {productSubCategory.length > 0 ? productSubCategory.map(singleCategory =>(
-                                                <MenuItem key={singleCategory.id} id={singleCategory.id} value={singleCategory.value}>{singleCategory.label}</MenuItem>
+                                            {allSubCategories.length > 0 ? allSubCategories.map(singleCategory =>(
+                                                <MenuItem key={singleCategory?.id} id={singleCategory?.id} value={singleCategory?.value}>{singleCategory?.label}</MenuItem>
                                             )) : <MenuItem disabled>No Record Found</MenuItem>}
                                         </Select>
                                 </FormControl>
