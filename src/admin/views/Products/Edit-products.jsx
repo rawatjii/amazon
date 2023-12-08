@@ -35,6 +35,13 @@ const EditProducts = ()=>{
         })
     } , [allProducts]);
 
+    useEffect(()=>{
+        setProductSubCategories(() =>([
+            ...currentProduct.product_subCategory || []
+        ]))
+        console.log('productSubCategories',productSubCategories);
+    },[currentProduct])
+
     const fetchBrandData = async()=>{
         try{
             const allBrandsData = await getAllBrands()
@@ -67,15 +74,8 @@ const EditProducts = ()=>{
         setProductCategory(currentProduct.product_category);
         fetchProductCategories();
         fetchProductSubCategories(currentProduct.product_category);
-        getProductSubCategories(productId);
     }, [currentProduct, productId]);
 
-    const getProductSubCategories = (test)=>{ 
-        console.log('currentProduct',currentProduct);
-        currentProduct.product_subCategory.map(item=>{
-            setProductSubCategories([...productSubCategories, item])
-        })
-    }
 
     const fetchProductCategories = async()=>{
         try{
@@ -97,7 +97,6 @@ const EditProducts = ()=>{
         debugger;
         try{
             const allCategoryData = await getAllCategories();
-            console.log('allCategoryData',allCategoryData);
             if(allCategoryData){
 
                 const allCategoryArrayData = Object.values(allCategoryData).map(data=>{
@@ -107,8 +106,6 @@ const EditProducts = ()=>{
                 const filteredCategories = allCategoryArrayData.filter((data)=>{
                     return data.hasOwnProperty('subCategories');
                 })
-
-                console.log('filteredCategories',filteredCategories);
                     
                 const categoryRowsData = Object.values(filteredCategories).flatMap(data=>{
                     if(data.hasOwnProperty('subCategories')){
@@ -123,32 +120,11 @@ const EditProducts = ()=>{
                         }
                     }
                 })
-                console.log('categoryRowsData',categoryRowsData );
                 setAllSubCategories(categoryRowsData)
             }
             else{
                 setAllSubCategories([])
             }
-
-
-            // const allCategoryData = await getAllCategories();
-            // console.log('allCategoryData',allCategoryData);
-            // if(allCategoryData){
-            //     if(allCategoryData.hasOwnProperty('subCategories')){
-			// 		const categoryRowsData = Object.values(allCategoryData.subCategories).map(category=>{
-			// 			return {
-            //                 value:[category.category.toLowerCase()],
-            //                 label:category.category,
-            //                 // id:category.id
-            //             }
-			// 		})
-            //         console.log('categoryRowsData',categoryRowsData );
-			// 		setProductSubCategory(categoryRowsData)
-			// 	}
-            //     else{
-			// 		setProductSubCategory([])
-			// 	}
-            // }
         }catch(err){
             console.log(err);
         }
@@ -205,8 +181,6 @@ const EditProducts = ()=>{
         const selectedValues = event.target.value;
         setProductSubCategories(selectedValues)
     }
-
-    console.log('Product Sub Categories', productSubCategories);
 
     return(
         <>
